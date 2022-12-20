@@ -165,25 +165,49 @@ class _ProfileState extends State<Profile> {
           Positioned(
             top: 20,
             left: 50,
-            child: Container(
-              height: 150,
-              width: 150,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  width: 5,
-                  color: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
+            child: Stack(
+              children: [
+                Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      width: 5,
+                      color: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
+                    ),
+                    color: AppColors.WHITE_COLOR,
+                    image: state is SUCCESS
+                        ? image != null
+                            ? DecorationImage(
+                                image: CachedNetworkImageProvider(image),
+                                fit: BoxFit.cover,
+                              )
+                            : null
+                        : null,
+                  ),
                 ),
-                color: AppColors.WHITE_COLOR,
-                image: state is SUCCESS
-                    ? image != null
-                        ? DecorationImage(
-                            image: CachedNetworkImageProvider(image),
-                            fit: BoxFit.cover,
-                          )
-                        : null
-                    : null,
-              ),
+                Positioned(
+                  bottom: 10,
+                  right: 10,
+                  child: Container(
+                    height: 30,
+                    width: 30,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        width: 3,
+                        color: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
+                      ),
+                      color: AppColors.WHITE_COLOR,
+                    ),
+                    child: const Icon(
+                      Iconsax.gallery_edit,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
