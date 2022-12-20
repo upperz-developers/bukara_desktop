@@ -1,17 +1,18 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
-import 'package:bukara/app/ui/auth/auth_view_controller.dart';
-import 'package:bukara/app/ui/auth/loging.dart';
-import 'package:bukara/app/ui/auth/signup.dart';
-import 'package:bukara/app/ui/home/home.dart';
-import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
+import 'package:bukara/app/ui/views/auth/loging.dart';
+import 'package:bukara/app/ui/views/auth/signup.dart';
+import 'package:bukara/app/ui/views/home/home.dart';
+import 'package:bukara/app/ui/views/start/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../shared/style.dart';
+import '../start/shared/style.dart';
 
 class Auth extends StatefulWidget {
   static String routeName = "/auth";
@@ -24,12 +25,21 @@ class _AuthState extends State<Auth> {
   ValueNotifier<bool> isLogin = ValueNotifier(true);
   AuthController authController = AuthController();
 
-  void _login(
-      {required AuthController controller, required BuildContext context}) {
+  void _login({required BuildContext context}) {
     context.read<AppBloc>().add(
           LOGINEVENT(
-            username: controller.userName.text.trim(),
-            password: controller.passWord.text.trim(),
+            username: authController.userName.text.trim(),
+            password: authController.passWord.text.trim(),
+          ),
+        );
+  }
+
+  void _signup({required BuildContext context}) {
+    context.read<AppBloc>().add(
+          SIGNUP(
+            username: authController.userName.text.trim(),
+            password: authController.passWord.text.trim(),
+            confirmPass: authController.confirmPass.text.trim(),
           ),
         );
   }
@@ -39,10 +49,13 @@ class _AuthState extends State<Auth> {
     return CustormScaffold(
       onSuccess: () {
         if (isLogin.value) {
+          authController.confirmPass.clear();
+          authController.passWord.clear();
+          authController.userName.clear();
           Navigator.pushReplacementNamed(context, Home.routeName);
           return;
         }
-        isLogin.value = false;
+        isLogin.value = true;
       },
       body: Row(
         children: [
@@ -62,11 +75,7 @@ class _AuthState extends State<Auth> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    isLoginAction
-                        ? Loggin(
-                            loginControler: authController,
-                          )
-                        : const Signup(),
+                    isLoginAction ? const Loggin() : const Signup(),
                     30.heightBox,
                     callToAction(isLoginAction),
                   ],
@@ -84,15 +93,16 @@ class _AuthState extends State<Auth> {
       children: [
         CustomButton(
           onTap: () {
-            AuthController authController = AuthController();
             if (isLoginAction) {
               _login(
-                controller: authController,
                 context: context,
               );
               return;
             }
-            //here will be the action of the signup
+
+            _signup(
+              context: context,
+            );
           },
           title: isLoginAction ? "Connexion" : "Creer un compte",
           textColor: AppColors.WHITE_COLOR,
@@ -100,7 +110,7 @@ class _AuthState extends State<Auth> {
         ),
         15.heightBox,
         SizedBox(
-          width: 300,
+          width: 250,
           child: Row(
             children: [
               Expanded(
@@ -113,9 +123,9 @@ class _AuthState extends State<Auth> {
                 ),
               ),
               10.widthBox,
-              const Text(
+              Text(
                 "ou",
-                style: TextStyle(),
+                style: GoogleFonts.montserrat(),
               ),
               10.widthBox,
               Expanded(

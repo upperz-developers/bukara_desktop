@@ -25,6 +25,10 @@ dependencies:
   fluent_ui: 3.12.0
   google_fonts: ^3.0.1
   shared_preferences: ^2.0.15
+  country_pickers: ^2.0.0
+  iconsax: ^0.0.8
+  cached_network_image: ^3.2.3
+  file_picker: ^5.2.4
 
 dev_dependencies:
   flutter_test:

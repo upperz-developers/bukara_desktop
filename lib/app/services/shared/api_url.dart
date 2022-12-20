@@ -4,4 +4,6 @@ class APIURL {
   static const String BASEURL = "https://api-bukara.benfluxgroup.com/api/v1";
   static const String LOGIN = "$BASEURL/users/signin";
   static const String SIGNUP = "$BASEURL/users/";
+  static const String ADDENTERPRISEURL = "$BASEURL/entreprises";
+  static const String GETENTERPRISE = "$BASEURL/entreprises";
 }

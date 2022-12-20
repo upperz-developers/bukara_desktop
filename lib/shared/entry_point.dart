@@ -1,7 +1,7 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
-import 'package:bukara/app/ui/shared/style.dart';
-import 'package:bukara/app/ui/start/splash_screen.dart';
+import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/views/start/splash_screen.dart';
 import 'package:bukara/shared/route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

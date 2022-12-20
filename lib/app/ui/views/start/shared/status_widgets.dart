@@ -1,5 +1,6 @@
-import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/views/start/shared/style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AppInfo extends StatelessWidget {
@@ -31,14 +32,14 @@ class AppInfo extends StatelessWidget {
               children: [
                 Text(
                   title!,
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 10.heightBox,
                 Text(
                   subtitle!,
-                  style: const TextStyle(
+                  style: GoogleFonts.montserrat(
                     fontSize: 12,
                     color: AppColors.SECOND_TEXT_COLOR,
                   ),
@@ -92,9 +93,9 @@ class LoandingInfo extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Text(
+          Text(
             "Chargement...",
-            style: TextStyle(
+            style: GoogleFonts.montserrat(
               fontSize: 12,
               color: AppColors.SECOND_TEXT_COLOR,
             ),

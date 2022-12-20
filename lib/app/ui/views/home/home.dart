@@ -1,9 +1,11 @@
-import 'package:bukara/app/ui/home/profile/profile.dart';
-import 'package:bukara/app/ui/shared/app_architecture.dart';
-import 'package:bukara/app/ui/shared/style.dart';
-import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/profile/profile.dart';
+import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
+import 'package:bukara/app/ui/views/start/shared/app_architecture.dart';
+import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/views/start/shared/widget.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mat;
+import 'package:iconsax/iconsax.dart';
 
 class Home extends StatefulWidget {
   static String routeName = "/home";
@@ -45,7 +47,7 @@ class _HomeState extends State<Home> {
           kIcons.length,
           (index) => modelMenuApp(
             context,
-            icon: kIcons[index],
+            icon: selectedNav == index ? kIcons25[index] : kIcons[index],
             index: index,
             selectedIndex: selectedNav,
             onTap: () {
@@ -58,7 +60,7 @@ class _HomeState extends State<Home> {
         footer: [
           modelMenuFootApp(
             context,
-            icon: mat.Icons.person,
+            icon: Iconsax.user,
             index: 5,
             selectedIndex: selectedNav,
             onTap: () {
@@ -68,24 +70,16 @@ class _HomeState extends State<Home> {
             },
           ),
         ],
-        content: Padding(
-          padding: const EdgeInsets.only(
-            left: 75,
-            right: 75,
-            bottom: 15,
-            top: 15,
-          ),
-          child: NavigationBody(
-            index: selectedNav,
-            children: [
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-              Container(),
-              const Profile(),
-            ],
-          ),
+        content: NavigationBody(
+          index: selectedNav,
+          children: [
+            const SuiteHome(),
+            Container(),
+            Container(),
+            Container(),
+            Container(),
+            const Profile(),
+          ],
         ),
       ),
     );

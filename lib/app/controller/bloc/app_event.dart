@@ -1,3 +1,4 @@
+import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:flutter/foundation.dart' show immutable;
 
 @immutable
@@ -18,4 +19,16 @@ class SIGNUP implements AppEvent {
   final String? confirmPass;
 
   SIGNUP({this.username, this.password, this.confirmPass});
+  @override
+  String toString() {
+    return "Username:$username, Password:$password, Confirm:$confirmPass";
+  }
 }
+
+class ADDENTERPRISE implements AppEvent {
+  final Enterprise? enterprise;
+
+  ADDENTERPRISE({this.enterprise});
+}
+
+class GETENTERPRISE implements AppEvent {}

@@ -16,7 +16,8 @@ httpGet({String? endPoint, Map<String, dynamic>? parameters}) async {
   );
 }
 
-httpGetWithToken({String? endPoint, Map<String, dynamic>? parameters}) async {
+Future<Response> httpGetWithToken(
+    {String? endPoint, Map<String, dynamic>? parameters}) async {
   Token token = getMobileToken();
   return await DioApi().dio.get(
         endPoint!,
@@ -46,7 +47,7 @@ httpPost({String? endPoint, Map<String, dynamic>? data}) async {
       );
 }
 
-httpPostWithToken({String? endPoint, var data}) async {
+Future<Response> httpPostWithToken({String? endPoint, var data}) async {
   Token token = getMobileToken();
 
   return await DioApi().dio.post(

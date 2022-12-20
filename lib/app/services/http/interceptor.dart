@@ -8,6 +8,7 @@ class ApiInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
+    debugPrint(err.response.toString());
     switch (err.type) {
       case DioErrorType.sendTimeout:
       case DioErrorType.connectTimeout:
@@ -112,6 +113,6 @@ class ValidationInternalServerErrorException extends DioError {
 
   @override
   String toString() {
-    return "Erreur de validation";
+    return requestOptions.data.toString();
   }
 }

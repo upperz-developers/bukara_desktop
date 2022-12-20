@@ -1,15 +1,26 @@
-import 'package:bukara/app/ui/shared/style.dart';
-import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/views/start/shared/utils/hover_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:unicons/unicons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 
+double horizontalSpace = 130;
+
 List<IconData> kIcons = [
-  fluent.FluentIcons.user_window,
-  fluent.FluentIcons.shopping_cart,
+  Iconsax.home,
+  Iconsax.user_add,
   fluent.FluentIcons.task_manager,
-  fluent.FluentIcons.custom_activity,
+  Iconsax.folder,
+  fluent.FluentIcons.money,
+];
+
+List<IconData> kIcons25 = [
+  Iconsax.home_25,
+  Iconsax.user_add,
+  fluent.FluentIcons.task_manager,
+  Iconsax.folder_25,
   fluent.FluentIcons.money,
 ];
 
@@ -103,7 +114,7 @@ Widget modelMenuFootApp(
         ),
         child: Icon(
           icon,
-          size: 20,
+          size: 16,
           color:
               index == selectedIndex ? AppColors.WHITE_COLOR : Colors.black54,
         ),
@@ -115,21 +126,27 @@ Widget modelMenuFootApp(
 class FormText extends StatelessWidget {
   final String? hint;
   final TextEditingController? controller;
-  const FormText({super.key, this.hint, this.controller});
+  final bool? optinal;
+  final bool? submitted;
+  const FormText(
+      {super.key, this.hint, this.controller, this.optinal, this.submitted});
 
   @override
   Widget build(BuildContext context) {
+    bool validation =
+        optinal != false && controller!.text.isEmpty && submitted == true;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      width: 300,
+      width: 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: AppColors.BORDER_COLOR,
+          width: validation ? 1.5 : 1,
+          color: validation ? AppColors.RED_COLOR : AppColors.BORDER_COLOR,
         ),
       ),
       child: TextField(
-        style: const TextStyle(
+        style: GoogleFonts.montserrat(
           fontSize: 12,
         ),
         controller: controller,
@@ -137,7 +154,7 @@ class FormText extends StatelessWidget {
           border: InputBorder.none,
           isDense: true,
           hintText: hint,
-          hintStyle: const TextStyle(
+          hintStyle: GoogleFonts.montserrat(
             fontSize: 12,
           ),
         ),
@@ -161,7 +178,7 @@ class _FormPassWordTextState extends State<FormPassWordText> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      width: 300,
+      width: 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
@@ -175,7 +192,7 @@ class _FormPassWordTextState extends State<FormPassWordText> {
               children: [
                 Expanded(
                   child: TextField(
-                    style: const TextStyle(
+                    style: GoogleFonts.montserrat(
                       fontSize: 12,
                     ),
                     controller: widget.controller,
@@ -184,7 +201,7 @@ class _FormPassWordTextState extends State<FormPassWordText> {
                       border: InputBorder.none,
                       isDense: true,
                       hintText: widget.hint,
-                      hintStyle: const TextStyle(
+                      hintStyle: GoogleFonts.montserrat(
                         fontSize: 12,
                       ),
                     ),
@@ -196,8 +213,8 @@ class _FormPassWordTextState extends State<FormPassWordText> {
                     isObscure.value = !isObscure.value;
                   },
                   child: Icon(
-                    isObscureText ? UniconsLine.eye : UniconsLine.eye_slash,
-                    size: 20,
+                    isObscureText ? Iconsax.eye : Iconsax.eye_slash,
+                    size: 16,
                   ),
                 ),
               ],
@@ -225,7 +242,7 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(100),
       child: Container(
-        width: 300,
+        width: 250,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(
           vertical: 10,
@@ -235,13 +252,11 @@ class CustomButton extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(100),
         ),
-        child: Text(
-          title!,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: textColor,
-          ),
-        ),
+        child: Text(title!,
+            style: GoogleFonts.montserrat(
+              fontWeight: FontWeight.bold,
+              color: textColor,
+            )),
       ),
     );
   }
@@ -253,8 +268,7 @@ Widget appBar(
 }) {
   return Text(
     title!,
-    style: const TextStyle(
-      fontFamily: "Montserrat",
+    style: GoogleFonts.montserrat(
       fontSize: 20,
       fontWeight: FontWeight.bold,
     ),

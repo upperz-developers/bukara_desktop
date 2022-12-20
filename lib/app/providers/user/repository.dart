@@ -14,7 +14,7 @@ Future<Response> signup(
     await httpPost(
       endPoint: APIURL.SIGNUP,
       data: {
-        "username": username,
+        "email": username,
         "password": password,
         "password_confirmation": confirmPass,
       },

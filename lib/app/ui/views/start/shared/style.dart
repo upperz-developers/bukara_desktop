@@ -47,10 +47,12 @@ class AppColors {
   static const GREY_COLOR = Color(0xFF99A3C5);
   static const BLUE_COLOR = Color(0xFF156BE7);
   static const GREEN_COLOR = Color(0xFF0D8B5F);
-  static const BLACK_COLOR = Color(0xFF000000);
-  static const SCAFFOLD_BACKGROUND_LIGHT = Color(0xFFF5F5F5);
+  static const BLACK_COLOR = fluent.Color.fromARGB(255, 48, 47, 47);
+  static const SCAFFOLD_BACKGROUND_LIGHT =
+      fluent.Color.fromRGBO(245, 245, 245, 1);
   static const DISABLE_COLOR = Color(0xFFECECEC);
-  static const SECOND_TEXT_COLOR = Color.fromARGB(255, 110, 110, 110);
+  static const SECOND_CARD_COLOR = fluent.Color.fromARGB(255, 219, 219, 219);
+  static const SECOND_TEXT_COLOR = fluent.Color.fromARGB(235, 98, 97, 97);
   static const SHADOW_COLOR = Color.fromARGB(255, 241, 236, 236);
 
   //Dark theme
