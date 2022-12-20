@@ -32,7 +32,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<SIGNUP>((event, emit) async {
       try {
         emit(const LOADING());
-        print(event.toString());
         await signup(
           username: event.username,
           password: event.password,

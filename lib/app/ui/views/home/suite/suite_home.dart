@@ -22,13 +22,10 @@ class SuiteHome extends StatefulWidget {
 class _SuiteHomeState extends State<SuiteHome>
     with SingleTickerProviderStateMixin {
   TabController? controller;
-  ScrollController? scrol1, scrol2, scrol3;
+
   @override
   void initState() {
     controller = TabController(length: 3, vsync: this);
-    scrol1 = ScrollController();
-    scrol2 = ScrollController();
-    scrol3 = ScrollController();
     super.initState();
   }
 
@@ -52,7 +49,11 @@ class _SuiteHomeState extends State<SuiteHome>
           ValueListenableBuilder(
               valueListenable: isShowingData,
               builder: (context, bool isData, child) {
-                return isData ? const ShowSuite() : const AddSuite();
+                return isData
+                    ? const ShowSuite()
+                    : AddSuite(
+                        showSuites: isShowingData,
+                      );
               })
         ],
       ),
