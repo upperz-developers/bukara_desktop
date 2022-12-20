@@ -76,7 +76,7 @@ class _ProfileState extends State<Profile> {
     String? name = "";
     if (state is SUCCESS) {
       // image = state.value.logo;
-      // name = state.value.designation;
+      name = state.value.designation ?? "";
     }
     return SizedBox(
       height: 190,
@@ -112,7 +112,7 @@ class _ProfileState extends State<Profile> {
                       3.heightBox,
                       state is SUCCESS
                           ? Text(
-                              name,
+                              name!,
                               style: GoogleFonts.montserrat(
                                 color: AppColors.SECOND_TEXT_COLOR,
                                 fontSize: 12,

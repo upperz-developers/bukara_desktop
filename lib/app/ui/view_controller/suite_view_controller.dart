@@ -24,9 +24,11 @@ class SuiteViewController {
   List<String> selectedCaracteristics;
   String selectedGoods = "simple";
   String selectedSuite = "apartement";
-  String selectedCountBedRoom = "1";
-  String selectedCountInternToilet = "1";
-  String selectedCountExternToilet = "1";
+  String selectedCountBedRoom = "0";
+  String selectedCountInternToilet = "0";
+  String selectedCountExternToilet = "0";
+  String selectedCountLeavingRoom = "0";
+  String selectedSuiteNumber = "1";
   List<File> images;
   SuiteViewController()
       : addressController = AddressController(),
@@ -40,9 +42,22 @@ class SuiteViewController {
       designation.text.trim().isNotEmpty &&
       description.text.trim().isNotEmpty &&
       price.text.trim().isNotEmpty &&
+      images.length == 5 &&
       addressController.validated();
 
-  void submit() {}
+  void submit(BuildContext context) {
+    Map<String, dynamic> caracteristic = {
+      "bedroom": int.parse(selectedCountBedRoom),
+      "interntoilet": int.parse(selectedCountInternToilet),
+      "externtoilet": int.parse(selectedCountExternToilet),
+      "livingroom": int.parse(selectedCountLeavingRoom),
+      "other": selectedCaracteristics,
+    };
+
+    if (validated()) {
+      // do something here
+    }
+  }
 
   Future<void> pickImages() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(

@@ -18,20 +18,9 @@ List<String> goodType = [
   "Meuble",
 ];
 
-List<String> count = [
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-];
-
 class AddSuite extends StatefulWidget {
-  const AddSuite({super.key});
+  final ValueNotifier<bool> showSuites;
+  const AddSuite({super.key, required this.showSuites});
 
   @override
   State<AddSuite> createState() => _AddSuiteState();
@@ -62,6 +51,17 @@ class _AddSuiteState extends State<AddSuite> {
   void initState() {
     suiteCaracteristiqueModel();
     super.initState();
+  }
+
+  bool submitted = false;
+  void saveSuite() {
+    if (suiteViewController.validated()) {
+      suiteViewController.submit(context);
+      return;
+    }
+    setState(() {
+      submitted = true;
+    });
   }
 
   @override
@@ -122,44 +122,39 @@ class _AddSuiteState extends State<AddSuite> {
           "Adresse",
         ),
         modelInfo(
-          title: "Reference",
-          hint: "Entrez la reference",
-          controller: TextEditingController(),
-        ),
-        modelInfo(
           title: "Pays",
           hint: "Rep dem du congo",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.country,
         ),
         modelInfo(
           title: "Province",
           hint: "Nord-kivu",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.city,
         ),
         modelInfo(
           title: "Ville",
           hint: "Goma",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.town,
         ),
         modelInfo(
           title: "Commune",
           hint: "Goma",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.commune,
         ),
         modelInfo(
           title: "Quartier",
           hint: "Entrer le cartier",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.quater,
         ),
         modelInfo(
           title: "Avenue",
           hint: "Entrer l'avenu",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.avenue,
         ),
         modelInfo(
           title: "Numero",
           hint: "Entrer le numero",
-          controller: TextEditingController(),
+          controller: suiteViewController.addressController.number,
         ),
       ],
     );
@@ -514,7 +509,12 @@ class _AddSuiteState extends State<AddSuite> {
         modelInfo(
           title: "Designation",
           hint: "Designation de l'entreprise",
-          controller: TextEditingController(),
+          controller: suiteViewController.designation,
+        ),
+        modelInfo(
+          title: "Prix",
+          hint: "1 USD",
+          controller: suiteViewController.price,
         ),
         Text(
           "Description",
@@ -533,13 +533,21 @@ class _AddSuiteState extends State<AddSuite> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             border: Border.all(
-              color: AppColors.BORDER_COLOR,
+              width: suiteViewController.description.text.isEmpty &&
+                      submitted == true
+                  ? 1.5
+                  : 1,
+              color: suiteViewController.description.text.isEmpty &&
+                      submitted == true
+                  ? AppColors.RED_COLOR
+                  : AppColors.BORDER_COLOR,
             ),
           ),
           child: TextField(
             style: GoogleFonts.montserrat(
               fontSize: 12,
             ),
+            controller: suiteViewController.description,
             maxLines: 3,
             maxLength: 125,
             decoration: InputDecoration(
@@ -556,6 +564,69 @@ class _AddSuiteState extends State<AddSuite> {
           width: 250,
           child: Row(
             children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "#numero",
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.SECOND_TEXT_COLOR,
+                          ),
+                        ),
+                      ),
+                      8.heightBox,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.BORDER_COLOR,
+                          ),
+                        ),
+                        child: DropdownButton<String>(
+                          value: suiteViewController.selectedSuiteNumber,
+                          borderRadius: BorderRadius.circular(4),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
+                          underline: Container(),
+                          isDense: true,
+                          items: List.generate(100, (index) => "$index")
+                              .map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: SizedBox(
+                                width: 30,
+                                child: Text(
+                                  items,
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              suiteViewController.selectedSuiteNumber =
+                                  newValue!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              10.widthBox,
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
@@ -583,19 +654,20 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          // Initial Value
                           value: suiteViewController.selectedCountBedRoom,
                           borderRadius: BorderRadius.circular(4),
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
                           underline: Container(),
-                          // Array list of items
                           isDense: true,
-                          items: count.map((String items) {
+                          items: List.generate(10, (index) => "$index")
+                              .map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: SizedBox(
-                                width: 74,
+                                width: 30,
                                 child: Text(
                                   items,
                                   style: GoogleFonts.montserrat(
@@ -605,8 +677,6 @@ class _AddSuiteState extends State<AddSuite> {
                               ),
                             );
                           }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
                           onChanged: (String? newValue) {
                             setState(() {
                               suiteViewController.selectedCountBedRoom =
@@ -620,6 +690,74 @@ class _AddSuiteState extends State<AddSuite> {
                 ),
               ),
               10.widthBox,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Salon",
+                        style: GoogleFonts.montserrat(
+                          textStyle: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.SECOND_TEXT_COLOR,
+                          ),
+                        ),
+                      ),
+                      8.heightBox,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.BORDER_COLOR,
+                          ),
+                        ),
+                        child: DropdownButton<String>(
+                          isDense: true,
+                          underline: Container(),
+                          value: suiteViewController.selectedCountLeavingRoom,
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
+                          items: List.generate(5, (index) => "$index")
+                              .map((String items) {
+                            return DropdownMenuItem(
+                              value: items,
+                              child: SizedBox(
+                                width: 30,
+                                child: Text(
+                                  items,
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              suiteViewController.selectedCountLeavingRoom =
+                                  newValue!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          width: 250,
+          child: Row(
+            children: [
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
@@ -647,14 +785,15 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          // Initial Value
                           value: suiteViewController.selectedCountInternToilet,
-
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          underline: Container(), isDense: true,
-                          // Array list of items
-                          items: count.map((String items) {
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
+                          underline: Container(),
+                          isDense: true,
+                          items: List.generate(10, (index) => "$index")
+                              .map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: SizedBox(
@@ -668,8 +807,6 @@ class _AddSuiteState extends State<AddSuite> {
                               ),
                             );
                           }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
                           onChanged: (String? newValue) {
                             setState(() {
                               suiteViewController.selectedCountInternToilet =
@@ -682,13 +819,7 @@ class _AddSuiteState extends State<AddSuite> {
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
-        SizedBox(
-          width: 250,
-          child: Row(
-            children: [
+              10.widthBox,
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 15),
@@ -717,15 +848,14 @@ class _AddSuiteState extends State<AddSuite> {
                         ),
                         child: DropdownButton<String>(
                           isDense: true,
-                          // Initial Value
                           underline: Container(),
                           value: suiteViewController.selectedCountExternToilet,
-
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
-
-                          // Array list of items
-                          items: count.map((String items) {
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
+                          items: List.generate(10, (index) => "$index")
+                              .map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: SizedBox(
@@ -739,8 +869,6 @@ class _AddSuiteState extends State<AddSuite> {
                               ),
                             );
                           }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
                           onChanged: (String? newValue) {
                             setState(() {
                               suiteViewController.selectedCountExternToilet =
@@ -751,14 +879,6 @@ class _AddSuiteState extends State<AddSuite> {
                       ),
                     ],
                   ),
-                ),
-              ),
-              10.widthBox,
-              Expanded(
-                child: modelInfo(
-                  title: "Prix",
-                  hint: "1 USD",
-                  controller: TextEditingController(),
                 ),
               ),
             ],
@@ -795,13 +915,13 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          // Initial Value
                           value: suiteViewController.selectedSuite,
                           borderRadius: BorderRadius.circular(4),
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
                           underline: Container(),
-                          // Array list of items
                           isDense: true,
                           items: appartType.map((String items) {
                             return DropdownMenuItem(
@@ -817,8 +937,6 @@ class _AddSuiteState extends State<AddSuite> {
                               ),
                             );
                           }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
                           onChanged: (String? newValue) {
                             setState(() {
                               suiteViewController.selectedSuite = newValue!;
@@ -858,13 +976,13 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          // Initial Value
                           value: suiteViewController.selectedGoods,
-
-                          // Down Arrow Icon
-                          icon: const Icon(Icons.keyboard_arrow_down),
-                          underline: Container(), isDense: true,
-                          // Array list of items
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                            size: 20,
+                          ),
+                          underline: Container(),
+                          isDense: true,
                           items: goodType.map((String items) {
                             return DropdownMenuItem(
                               value: items,
@@ -879,8 +997,6 @@ class _AddSuiteState extends State<AddSuite> {
                               ),
                             );
                           }).toList(),
-                          // After selecting the desired option,it will
-                          // change button value to selected value
                           onChanged: (String? newValue) {
                             setState(() {
                               suiteViewController.selectedGoods = newValue!;
@@ -983,6 +1099,60 @@ class _AddSuiteState extends State<AddSuite> {
               },
             ),
           ),
+          30.heightBox,
+          Row(
+            children: [
+              OnHoverEffect(
+                child: InkWell(
+                  onTap: saveSuite,
+                  borderRadius: BorderRadius.circular(4),
+                  child: Container(
+                    width: 145,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppColors.BLACK_COLOR,
+                    ),
+                    child: Text(
+                      "Enregistrer",
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: AppColors.WHITE_COLOR,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              10.widthBox,
+              OnHoverEffect(
+                child: InkWell(
+                  onTap: () {
+                    widget.showSuites.value = true;
+                  },
+                  borderRadius: BorderRadius.circular(4),
+                  child: Container(
+                    width: 145,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppColors.DISABLE_COLOR,
+                    ),
+                    child: Text(
+                      "Annuler",
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: AppColors.BLACK_COLOR,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -1026,7 +1196,7 @@ class _AddSuiteState extends State<AddSuite> {
             hint: hint,
             optinal: optinal,
             controller: controller,
-            // submitted: submitted,
+            submitted: submitted,
           ),
         ],
       ),
