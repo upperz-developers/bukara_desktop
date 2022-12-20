@@ -22,6 +22,11 @@ class SuiteViewController {
   TextEditingController price;
   AddressController addressController;
   List<String> selectedCaracteristics;
+  String selectedGoods = "simple";
+  String selectedSuite = "apartement";
+  String selectedCountBedRoom = "1";
+  String selectedCountInternToilet = "1";
+  String selectedCountExternToilet = "1";
   List<File> images;
   SuiteViewController()
       : addressController = AddressController(),
