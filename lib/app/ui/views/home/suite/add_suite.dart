@@ -7,6 +7,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+List<String> appartType = [
+  "simple",
+  "Meuble",
+];
+
 class AddSuite extends StatefulWidget {
   const AddSuite({super.key});
 
@@ -25,6 +30,8 @@ class _AddSuiteState extends State<AddSuite> {
 
   List<String> caracteristiqueKey = [];
   List<IconData> caracteristiqueValue = [];
+  String selectedGoods = "simple";
+  bool disabled = false;
   suiteCaracteristiqueModel() {
     suiteViewController.caracteristics.forEach((key, value) {
       caracteristiqueKey.add(key);
@@ -547,75 +554,101 @@ class _AddSuiteState extends State<AddSuite> {
           ),
           Wrap(
             spacing: 10,
-            children: List.generate(suiteViewController.caracteristics.length,
-                (index) {
-              bool isSelected = false;
-              List<String> test = suiteViewController.selectedCaracteristics
-                  .where((c) => c == caracteristiqueKey[index])
-                  .toList();
-              if (test.isNotEmpty) {
-                setState(() {
-                  isSelected = true;
-                });
-              }
-              return OnHoverEffect(
-                child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      List<String> test = suiteViewController
-                          .selectedCaracteristics
-                          .where((c) => c == caracteristiqueKey[index])
-                          .toList();
-                      if (test.isEmpty) {
-                        suiteViewController.selectedCaracteristics
-                            .add(caracteristiqueKey[index]);
-                        isSelected = true;
-                      } else {
-                        suiteViewController.selectedCaracteristics
-                            .removeWhere((c) => c == caracteristiqueKey[index]);
-                        isSelected = false;
-                      }
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    height: 90,
-                    width: 90,
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.BLACK_COLOR
-                          : AppColors.DISABLE_COLOR,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          caracteristiqueValue[index],
-                          size: 14,
-                          color: isSelected
-                              ? AppColors.WHITE_COLOR
-                              : AppColors.BLACK_COLOR,
-                        ),
-                        5.heightBox,
-                        Text(
-                          caracteristiqueKey[index],
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.montserrat(
-                            fontSize: 12,
+            children: List.generate(
+              suiteViewController.caracteristics.length,
+              (index) {
+                bool isSelected = false;
+                List<String> test = suiteViewController.selectedCaracteristics
+                    .where((c) => c == caracteristiqueKey[index])
+                    .toList();
+                if (test.isNotEmpty) {
+                  setState(() {
+                    isSelected = true;
+                  });
+                }
+                return OnHoverEffect(
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        List<String> test = suiteViewController
+                            .selectedCaracteristics
+                            .where((c) => c == caracteristiqueKey[index])
+                            .toList();
+                        if (test.isEmpty) {
+                          suiteViewController.selectedCaracteristics
+                              .add(caracteristiqueKey[index]);
+                          isSelected = true;
+                        } else {
+                          suiteViewController.selectedCaracteristics
+                              .removeWhere(
+                                  (c) => c == caracteristiqueKey[index]);
+                          isSelected = false;
+                        }
+                      });
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 10),
+                      height: 90,
+                      width: 90,
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: isSelected
+                            ? AppColors.BLACK_COLOR
+                            : AppColors.DISABLE_COLOR,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            caracteristiqueValue[index],
+                            size: 14,
                             color: isSelected
                                 ? AppColors.WHITE_COLOR
                                 : AppColors.BLACK_COLOR,
                           ),
-                        ),
-                      ],
+                          5.heightBox,
+                          Text(
+                            caracteristiqueKey[index],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.montserrat(
+                              fontSize: 12,
+                              color: isSelected
+                                  ? AppColors.WHITE_COLOR
+                                  : AppColors.BLACK_COLOR,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
+                );
+              },
+            ),
+          ),
+          30.heightBox,
+          DropdownButton<String>(
+            // Initial Value
+            value: selectedGoods,
+
+            // Down Arrow Icon
+            icon: const Icon(Icons.keyboard_arrow_down),
+
+            // Array list of items
+            items: appartType.map((String items) {
+              return DropdownMenuItem(
+                value: items,
+                child: Text(items),
               );
-            }),
+            }).toList(),
+            // After selecting the desired option,it will
+            // change button value to selected value
+            onChanged: (String? newValue) {
+              setState(() {
+                selectedGoods = newValue!;
+              });
+            },
           ),
         ],
       ),

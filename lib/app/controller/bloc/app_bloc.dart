@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:bloc/bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
@@ -42,7 +40,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         );
         emit(const SUCCESS());
       } on Exception catch (e) {
-        print(e.toString());
         emit(
           ERROR(
             dueTo: e.toString(),
