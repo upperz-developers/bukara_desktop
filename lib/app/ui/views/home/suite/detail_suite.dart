@@ -1,5 +1,6 @@
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -191,29 +192,52 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                   child: Divider(),
                                 ),
                                 TableCalendar(
+                                  daysOfWeekStyle: DaysOfWeekStyle(
+                                    weekdayStyle: GoogleFonts.montserrat(),
+                                    weekendStyle: GoogleFonts.montserrat(
+                                      color: Colors.black38,
+                                    ),
+                                  ),
                                   rowHeight: 53,
-                                  headerStyle: const HeaderStyle(
-                                      formatButtonVisible: false,
-                                      headerPadding: EdgeInsets.only(
-                                        bottom: 10,
-                                      ),
-                                      titleCentered: true,
-                                      leftChevronIcon: Icon(
-                                        Iconsax.arrow_left_2,
-                                      ),
-                                      rightChevronIcon: Icon(
-                                        Iconsax.arrow_right_3,
-                                      ),
-                                      titleTextStyle: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                  calendarStyle: const CalendarStyle(
-                                    selectedDecoration: BoxDecoration(
+                                  headerStyle: HeaderStyle(
+                                    formatButtonVisible: false,
+                                    headerPadding: const EdgeInsets.only(
+                                      bottom: 10,
+                                    ),
+                                    titleCentered: true,
+                                    leftChevronIcon: const Icon(
+                                      Iconsax.arrow_left_2,
+                                      color: AppColors.BLACK_COLOR,
+                                    ),
+                                    rightChevronIcon: const Icon(
+                                      Iconsax.arrow_right_3,
+                                      color: AppColors.BLACK_COLOR,
+                                    ),
+                                    titleTextStyle: GoogleFonts.montserrat(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  calendarStyle: CalendarStyle(
+                                    weekendTextStyle: GoogleFonts.montserrat(
+                                      color: Colors.black38,
+                                    ),
+                                    outsideTextStyle: GoogleFonts.montserrat(
+                                      color: Colors.black38,
+                                    ),
+                                    todayTextStyle: GoogleFonts.montserrat(
+                                      color: AppColors.WHITE_COLOR,
+                                    ),
+                                    weekNumberTextStyle:
+                                        GoogleFonts.montserrat(),
+                                    selectedTextStyle: GoogleFonts.montserrat(),
+                                    selectedDecoration: const BoxDecoration(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         shape: BoxShape.circle),
-                                    todayDecoration: BoxDecoration(
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        shape: BoxShape.circle),
+                                    todayDecoration: const BoxDecoration(
+                                      color: AppColors.BLACK_COLOR,
+                                      shape: BoxShape.circle,
+                                    ),
                                   ),
                                   availableGestures: AvailableGestures.all,
                                   focusedDay: DateTime.now(),
@@ -340,7 +364,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
         Expanded(
           child: OnHoverEffect(
             child: InkWell(
-              onTap: () {},
+              onTap: showImageGalerie,
               child: Container(
                 height: 448,
                 width: 600,
@@ -367,7 +391,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
               children: [
                 OnHoverEffect(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: showImageGalerie,
                     child: Container(
                       height: 220,
                       width: 250,
@@ -447,6 +471,13 @@ class _SuiteDetailState extends State<SuiteDetail> {
           ],
         ),
       ],
+    );
+  }
+
+  void showImageGalerie() {
+    showDialog(
+      context: context,
+      builder: (context) => const SuiteGaleryImage(),
     );
   }
 }
