@@ -1,5 +1,5 @@
-import 'package:bukara/app/ui/views/start/shared/style.dart';
-import 'package:bukara/app/ui/views/start/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -11,17 +11,13 @@ double horizontalSpace = 130;
 List<IconData> kIcons = [
   Iconsax.home,
   Iconsax.user_add,
-  fluent.FluentIcons.task_manager,
   Iconsax.folder,
-  fluent.FluentIcons.money,
 ];
 
 List<IconData> kIcons25 = [
   Iconsax.home_25,
   Iconsax.user_add,
-  fluent.FluentIcons.task_manager,
   Iconsax.folder_25,
-  fluent.FluentIcons.money,
 ];
 
 Widget modelMenuApp(

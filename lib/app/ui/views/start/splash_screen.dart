@@ -2,7 +2,7 @@ import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/user/user.dart';
 import 'package:bukara/app/ui/views/auth/auth.dart';
 import 'package:bukara/app/ui/views/home/home.dart';
-import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
