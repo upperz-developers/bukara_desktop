@@ -4,7 +4,7 @@ import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 import 'package:bukara/app/ui/views/auth/loging.dart';
 import 'package:bukara/app/ui/views/auth/signup.dart';
 import 'package:bukara/app/ui/views/home/home.dart';
-import 'package:bukara/app/ui/views/start/shared/widget.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,7 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../start/shared/style.dart';
+import '../../shared/style.dart';
 
 class Auth extends StatefulWidget {
   static String routeName = "/auth";

@@ -1,6 +1,6 @@
-import 'package:bukara/app/ui/views/start/shared/style.dart';
-import 'package:bukara/app/ui/views/start/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/views/start/shared/widget.dart';
+import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/enterprise_view_controller.dart';
 import 'package:country_pickers/country.dart';
 import 'package:country_pickers/country_pickers.dart';

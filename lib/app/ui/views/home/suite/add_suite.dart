@@ -1,7 +1,7 @@
 import 'package:bukara/app/ui/view_controller/suite_view_controller.dart';
-import 'package:bukara/app/ui/views/start/shared/style.dart';
-import 'package:bukara/app/ui/views/start/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/views/start/shared/widget.dart';
+import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';

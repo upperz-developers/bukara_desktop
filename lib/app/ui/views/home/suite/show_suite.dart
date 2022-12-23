@@ -1,6 +1,7 @@
-import 'package:bukara/app/ui/views/start/shared/style.dart';
-import 'package:bukara/app/ui/views/start/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/views/start/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/suite/detail_suite.dart';
+import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -233,6 +234,9 @@ class _ShowSuiteState extends State<ShowSuite> {
                   icon: Iconsax.shop_remove,
                 ),
                 modelAction(
+                  onTap: () {
+                    Navigator.pushNamed(context, SuiteDetail.routeName);
+                  },
                   icon: Iconsax.more,
                 ),
               ],

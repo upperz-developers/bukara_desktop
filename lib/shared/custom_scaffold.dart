@@ -1,7 +1,7 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
-import 'package:bukara/app/ui/views/start/shared/status_widgets.dart';
-import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/shared/status_widgets.dart';
+import 'package:bukara/app/ui/shared/style.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

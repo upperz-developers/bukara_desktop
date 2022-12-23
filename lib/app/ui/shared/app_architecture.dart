@@ -1,4 +1,4 @@
-import 'package:bukara/app/ui/views/start/shared/style.dart';
+import 'package:bukara/app/ui/shared/style.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 
 class ArchitectureApp extends StatefulWidget {

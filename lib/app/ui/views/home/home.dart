@@ -1,8 +1,8 @@
 import 'package:bukara/app/ui/views/home/profile/profile.dart';
 import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
-import 'package:bukara/app/ui/views/start/shared/app_architecture.dart';
-import 'package:bukara/app/ui/views/start/shared/style.dart';
-import 'package:bukara/app/ui/views/start/shared/widget.dart';
+import 'package:bukara/app/ui/shared/app_architecture.dart';
+import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:iconsax/iconsax.dart';
@@ -61,11 +61,11 @@ class _HomeState extends State<Home> {
           modelMenuFootApp(
             context,
             icon: Iconsax.user,
-            index: 5,
+            index: 3,
             selectedIndex: selectedNav,
             onTap: () {
               setState(() {
-                selectedNav = 5;
+                selectedNav = 3;
               });
             },
           ),
@@ -74,8 +74,6 @@ class _HomeState extends State<Home> {
           index: selectedNav,
           children: [
             const SuiteHome(),
-            Container(),
-            Container(),
             Container(),
             Container(),
             const Profile(),
