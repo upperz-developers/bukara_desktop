@@ -1,12 +1,15 @@
+import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'package:bukara/app/providers/shared/common_models.dart' as img;
 
 class SuiteDetail extends StatefulWidget {
   static String routeName = "/detail_suite";
@@ -19,6 +22,7 @@ class SuiteDetail extends StatefulWidget {
 class _SuiteDetailState extends State<SuiteDetail> {
   @override
   Widget build(BuildContext context) {
+    Suite suiteDetail = ModalRoute.of(context)!.settings.arguments as Suite;
     return Scaffold(
       backgroundColor: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
       body: Padding(
@@ -47,7 +51,8 @@ class _SuiteDetailState extends State<SuiteDetail> {
                       ),
                     ),
                     30.heightBox,
-                    showImage(),
+                    if (suiteDetail.images!.isNotEmpty)
+                      showImage(suiteDetail.images!),
                     45.heightBox,
                     Align(
                       alignment: Alignment.center,
@@ -60,7 +65,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Appartement name - 150\$ par mois",
+                                  "Appartement name - ${suiteDetail.price}\$ par mois",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -68,12 +73,12 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                 ),
                                 10.heightBox,
                                 Text(
-                                  "#numero 25 (3 chambres - 1 salon)",
+                                  "#numero ${suiteDetail.number} (${suiteDetail.features!.bedroom} chambres - ${suiteDetail.features!.livingroom} salon)",
                                   style: GoogleFonts.montserrat(),
                                 ),
                                 20.heightBox,
                                 Text(
-                                  "Le lorem ipsum est, en imprimerie, une suite de mots sans signification utilisée à titre provisoire pour calibrer une mise en page, le texte définitif venant remplacer le faux-texte dès qu'il est prêt ou que la mise en page est achevée. Généralement, on utilise un texte en faux latin",
+                                  suiteDetail.description!,
                                   style: GoogleFonts.montserrat(
                                     color: AppColors.SECOND_TEXT_COLOR,
                                     fontSize: 12,
@@ -84,7 +89,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                   padding: EdgeInsets.symmetric(vertical: 20),
                                   child: Divider(),
                                 ),
-                                caracteristic(),
+                                caracteristic(suiteDetail),
                                 const Padding(
                                   padding: EdgeInsets.only(top: 5, bottom: 20),
                                   child: Divider(),
@@ -96,7 +101,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                   ),
                                 ),
                                 30.heightBox,
-                                otherInfo(),
+                                otherInfo(suiteDetail.features!.other!),
                               ],
                             ),
                           ),
@@ -261,77 +266,84 @@ class _SuiteDetailState extends State<SuiteDetail> {
     );
   }
 
-  Widget caracteristic() {
+  Widget caracteristic(Suite suite) {
     return Column(
       children: [
         caracteristicModel(
-          title: "Appartement no 23",
+          title: "#numero ${suite.number}",
           icon: Iconsax.box,
         ),
         caracteristicModel(
           title:
-              "5,avenue du lac, quartier katindo 1, commune de goma, ville de goma, Goma, congo/kinshasa",
+              "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}",
           icon: Iconsax.map_1,
         ),
         caracteristicModel(
-          title: "4 chambres",
+          title: "${suite.features!.bedroom} chambres",
           icon: Iconsax.box,
         ),
         caracteristicModel(
-          title: "2 Salon",
+          title: "${suite.features!.livingroom} salons",
           icon: Iconsax.home,
         ),
         caracteristicModel(
-          title: "1 toillette interne",
+          title: "${suite.features!.interntoilet} toillette interne",
           icon: Iconsax.safe_home,
         ),
         caracteristicModel(
-          title: "0 toillette externe",
+          title: "${suite.features!.externtoilet} toillette externe",
           icon: Iconsax.activity,
-          exist: false,
         ),
       ],
     );
   }
 
-  Widget otherInfo() {
+  Widget otherInfo(List<String> otherCarteristic) {
     return Column(
       children: [
-        caracteristicModel(
-          title: "Connxion internet",
-          icon: Iconsax.wifi,
-        ),
-        caracteristicModel(
+        otherCaracteristicModel(
+            title: "Connxion internet",
+            icon: Iconsax.wifi,
+            otherCarteristic: otherCarteristic),
+        otherCaracteristicModel(
           title: "Cash power",
           icon: Iconsax.flash,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
+        otherCaracteristicModel(
           title: "Snel",
           icon: Iconsax.flash,
-          exist: false,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
-          title: "Regideso",
+        otherCaracteristicModel(
+          title: "Eau",
           icon: Iconsax.omega_circle,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
-          title: "toillette interne",
+        otherCaracteristicModel(
+          title: "Cuisine",
+          icon: Iconsax.omega_circle,
+          otherCarteristic: otherCarteristic,
+        ),
+        otherCaracteristicModel(
+          title: "Toilette interne",
           icon: Iconsax.safe_home,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
-          title: "toillette externe",
+        otherCaracteristicModel(
+          title: "Toillette externe",
           icon: Iconsax.activity,
-          exist: false,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
+        otherCaracteristicModel(
           title: "Piscine",
           icon: Iconsax.activity,
-          exist: false,
+          otherCarteristic: otherCarteristic,
         ),
-        caracteristicModel(
+        otherCaracteristicModel(
           title: "Parking",
           icon: Iconsax.activity,
-          exist: false,
+          otherCarteristic: otherCarteristic,
         ),
       ],
     );
@@ -358,25 +370,63 @@ class _SuiteDetailState extends State<SuiteDetail> {
     );
   }
 
-  Widget showImage() {
+  Widget otherCaracteristicModel(
+      {IconData? icon, String? title, List<String>? otherCarteristic}) {
+    ValueNotifier<bool> isExist = ValueNotifier(false);
+    if (otherCarteristic != null) {
+      for (int i = 0; i < otherCarteristic.length; i++) {
+        if (otherCarteristic[i] == title) {
+          isExist.value = true;
+          break;
+        }
+      }
+    }
+    return ValueListenableBuilder(
+        valueListenable: isExist,
+        builder: (context, bool exist, child) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 25),
+            child: Row(
+              children: [
+                Icon(icon),
+                15.widthBox,
+                Expanded(
+                  child: Text(
+                    title!,
+                    style: GoogleFonts.montserrat(
+                      height: 1.5,
+                      decoration:
+                          exist == false ? TextDecoration.lineThrough : null,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget showImage(List<img.Image> images) {
     return Row(
       children: [
         Expanded(
           child: OnHoverEffect(
             child: InkWell(
-              onTap: showImageGalerie,
+              onTap: () {
+                showImageGalerie(images: images, index: 0);
+              },
               child: Container(
                 height: 448,
                 width: 600,
                 alignment: Alignment.center,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.SECOND_CARD_COLOR,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(10),
                     bottomLeft: Radius.circular(10),
                   ),
                   image: DecorationImage(
-                    image: AssetImage("assets/images/suite.jpg"),
+                    image: CachedNetworkImageProvider(images[0].url!),
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -391,14 +441,16 @@ class _SuiteDetailState extends State<SuiteDetail> {
               children: [
                 OnHoverEffect(
                   child: InkWell(
-                    onTap: showImageGalerie,
+                    onTap: () {
+                      showImageGalerie(images: images, index: 1);
+                    },
                     child: Container(
                       height: 220,
                       width: 250,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.SECOND_CARD_COLOR,
                         image: DecorationImage(
-                          image: AssetImage("assets/images/suite.jpg"),
+                          image: CachedNetworkImageProvider(images[1].url!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -408,17 +460,19 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 8.widthBox,
                 OnHoverEffect(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showImageGalerie(images: images, index: 2);
+                    },
                     child: Container(
                       height: 220,
                       width: 250,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.SECOND_CARD_COLOR,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           topRight: Radius.circular(10),
                         ),
                         image: DecorationImage(
-                          image: AssetImage("assets/images/suite.jpg"),
+                          image: CachedNetworkImageProvider(images[2].url!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -432,14 +486,16 @@ class _SuiteDetailState extends State<SuiteDetail> {
               children: [
                 OnHoverEffect(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showImageGalerie(images: images, index: 3);
+                    },
                     child: Container(
                       height: 220,
                       width: 250,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.SECOND_CARD_COLOR,
                         image: DecorationImage(
-                          image: AssetImage("assets/images/suite.jpg"),
+                          image: CachedNetworkImageProvider(images[3].url!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -449,17 +505,19 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 8.widthBox,
                 OnHoverEffect(
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showImageGalerie(images: images, index: 4);
+                    },
                     child: Container(
                       height: 220,
                       width: 250,
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         color: AppColors.SECOND_CARD_COLOR,
-                        borderRadius: BorderRadius.only(
+                        borderRadius: const BorderRadius.only(
                           bottomRight: Radius.circular(10),
                         ),
                         image: DecorationImage(
-                          image: AssetImage("assets/images/suite.jpg"),
+                          image: CachedNetworkImageProvider(images[4].url!),
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -474,10 +532,13 @@ class _SuiteDetailState extends State<SuiteDetail> {
     );
   }
 
-  void showImageGalerie() {
+  void showImageGalerie({List<img.Image>? images, int? index}) {
     showDialog(
       context: context,
-      builder: (context) => const SuiteGaleryImage(),
+      builder: (context) => SuiteGaleryImage(
+        images: images,
+        index: index,
+      ),
     );
   }
 }

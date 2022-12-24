@@ -1,9 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:bukara/app/providers/shared/common_models.dart' as img;
 
 class SuiteGaleryImage extends StatefulWidget {
-  final List<String>? avatars;
-  const SuiteGaleryImage({Key? key, this.avatars}) : super(key: key);
+  final List<img.Image>? images;
+  final int? index;
+  const SuiteGaleryImage({Key? key, this.images, this.index}) : super(key: key);
 
   @override
   State<SuiteGaleryImage> createState() => _SuiteGaleryImageState();
@@ -13,12 +16,13 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
     with mat.SingleTickerProviderStateMixin {
   mat.PageController? _controller;
   int i = 0;
-
+  bool hasStated = true;
   @override
   void initState() {
     _controller = mat.PageController(
-      initialPage: 0,
+      initialPage: widget.index!,
     );
+    i = widget.index!;
     super.initState();
   }
 
@@ -36,14 +40,15 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
               width: mat.MediaQuery.of(context).size.width,
               child: ClipRRect(
                 child: Container(
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                       image: DecorationImage(
-                    image: AssetImage("assets/images/people.jpg"),
+                    image:
+                        CachedNetworkImageProvider(widget.images![index].url!),
                   )),
                 ),
               ),
             ),
-            itemCount: 3,
+            itemCount: widget.images!.length,
           ),
           mat.Positioned(
             top: 30,
@@ -154,7 +159,7 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
                 spacing: 10,
                 crossAxisAlignment: mat.WrapCrossAlignment.center,
                 children: List.generate(
-                  5,
+                  widget.images!.length,
                   (index) => mat.InkWell(
                     onTap: () {
                       setState(() {
@@ -186,9 +191,9 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
                           color: index == i
                               ? FluentTheme.of(context).activeColor
                               : FluentTheme.of(context).disabledColor,
-                          image: const DecorationImage(
-                            image: AssetImage(
-                              "assets/images/people.jpg",
+                          image: DecorationImage(
+                            image: CachedNetworkImageProvider(
+                              widget.images![index].url!,
                             ),
                             fit: BoxFit.cover,
                           )),

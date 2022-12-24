@@ -6,4 +6,7 @@ class APIURL {
   static const String SIGNUP = "$BASEURL/users/";
   static const String ADDENTERPRISEURL = "$BASEURL/entreprises";
   static const String GETENTERPRISE = "$BASEURL/entreprises";
+  static const String ADDAPARTIMAGE = "$BASEURL/appartements/images/";
+  static const String GETAPARTURL = "$BASEURL/appartements";
+  static const String ADDAPART = "$BASEURL/appartements";
 }

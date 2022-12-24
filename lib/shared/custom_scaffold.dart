@@ -126,6 +126,7 @@ class _CustormScaffoldPageState extends State<CustormScaffoldPage> {
           }
         },
         child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
+          debugPrint(state.toString());
           return Stack(
             children: [
               // the body of the screen
