@@ -92,6 +92,7 @@ class LoandingInfo extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             "Chargement...",

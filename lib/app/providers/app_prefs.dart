@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppPref {
   static SharedPreferences? prefs;
   static const String mobilTokenKey = "token";
+  static const String appConfig = "config";
 }
 
 Token getMobileToken() {
@@ -22,6 +23,25 @@ void setMobileToken(Token token) {
     AppPref.mobilTokenKey,
     jsonEncode(
       token.toJson(),
+    ),
+  );
+}
+
+Config getAppConfig() {
+  var config = AppPref.prefs?.getString(AppPref.appConfig) ?? '';
+  if (config.isEmpty) {
+    return Config();
+  } else {
+    var json = jsonDecode(config);
+    return Config.fromJson(json);
+  }
+}
+
+void setAppConfig(Config config) {
+  AppPref.prefs!.setString(
+    AppPref.appConfig,
+    jsonEncode(
+      config.toJson(),
     ),
   );
 }

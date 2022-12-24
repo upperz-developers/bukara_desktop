@@ -1,20 +1,27 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/providers/app_prefs.dart';
+import 'package:bukara/app/providers/shared/common_models.dart';
+import 'package:bukara/app/providers/user/user.dart';
 import 'package:bukara/app/ui/view_controller/enterprise_view_controller.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SuiteViewController {
   Map<String, dynamic> caracteristics = {
-    "cuisine": Iconsax.back_square,
-    "connexion": Iconsax.wifi,
-    "toilette interne": Iconsax.box_1,
-    "toilette externe": Iconsax.arrange_square_24,
-    "cash power": Iconsax.call_slash,
-    "courant normal": Iconsax.star,
-    "eau": Iconsax.ranking5,
-    "parking": Iconsax.car,
+    "Cuisine": Iconsax.back_square,
+    "Connxion internet": Iconsax.wifi,
+    "Toilette interne": Iconsax.box_1,
+    "Toillette externe": Iconsax.arrange_square_24,
+    "Cash power": Iconsax.call_slash,
+    "Snel": Iconsax.star,
+    "Eau": Iconsax.ranking5,
+    "Parking": Iconsax.car,
     "Piscine": Iconsax.bezier,
   };
   TextEditingController designation;
@@ -30,13 +37,24 @@ class SuiteViewController {
   String selectedCountLeavingRoom = "0";
   String selectedSuiteNumber = "1";
   List<File> images;
+  List<String> typeApparts;
+  List<String> typebiens;
   SuiteViewController()
       : addressController = AddressController(),
         designation = TextEditingController(),
         description = TextEditingController(),
         price = TextEditingController(),
         selectedCaracteristics = [],
-        images = [];
+        images = [],
+        typeApparts = [],
+        typebiens = [] {
+    for (TypeAppart typeAppart in getAppConfig().typeAppart!) {
+      typeApparts.add(typeAppart.designation!);
+    }
+    for (TypeBiens typebien in getAppConfig().typeBiens!) {
+      typebiens.add(typebien.designation!);
+    }
+  }
 
   bool validated() =>
       designation.text.trim().isNotEmpty &&
@@ -55,7 +73,48 @@ class SuiteViewController {
     };
 
     if (validated()) {
-      // do something here
+      String? typeBienId = getAppConfig()
+          .typeBiens!
+          .where((typebien) => typebien.designation == selectedGoods)
+          .first
+          .id;
+      String? typeAppart = getAppConfig()
+          .typeAppart!
+          .where((typeAppart) => typeAppart.designation == selectedSuite)
+          .first
+          .id;
+
+      Addresses suiteAdress = Addresses(
+        city: addressController.city.text.trim(),
+        town: addressController.town.text.trim(),
+        country: addressController.country.text.trim(),
+        quarter: addressController.quater.text.trim(),
+        street: addressController.avenue.text.trim(),
+        number: int.tryParse(addressController.number.text.trim()),
+      );
+      suiteAdress.toJson().removeWhere((key, value) => value == null);
+
+      Map<String, dynamic> data = {
+        "typeBienId": typeBienId,
+        "typeAppartementId": typeAppart,
+        "description": description.text.trim(),
+        "features": jsonEncode(caracteristic),
+        "address": suiteAdress.toJson(),
+        "number": selectedSuiteNumber,
+        "price": double.tryParse(price.text.trim()),
+      };
+
+      List<String> imagePaths = [];
+      for (File image in images) {
+        imagePaths.add(image.path);
+      }
+
+      context.read<AppBloc>().add(
+            ADDSUITE(
+              data: data,
+              imagePaths: imagePaths,
+            ),
+          );
     }
   }
 

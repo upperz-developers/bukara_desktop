@@ -94,8 +94,7 @@ class AddressController {
         number = TextEditingController();
 
   bool validated() {
-    bool isValidate = reference.text.trim().isNotEmpty &&
-        country.text.trim().isNotEmpty &&
+    bool isValidate = country.text.trim().isNotEmpty &&
         city.text.trim().isNotEmpty &&
         town.text.trim().isNotEmpty &&
         commune.text.trim().isNotEmpty &&

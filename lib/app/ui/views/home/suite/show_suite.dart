@@ -1,3 +1,5 @@
+import 'package:bukara/app/providers/suite/model.dart';
+import 'package:bukara/app/providers/suite/provider.dart';
 import 'package:bukara/app/ui/views/home/suite/detail_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
@@ -20,16 +22,18 @@ class _ShowSuiteState extends State<ShowSuite> {
     return Expanded(
       child: Column(
         children: [
-          pagination(),
+          // pagination(),
+          30.heightBox,
           tabDetail(),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(
-                  15,
+                  suites.length,
                   (index) => suiteDetail(
                     index: index,
+                    suite: suites[index],
                   ),
                 ),
               ),
@@ -154,6 +158,7 @@ class _ShowSuiteState extends State<ShowSuite> {
 
   Widget suiteDetail({
     int? index,
+    Suite? suite,
   }) {
     double space = 10;
     return Container(
@@ -173,19 +178,18 @@ class _ShowSuiteState extends State<ShowSuite> {
           Expanded(
             flex: 1,
             child: suiteDetailModel(
-              title: "00${(index + 1).toString()}",
+              title: "00${suite!.number}",
             ),
           ),
           space.widthBox,
           Expanded(
             flex: 2,
-            child: suiteDetailModel(
-                title: "Nom de l'appartement 00${(index + 1).toString()}"),
+            child: suiteDetailModel(title: "${suite.description}"),
           ),
           space.widthBox,
           Expanded(
             flex: 1,
-            child: suiteDetailModel(title: "150 USD"),
+            child: suiteDetailModel(title: "${suite.price} USD"),
           ),
           space.widthBox,
           Expanded(
@@ -197,7 +201,7 @@ class _ShowSuiteState extends State<ShowSuite> {
             flex: 3,
             child: suiteDetailModel(
                 title:
-                    "5,avenue du lac, quartier katindo 1, commune de goma, ville de goma, Goma, congo/kinshasa"),
+                    "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}"),
           ),
           space.widthBox,
           Expanded(
@@ -235,7 +239,11 @@ class _ShowSuiteState extends State<ShowSuite> {
                 ),
                 modelAction(
                   onTap: () {
-                    Navigator.pushNamed(context, SuiteDetail.routeName);
+                    Navigator.pushNamed(
+                      context,
+                      SuiteDetail.routeName,
+                      arguments: suite,
+                    );
                   },
                   icon: Iconsax.more,
                 ),

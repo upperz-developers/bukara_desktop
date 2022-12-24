@@ -54,3 +54,19 @@ class Addresses {
     return data;
   }
 }
+
+class Image {
+  String? id;
+  String? url;
+  String? createdAt;
+  String? updatedAt;
+
+  Image({this.id, this.url, this.createdAt, this.updatedAt});
+
+  Image.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    url = json['url'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+}

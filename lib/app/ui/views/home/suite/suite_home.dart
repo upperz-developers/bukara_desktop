@@ -1,3 +1,8 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/suite/provider.dart';
+import 'package:bukara/app/ui/shared/status_widgets.dart';
 import 'package:bukara/app/ui/views/home/suite/add_suite.dart';
 import 'package:bukara/app/ui/views/home/suite/show_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
@@ -6,6 +11,7 @@ import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -22,10 +28,14 @@ class SuiteHome extends StatefulWidget {
 class _SuiteHomeState extends State<SuiteHome>
     with SingleTickerProviderStateMixin {
   TabController? controller;
-
+  AppBloc bloc = AppBloc();
   @override
   void initState() {
     controller = TabController(length: 3, vsync: this);
+    suites = [];
+    bloc.add(
+      GETSUITE(),
+    );
     super.initState();
   }
 
@@ -33,6 +43,7 @@ class _SuiteHomeState extends State<SuiteHome>
   @override
   Widget build(BuildContext context) {
     return CustormScaffoldPage(
+      onSuccess: () {},
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -45,16 +56,42 @@ class _SuiteHomeState extends State<SuiteHome>
             ),
             child: appBar(context, title: "Appartements"),
           ),
-          infoTabBar(),
-          ValueListenableBuilder(
-              valueListenable: isShowingData,
-              builder: (context, bool isData, child) {
-                return isData
-                    ? const ShowSuite()
-                    : AddSuite(
-                        showSuites: isShowingData,
-                      );
-              })
+          Expanded(
+            child: BlocBuilder<AppBloc, AppState>(
+                bloc: bloc,
+                builder: (context, state) {
+                  if (state is LOADING) {
+                    return const Center(
+                      child: SizedBox(
+                        // height: ,
+                        child: LoandingInfo(),
+                      ),
+                    );
+                  } else if (state is SUCCESS) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        infoTabBar(),
+                        ValueListenableBuilder(
+                          valueListenable: isShowingData,
+                          builder: (context, bool isData, child) {
+                            return isData
+                                ? const ShowSuite()
+                                : AddSuite(
+                                    showSuites: isShowingData,
+                                  );
+                          },
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Text(
+                      "Error model here",
+                      style: GoogleFonts.montserrat(),
+                    );
+                  }
+                }),
+          ),
         ],
       ),
     );

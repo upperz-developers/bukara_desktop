@@ -32,3 +32,12 @@ class ADDENTERPRISE implements AppEvent {
 }
 
 class GETENTERPRISE implements AppEvent {}
+
+class GETSUITE implements AppEvent {}
+
+class ADDSUITE implements AppEvent {
+  final Map<String, dynamic>? data;
+  final List<String>? imagePaths;
+
+  ADDSUITE({this.data, this.imagePaths});
+}

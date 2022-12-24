@@ -1,22 +1,14 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/ui/view_controller/suite_view_controller.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-List<String> appartType = [
-  "apartement",
-  "maison",
-  "studio",
-];
-
-List<String> goodType = [
-  "simple",
-  "Meuble",
-];
 
 class AddSuite extends StatefulWidget {
   final ValueNotifier<bool> showSuites;
@@ -55,13 +47,12 @@ class _AddSuiteState extends State<AddSuite> {
 
   bool submitted = false;
   void saveSuite() {
-    if (suiteViewController.validated()) {
-      suiteViewController.submit(context);
-      return;
-    }
     setState(() {
       submitted = true;
     });
+    if (suiteViewController.validated()) {
+      suiteViewController.submit(context);
+    }
   }
 
   @override
@@ -915,7 +906,7 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          value: suiteViewController.selectedSuite,
+                          value: suiteViewController.typeApparts.first,
                           borderRadius: BorderRadius.circular(4),
                           icon: const Icon(
                             Icons.arrow_drop_down,
@@ -923,7 +914,8 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                           underline: Container(),
                           isDense: true,
-                          items: appartType.map((String items) {
+                          items: suiteViewController.typeApparts
+                              .map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: SizedBox(
@@ -976,14 +968,15 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          value: suiteViewController.selectedGoods,
+                          value: suiteViewController.typebiens.first,
                           icon: const Icon(
                             Icons.arrow_drop_down,
                             size: 20,
                           ),
                           underline: Container(),
                           isDense: true,
-                          items: goodType.map((String items) {
+                          items:
+                              suiteViewController.typebiens.map((String items) {
                             return DropdownMenuItem(
                               value: items,
                               child: SizedBox(
@@ -1102,24 +1095,32 @@ class _AddSuiteState extends State<AddSuite> {
           30.heightBox,
           Row(
             children: [
-              OnHoverEffect(
-                child: InkWell(
-                  onTap: saveSuite,
-                  borderRadius: BorderRadius.circular(4),
-                  child: Container(
-                    width: 145,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: AppColors.BLACK_COLOR,
-                    ),
-                    child: Text(
-                      "Enregistrer",
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: AppColors.WHITE_COLOR,
+              BlocListener<AppBloc, AppState>(
+                listener: ((context, state) {
+                  if (state is SUCCESS) {
+                    widget.showSuites.value = true;
+                    setState(() {});
+                  }
+                }),
+                child: OnHoverEffect(
+                  child: InkWell(
+                    onTap: saveSuite,
+                    borderRadius: BorderRadius.circular(4),
+                    child: Container(
+                      width: 145,
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: AppColors.BLACK_COLOR,
+                      ),
+                      child: Text(
+                        "Enregistrer",
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: AppColors.WHITE_COLOR,
+                        ),
                       ),
                     ),
                   ),
