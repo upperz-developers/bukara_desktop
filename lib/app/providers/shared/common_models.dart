@@ -70,3 +70,29 @@ class Image {
     updatedAt = json['updated_at'];
   }
 }
+
+class Phones {
+  String? id;
+  String? personneId;
+  String? countryCode;
+  String? number;
+  String? createdAt;
+  String? updatedAt;
+
+  Phones(
+      {this.id,
+      this.personneId,
+      this.countryCode,
+      this.number,
+      this.createdAt,
+      this.updatedAt});
+
+  Phones.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    personneId = json['personne_id'];
+    countryCode = json['country_code'];
+    number = json['number'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+}

@@ -3,6 +3,7 @@ import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/tenant/show_tenant.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,7 +40,9 @@ class _SuiteDetailState extends State<SuiteDetail> {
             Expanded(
               child: SingleChildScrollView(
                 padding: EdgeInsets.symmetric(
-                    vertical: 30, horizontal: horizontalSpace),
+                  vertical: 30,
+                  horizontal: horizontalSpace,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -60,7 +63,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                         alignment: WrapAlignment.center,
                         children: [
                           SizedBox(
-                            width: 600,
+                            width: 500,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -146,7 +149,13 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                 ),
                                 OnHoverEffect(
                                   child: InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) =>
+                                            const TenantInfo(),
+                                      );
+                                    },
                                     child: Row(
                                       children: [
                                         Container(
@@ -174,6 +183,46 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                               ),
                                               Text(
                                                 "Personne physique",
+                                                style: GoogleFonts.montserrat(
+                                                  color: AppColors
+                                                      .SECOND_TEXT_COLOR,
+                                                  height: 1.5,
+                                                  fontSize: 12,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        15.widthBox,
+                                        const Icon(
+                                          Iconsax.arrow_right,
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 20),
+                                  child: Divider(),
+                                ),
+                                OnHoverEffect(
+                                  child: InkWell(
+                                    onTap: () {},
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Historique de paiement",
+                                                style: GoogleFonts.montserrat(
+                                                  height: 1.5,
+                                                ),
+                                              ),
+                                              Text(
+                                                "Paiement sur location de l'appartement",
                                                 style: GoogleFonts.montserrat(
                                                   color: AppColors
                                                       .SECOND_TEXT_COLOR,

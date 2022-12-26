@@ -1,3 +1,4 @@
+import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:flutter/material.dart';
@@ -124,8 +125,14 @@ class FormText extends StatelessWidget {
   final TextEditingController? controller;
   final bool? optinal;
   final bool? submitted;
+  final double? width;
   const FormText(
-      {super.key, this.hint, this.controller, this.optinal, this.submitted});
+      {super.key,
+      this.hint,
+      this.controller,
+      this.optinal,
+      this.submitted,
+      this.width});
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +140,7 @@ class FormText extends StatelessWidget {
         optinal != false && controller!.text.isEmpty && submitted == true;
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      width: 250,
+      width: width ?? 250,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
@@ -225,12 +232,16 @@ class CustomButton extends StatelessWidget {
   final Color? textColor;
   final Color? backgroundColor;
   final Function()? onTap;
+  final double? width;
+  final AppState? state;
   const CustomButton(
       {super.key,
       required this.title,
       this.textColor,
       this.backgroundColor,
-      this.onTap});
+      this.onTap,
+      this.width,
+      this.state});
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +249,7 @@ class CustomButton extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(100),
       child: Container(
-        width: 250,
+        width: width ?? 250,
         alignment: Alignment.center,
         padding: const EdgeInsets.symmetric(
           vertical: 10,
@@ -248,11 +259,25 @@ class CustomButton extends StatelessWidget {
           color: backgroundColor,
           borderRadius: BorderRadius.circular(100),
         ),
-        child: Text(title!,
-            style: GoogleFonts.montserrat(
-              fontWeight: FontWeight.bold,
-              color: textColor,
-            )),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            state is LOADING
+                ? const SizedBox(
+                    height: 15,
+                    width: 15,
+                    child: CircularProgressIndicator(
+                      color: AppColors.WHITE_COLOR,
+                    ),
+                  )
+                : Text(
+                    "$title",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+          ],
+        ),
       ),
     );
   }
