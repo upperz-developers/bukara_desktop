@@ -3,6 +3,7 @@ import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
 import 'package:bukara/app/ui/shared/app_architecture.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/tenant/tenant_home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:iconsax/iconsax.dart';
@@ -74,7 +75,7 @@ class _HomeState extends State<Home> {
           index: selectedNav,
           children: [
             const SuiteHome(),
-            Container(),
+            const Tenant(),
             Container(),
             const Profile(),
           ],

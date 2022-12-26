@@ -9,4 +9,5 @@ class APIURL {
   static const String ADDAPARTIMAGE = "$BASEURL/appartements/images/";
   static const String GETAPARTURL = "$BASEURL/appartements";
   static const String ADDAPART = "$BASEURL/appartements";
+  static const String ADDTENANT = "$BASEURL/personnes";
 }

@@ -6,6 +6,7 @@ import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/enterprise/repository.dart';
 import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
+import 'package:bukara/app/providers/tenant/provider.dart';
 import 'package:bukara/app/providers/user/repository.dart';
 import 'package:bukara/app/providers/user/user.dart';
 
@@ -111,6 +112,22 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ResultSuite resultSuite = ResultSuite.fromJson(response.data);
         suites = resultSuite.data!.suites!;
         emit(const SUCCESS());
+      } on Exception catch (e) {
+        emit(ERROR(
+          dueTo: e.toString(),
+        ));
+      }
+    });
+
+    on<ADDTENANT>((event, emit) async {
+      emit(const LOADING());
+      try {
+        await addTenant(
+          data: event.data,
+        );
+        emit(
+          const SUCCESS(),
+        );
       } on Exception catch (e) {
         emit(ERROR(
           dueTo: e.toString(),

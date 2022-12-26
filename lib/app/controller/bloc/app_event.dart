@@ -41,3 +41,9 @@ class ADDSUITE implements AppEvent {
 
   ADDSUITE({this.data, this.imagePaths});
 }
+
+class ADDTENANT implements AppEvent {
+  final Map<String, dynamic>? data;
+
+  ADDTENANT({this.data});
+}

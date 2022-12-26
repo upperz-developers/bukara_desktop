@@ -22,7 +22,6 @@ class _ShowSuiteState extends State<ShowSuite> {
     return Expanded(
       child: Column(
         children: [
-          // pagination(),
           30.heightBox,
           tabDetail(),
           Expanded(
