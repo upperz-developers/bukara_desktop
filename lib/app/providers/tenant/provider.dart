@@ -8,3 +8,7 @@ Future<Response> addTenant(
       endPoint: APIURL.ADDTENANT,
       data: data,
     );
+
+Future<Response> getTenant() async => await httpGetWithToken(
+      endPoint: APIURL.GETTENANT,
+    );

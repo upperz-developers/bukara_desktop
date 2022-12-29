@@ -495,7 +495,7 @@ class _AddSuiteState extends State<AddSuite> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         infoTitle(
-          "Entreprise",
+          "Appartement",
         ),
         modelInfo(
           title: "Designation",
@@ -906,7 +906,7 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          value: suiteViewController.typeApparts.first,
+                          value: suiteViewController.selectedSuite,
                           borderRadius: BorderRadius.circular(4),
                           icon: const Icon(
                             Icons.arrow_drop_down,
@@ -968,7 +968,7 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                         ),
                         child: DropdownButton<String>(
-                          value: suiteViewController.typebiens.first,
+                          value: suiteViewController.selectedGoods,
                           icon: const Icon(
                             Icons.arrow_drop_down,
                             size: 20,

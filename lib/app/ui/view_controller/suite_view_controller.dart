@@ -29,8 +29,8 @@ class SuiteViewController {
   TextEditingController price;
   AddressController addressController;
   List<String> selectedCaracteristics;
-  String selectedGoods = "simple";
-  String selectedSuite = "apartement";
+  String selectedGoods = getAppConfig().typeBiens!.first.designation!;
+  String selectedSuite = getAppConfig().typeAppart!.first.designation!;
   String selectedCountBedRoom = "0";
   String selectedCountInternToilet = "0";
   String selectedCountExternToilet = "0";
@@ -95,6 +95,7 @@ class SuiteViewController {
       suiteAdress.toJson().removeWhere((key, value) => value == null);
 
       Map<String, dynamic> data = {
+        "designation": designation.text.trim(),
         "typeBienId": typeBienId,
         "typeAppartementId": typeAppart,
         "description": description.text.trim(),

@@ -36,6 +36,7 @@ class Suite {
   TypeAppart? typeAppartement;
   int? number;
   String? description;
+  String? designation;
   SuiteFeature? features;
   bool? status;
   int? price;
@@ -44,19 +45,21 @@ class Suite {
   Addresses? address;
   List<Image>? images;
 
-  Suite(
-      {this.id,
-      this.typeBien,
-      this.typeAppartement,
-      this.number,
-      this.description,
-      this.features,
-      this.status,
-      this.price,
-      this.createdAt,
-      this.updatedAt,
-      this.address,
-      this.images});
+  Suite({
+    this.id,
+    this.typeBien,
+    this.typeAppartement,
+    this.number,
+    this.description,
+    this.features,
+    this.status,
+    this.price,
+    this.createdAt,
+    this.updatedAt,
+    this.address,
+    this.images,
+    this.designation,
+  });
 
   Suite.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -71,7 +74,7 @@ class Suite {
       Map<String, dynamic> data = jsonDecode(json['features']);
       features = SuiteFeature.fromJson(data);
     }
-
+    designation = json['designation'];
     status = json['status'];
     price = json['price'];
     createdAt = json['created_at'];

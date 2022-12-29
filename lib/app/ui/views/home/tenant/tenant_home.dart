@@ -1,9 +1,15 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/squeletton/tenant_squeletton.dart';
 import 'package:bukara/app/ui/views/home/tenant/add_tenant.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -17,6 +23,14 @@ class Tenant extends StatefulWidget {
 
 class _Tenant extends State<Tenant> {
   ValueNotifier<bool> isShowTenant = ValueNotifier(false);
+  TenantModel? selectedTenant;
+  AppBloc? _bloc;
+  @override
+  void initState() {
+    _bloc = AppBloc();
+    _bloc!.add(GETTENANT());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,58 +48,78 @@ class _Tenant extends State<Tenant> {
             ),
             child: appBar(context, title: "Locataires"),
           ),
-          infoTabBar(),
-          30.heightBox,
           Expanded(
-            child: ValueListenableBuilder(
-                valueListenable: isShowTenant,
-                builder: (context, bool isShowDetail, child) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 50),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: AnimatedContainer(
-                            duration: const Duration(seconds: 3),
-                            child: Column(
-                              children: [
-                                tabDetail(),
-                                Expanded(
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      children: List.generate(
-                                        30,
-                                        (index) => tenantDetail(
-                                          index: index,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        30.widthBox,
-                        Container(
-                          width: isShowDetail ? 300 : 0,
-                          height: 590,
-                          decoration: BoxDecoration(
-                            color: AppColors.WHITE_COLOR,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: isShowDetail
-                              ? showTenantDetail()
-                              : const SizedBox.shrink(),
-                        ),
-                      ],
-                    ),
-                  );
-                }),
+            child: BlocBuilder<AppBloc, AppState>(
+              bloc: _bloc,
+              builder: (context, state) {
+                List<TenantModel> tenants = [];
+                if (state is SUCCESS) {
+                  tenants = state.value;
+                }
+                return state is SUCCESS
+                    ? buidData(tenants)
+                    : const TenantSqueletton();
+              },
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget buidData(List<TenantModel> tenants) {
+    return Column(
+      children: [
+        infoTabBar(),
+        30.heightBox,
+        Expanded(
+          child: ValueListenableBuilder(
+            valueListenable: isShowTenant,
+            builder: (context, bool isShowDetail, child) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 50),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          tabDetail(),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: List.generate(
+                                  tenants.length,
+                                  (index) => tenantDetail(
+                                    index: index,
+                                    tenant: tenants[index],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    30.widthBox,
+                    Container(
+                      width: isShowDetail ? 320 : 0,
+                      height: 590,
+                      decoration: BoxDecoration(
+                        color: AppColors.WHITE_COLOR,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: isShowDetail
+                          ? showTenantDetail()
+                          : const SizedBox.shrink(),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 
@@ -123,7 +157,7 @@ class _Tenant extends State<Tenant> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "John doe",
+                    "${selectedTenant!.name} ${selectedTenant!.lastname}",
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -131,7 +165,7 @@ class _Tenant extends State<Tenant> {
                     ),
                   ),
                   Text(
-                    "physical person",
+                    "${selectedTenant!.landlordType}",
                     style: GoogleFonts.montserrat(
                       color: AppColors.BLACK_COLOR,
                     ),
@@ -178,12 +212,17 @@ class _Tenant extends State<Tenant> {
                     ),
                   ),
                   25.heightBox,
-                  module(Iconsax.document, "4 persons"),
-                  module(Iconsax.home, "Maried"),
-                  module2(Iconsax.tag, "Last Addres",
-                      "Goma, C de Goma, Q les volcan,\nav des avenues, num 10"),
-                  module(Iconsax.wallet_check, "Congolese"),
-                  module2(Iconsax.tag, "2218096730973", "Passport"),
+                  if (selectedTenant!.phones!.isNotEmpty)
+                    module(Iconsax.call,
+                        "${selectedTenant!.phones![0].countryCode} (0) ${selectedTenant!.phones![0].number}"),
+                  module(Iconsax.box_tick, "${selectedTenant!.email}"),
+                  module(Iconsax.home, "${selectedTenant!.maritalStatus}"),
+                  module2(
+                      Iconsax.tag, "Adresse", "${selectedTenant!.lastAdress}"),
+                  module(
+                      Iconsax.wallet_check, "${selectedTenant!.nationality}"),
+                  module2(Iconsax.tag, "${selectedTenant!.cardTypeId}",
+                      "${selectedTenant!.cardType}"),
                 ],
               ),
             ),
@@ -261,14 +300,19 @@ class _Tenant extends State<Tenant> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 1,
-              child: tabDetailModel(title: "#numero"),
+            SizedBox(
+              width: 50,
+              child: tabDetailModel(title: "#Num."),
             ),
             space.widthBox,
             Expanded(
               flex: 2,
               child: tabDetailModel(title: "Responsable"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 2,
+              child: tabDetailModel(title: "Type de locataire"),
             ),
             space.widthBox,
             Expanded(
@@ -279,6 +323,11 @@ class _Tenant extends State<Tenant> {
             Expanded(
               flex: 3,
               child: tabDetailModel(title: "Adresse physique"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 2,
+              child: tabDetailModel(title: "Contact"),
             ),
             space.widthBox,
             Expanded(
@@ -368,6 +417,7 @@ class _Tenant extends State<Tenant> {
 
   Widget tenantDetail({
     int? index,
+    required TenantModel tenant,
   }) {
     double space = 10;
     return Container(
@@ -384,8 +434,8 @@ class _Tenant extends State<Tenant> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 1,
+          SizedBox(
+            width: 50,
             child: suiteDetailModel(
               title: "00${index + 1}",
             ),
@@ -393,35 +443,43 @@ class _Tenant extends State<Tenant> {
           space.widthBox,
           Expanded(
             flex: 2,
-            child: suiteDetailModel(title: "Responsable name"),
+            child: suiteDetailModel(title: "${tenant.name} ${tenant.lastname}"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 2,
+            child: suiteDetailModel(title: "${tenant.landlordType}"),
           ),
           space.widthBox,
           Expanded(
             flex: 1,
-            child: suiteDetailModel(title: "Celibataire"),
+            child: suiteDetailModel(title: "${tenant.maritalStatus}"),
           ),
           space.widthBox,
           Expanded(
             flex: 3,
-            child: suiteDetailModel(
-                title: "52, avenu, quartier, commune, ville, province, pays"),
+            child: suiteDetailModel(title: "${tenant.lastAdress}"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 2,
+            child: tenant.phones!.isNotEmpty
+                ? suiteDetailModel(
+                    title:
+                        "${tenant.phones![0].countryCode} (0) ${tenant.phones![0].number}")
+                : const SizedBox.shrink(),
           ),
           space.widthBox,
           Expanded(
             flex: 1,
-            child: Wrap(
-              spacing: 20,
-              crossAxisAlignment: WrapCrossAlignment.center,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 modelAction(
-                  icon: Iconsax.edit,
-                ),
-                modelAction(
-                  icon: Iconsax.shop_remove,
-                ),
-                modelAction(
                   onTap: () {
+                    isShowTenant.value = false;
                     isShowTenant.value = true;
+                    selectedTenant = tenant;
                   },
                   icon: Iconsax.more,
                 ),

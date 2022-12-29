@@ -68,7 +68,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Appartement name - ${suiteDetail.price}\$ par mois",
+                                  "${suiteDetail.designation} - ${suiteDetail.price}\$ par mois",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,

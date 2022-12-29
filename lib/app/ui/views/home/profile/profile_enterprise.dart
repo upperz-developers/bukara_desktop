@@ -1,6 +1,8 @@
+import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/views/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -232,20 +234,29 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
                   ),
                 ),
               ),
-              Container(
-                width: width,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  color: AppColors.BLACK_COLOR,
-                ),
-                child: Text(
-                  "Se deconnecter",
-                  style: GoogleFonts.montserrat(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: AppColors.WHITE_COLOR,
+              OnHoverEffect(
+                child: InkWell(
+                  onTap: () {
+                    AppPref.prefs!.clear();
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, Auth.routeName, (route) => false);
+                  },
+                  child: Container(
+                    width: width,
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: AppColors.BLACK_COLOR,
+                    ),
+                    child: Text(
+                      "Se deconnecter",
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                        color: AppColors.WHITE_COLOR,
+                      ),
+                    ),
                   ),
                 ),
               ),
