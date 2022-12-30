@@ -193,13 +193,12 @@ class _ShowSuiteState extends State<ShowSuite> {
             child: suiteDetailModel(title: "${suite.price} USD"),
           ),
           space.widthBox,
-          if (suite.status!)
-            Expanded(
-              flex: 1,
-              child: suite.status!
-                  ? suiteDetailModel(title: "John jean")
-                  : const SizedBox.shrink(),
-            ),
+          Expanded(
+            flex: 1,
+            child: suite.status!
+                ? suiteDetailModel(title: "John jean")
+                : const SizedBox.shrink(),
+          ),
           space.widthBox,
           Expanded(
             flex: 3,
