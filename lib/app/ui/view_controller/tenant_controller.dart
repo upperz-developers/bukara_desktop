@@ -48,7 +48,6 @@ class TenantController {
       "phones": phones,
       "nationality": nationalite!.text.trim(),
     };
-
     bloc.add(
       ADDTENANT(data: data),
     );

@@ -57,7 +57,7 @@ class _AddTenantsState extends State<AddTenants> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height - 360,
+                    height: MediaQuery.of(context).size.height - 290,
                     width: 525,
                     child: Column(
                       children: [
