@@ -1,8 +1,10 @@
 import 'package:bukara/app/providers/suite/model.dart';
+import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/suite/rent_suite.dart';
 import 'package:bukara/app/ui/views/home/tenant/show_tenant.dart';
 import 'package:bukara/app/ui/views/home/tenant/select_tenant_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -107,7 +109,9 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                           30.widthBox,
                                           OnHoverEffect(
                                             child: InkWell(
-                                              onTap: rentSuite,
+                                              onTap: () {
+                                                rentSuite(suiteDetail.id!);
+                                              },
                                               borderRadius:
                                                   BorderRadius.circular(
                                                 100,
@@ -442,8 +446,19 @@ class _SuiteDetailState extends State<SuiteDetail> {
     );
   }
 
-  rentSuite() {
-    Navigator.pushNamed(context, ShowTenantDialog.routeName);
+  rentSuite(String id) {
+    Navigator.pushNamed(context, ShowTenantDialog.routeName).then((value) {
+      if (value != null) {
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => RentSuite(
+            tenantModel: value as TenantModel,
+            suiteId: id,
+          ),
+        );
+      }
+    });
   }
 
   Widget otherInfo(List<String> otherCarteristic) {

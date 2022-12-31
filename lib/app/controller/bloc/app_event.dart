@@ -49,3 +49,9 @@ class ADDTENANT implements AppEvent {
 }
 
 class GETTENANT implements AppEvent {}
+
+class CONFIGRENT implements AppEvent {
+  final Map<String, dynamic>? data;
+
+  CONFIGRENT({this.data});
+}
