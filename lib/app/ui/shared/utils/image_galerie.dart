@@ -63,11 +63,11 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
                   Navigator.pop(context);
                 },
                 child: const mat.Padding(
-                  padding: mat.EdgeInsets.all(15),
+                  padding: mat.EdgeInsets.all(10),
                   child: Icon(
                     mat.Icons.close,
                     color: Colors.white,
-                    size: 30,
+                    size: 24,
                   ),
                 ),
               ),
@@ -101,11 +101,11 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
                             });
                           },
                           child: const mat.Padding(
-                            padding: mat.EdgeInsets.all(25),
+                            padding: mat.EdgeInsets.all(10),
                             child: Icon(
                               mat.Icons.arrow_back_ios,
                               color: Colors.white,
-                              size: 30,
+                              size: 24,
                             ),
                           ),
                         ),
@@ -131,11 +131,11 @@ class _SuiteGaleryImageState extends State<SuiteGaleryImage>
                             });
                           },
                           child: const mat.Padding(
-                            padding: mat.EdgeInsets.all(25),
+                            padding: mat.EdgeInsets.all(10),
                             child: Icon(
                               mat.Icons.arrow_forward_ios,
                               color: Colors.white,
-                              size: 30,
+                              size: 24,
                             ),
                           ),
                         ),

@@ -272,7 +272,8 @@ class CustomButton extends StatelessWidget {
                   )
                 : Text(
                     "$title",
-                    style: const TextStyle(
+                    style: TextStyle(
+                      color: textColor,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

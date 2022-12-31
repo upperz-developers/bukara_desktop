@@ -7,21 +7,23 @@ import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/squeletton/tenant_squeletton.dart';
 import 'package:bukara/app/ui/views/home/tenant/add_tenant.dart';
-import 'package:bukara/shared/custom_scaffold.dart';
+import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/material.dart' as mat;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class Tenant extends StatefulWidget {
-  const Tenant({super.key});
+class ShowTenantDialog extends StatefulWidget {
+  static String routeName = "select_tenant";
+  const ShowTenantDialog({super.key});
 
   @override
-  State<Tenant> createState() => _Tenant();
+  State<ShowTenantDialog> createState() => _ShowTenantDialogState();
 }
 
-class _Tenant extends State<Tenant> {
+class _ShowTenantDialogState extends State<ShowTenantDialog> {
   ValueNotifier<bool> isShowTenant = ValueNotifier(false);
   TenantModel? selectedTenant;
   AppBloc? _bloc;
@@ -34,19 +36,45 @@ class _Tenant extends State<Tenant> {
 
   @override
   Widget build(BuildContext context) {
-    return CustormScaffoldPage(
-      onSuccess: () {},
-      content: Column(
+    return mat.Scaffold(
+      backgroundColor: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.only(
-              left: horizontalSpace,
-              right: horizontalSpace,
+            padding: const EdgeInsets.only(
+              left: 50,
+              right: 50,
               bottom: 20,
               top: 15,
             ),
-            child: appBar(context, title: "Locataires"),
+            child: Row(
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  borderRadius: BorderRadius.circular(4),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(4)),
+                    child: const Icon(
+                      Icons.arrow_back,
+                      size: 20,
+                    ),
+                  ),
+                ),
+                30.widthBox,
+                Text(
+                  "Selectionner un locataire",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
             child: BlocBuilder<AppBloc, AppState>(
@@ -140,7 +168,7 @@ class _Tenant extends State<Tenant> {
               ),
               15.widthBox,
               modelAction(
-                  icon: Icons.close,
+                  icon: mat.Icons.close,
                   onTap: () {
                     isShowTenant.value = false;
                   }),
@@ -161,7 +189,7 @@ class _Tenant extends State<Tenant> {
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: mat.Colors.black,
                     ),
                   ),
                   Text(
@@ -184,7 +212,7 @@ class _Tenant extends State<Tenant> {
                                 "Name of suite",
                                 style: GoogleFonts.montserrat(
                                   fontWeight: FontWeight.normal,
-                                  color: Colors.black,
+                                  color: mat.Colors.black,
                                 ),
                               ),
                               5.heightBox,
@@ -201,14 +229,14 @@ class _Tenant extends State<Tenant> {
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 20),
-                    child: Divider(),
+                    child: mat.Divider(),
                   ),
                   Text(
                     "Apropos du locataire",
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                      color: mat.Colors.black,
                     ),
                   ),
                   25.heightBox,
@@ -270,7 +298,7 @@ class _Tenant extends State<Tenant> {
                 "$title",
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.normal,
-                  color: Colors.black,
+                  color: mat.Colors.black,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -300,6 +328,11 @@ class _Tenant extends State<Tenant> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(
+              width: 50,
+              child: tabDetailModel(title: "#select."),
+            ),
+            space.widthBox,
             SizedBox(
               width: 50,
               child: tabDetailModel(title: "#Num."),
@@ -353,9 +386,9 @@ class _Tenant extends State<Tenant> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           OnHoverEffect(
-            child: InkWell(
+            child: mat.InkWell(
               onTap: () {
-                showDialog(
+                mat.showDialog(
                   context: context,
                   builder: (context) => const AddTenants(),
                   barrierDismissible: false,
@@ -388,12 +421,12 @@ class _Tenant extends State<Tenant> {
             child: Row(
               children: [
                 Expanded(
-                  child: TextField(
+                  child: mat.TextField(
                     style: GoogleFonts.montserrat(
                       fontSize: 12,
                     ),
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
+                    decoration: mat.InputDecoration(
+                        border: mat.InputBorder.none,
                         isDense: true,
                         hintText: "Tapez un mot cle",
                         helperStyle: GoogleFonts.montserrat(
@@ -420,6 +453,7 @@ class _Tenant extends State<Tenant> {
     required TenantModel tenant,
   }) {
     double space = 10;
+    ValueNotifier<bool> isSelected = ValueNotifier(false);
     return Container(
       padding: const EdgeInsets.only(
         left: 30,
@@ -429,11 +463,25 @@ class _Tenant extends State<Tenant> {
       ),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
+        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : mat.Colors.transparent,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          ValueListenableBuilder(
+              valueListenable: isSelected,
+              builder: (context, bool isSelectedValue, child) {
+                return SizedBox(
+                  width: 50,
+                  child: RadioButton(
+                    checked: isSelectedValue,
+                    onChanged: (bool value) {
+                      isSelected.value = value;
+                    },
+                  ),
+                );
+              }),
+          space.widthBox,
           SizedBox(
             width: 50,
             child: suiteDetailModel(
@@ -495,7 +543,7 @@ class _Tenant extends State<Tenant> {
     Function()? onTap,
     IconData? icon,
   }) {
-    return InkWell(
+    return mat.InkWell(
       onTap: onTap,
       child: Icon(icon),
     );

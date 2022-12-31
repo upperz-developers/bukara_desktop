@@ -47,3 +47,5 @@ class ADDTENANT implements AppEvent {
 
   ADDTENANT({this.data});
 }
+
+class GETTENANT implements AppEvent {}

@@ -1,5 +1,3 @@
-import 'package:bukara/app/providers/shared/common_models.dart';
-
 class TenantResult {
   bool? status;
   Data? data;
@@ -14,16 +12,16 @@ class TenantResult {
 
 class Data {
   Meta? meta;
-  List<Data>? data;
+  List<TenantModel>? tenants;
 
-  Data({this.meta, this.data});
+  Data({this.meta, this.tenants});
 
   Data.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
-      data = <Data>[];
+      tenants = <TenantModel>[];
       json['data'].forEach((v) {
-        data!.add(Data.fromJson(v));
+        tenants!.add(TenantModel.fromJson(v));
       });
     }
   }
@@ -72,6 +70,10 @@ class TenantModel {
   String? profile;
   String? cardType;
   String? cardTypeId;
+  String? maritalStatus;
+  String? landlordType;
+  String? nationality;
+  String? lastAdress;
   bool? status;
   String? createdAt;
   String? updatedAt;
@@ -85,6 +87,10 @@ class TenantModel {
       this.profile,
       this.cardType,
       this.cardTypeId,
+      this.maritalStatus,
+      this.landlordType,
+      this.nationality,
+      this.lastAdress,
       this.status,
       this.createdAt,
       this.updatedAt,
@@ -98,6 +104,10 @@ class TenantModel {
     profile = json['profile'];
     cardType = json['card_type'];
     cardTypeId = json['card_type_id'];
+    maritalStatus = json['marital_status'];
+    landlordType = json['landlord_type'];
+    nationality = json['nationality'];
+    lastAdress = json['last_adress'];
     status = json['status'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
@@ -107,5 +117,34 @@ class TenantModel {
         phones!.add(Phones.fromJson(v));
       });
     }
+  }
+}
+
+class Phones {
+  String? id;
+  String? landlordId;
+  String? countryCode;
+  String? number;
+  bool? running;
+  String? createdAt;
+  String? updatedAt;
+
+  Phones(
+      {this.id,
+      this.landlordId,
+      this.countryCode,
+      this.number,
+      this.running,
+      this.createdAt,
+      this.updatedAt});
+
+  Phones.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    landlordId = json['landlordId'];
+    countryCode = json['countryCode'];
+    number = json['number'];
+    running = json['running'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 }

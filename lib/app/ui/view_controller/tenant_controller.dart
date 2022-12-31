@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 
 class TenantController {
   List<String> cartType = ["carte electeur", "passport", "permis"];
-  List<String> tenantType = ["Personne physique", "Personne morale"];
+  List<String> tenantType = ["personne physique", "entreprise"];
+  List<String> tenantCivilState = ["married", "single"];
   String selectedCardType = "carte electeur";
   String countryCode = "+243";
+  String selectedTenantType = "personne physique";
+  String selectedTenantCivilState = "married";
   TextEditingController? firstName;
   TextEditingController? lastname;
   TextEditingController? email;
+  TextEditingController? lastAddress;
   TextEditingController? cartId;
   TextEditingController? nationalite;
   TextEditingController? phoneNumber;
@@ -21,22 +25,29 @@ class TenantController {
     cartId = TextEditingController();
     nationalite = TextEditingController();
     phoneNumber = TextEditingController();
+    lastAddress = TextEditingController();
   }
 
   void submit(AppBloc bloc) {
     List<Map<String, dynamic>> phones = [];
-    phones
-        .add({"country_code": countryCode, "number": phoneNumber!.text.trim()});
+    phones.add({
+      "countryCode": countryCode,
+      "number": phoneNumber!.text.trim(),
+      "running": true
+    });
 
     Map<String, dynamic> data = {
       "name": firstName!.text.trim(),
       "lastname": lastname!.text.trim(),
       "email": email!.text.trim(),
+      "landlordType": selectedTenantType,
       "cardType": selectedCardType,
+      "lastAdress": lastAddress!.text.trim(),
       "cardTypeId": cartId!.text.trim(),
+      "maritalStatus": selectedTenantCivilState,
       "phones": phones,
+      "nationality": nationalite!.text.trim(),
     };
-
     bloc.add(
       ADDTENANT(data: data),
     );

@@ -183,7 +183,9 @@ class _ShowSuiteState extends State<ShowSuite> {
           space.widthBox,
           Expanded(
             flex: 2,
-            child: suiteDetailModel(title: "${suite.description}"),
+            child: suite.designation == null
+                ? const SizedBox.shrink()
+                : suiteDetailModel(title: "${suite.designation}"),
           ),
           space.widthBox,
           Expanded(
@@ -193,7 +195,9 @@ class _ShowSuiteState extends State<ShowSuite> {
           space.widthBox,
           Expanded(
             flex: 1,
-            child: suiteDetailModel(title: "John jean"),
+            child: suite.status!
+                ? suiteDetailModel(title: "John jean")
+                : const SizedBox.shrink(),
           ),
           space.widthBox,
           Expanded(
@@ -217,9 +221,9 @@ class _ShowSuiteState extends State<ShowSuite> {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Text(
-                "Occupe",
+                suite.status! ? "Occupe" : "Inoccupe",
                 style: GoogleFonts.montserrat(
-                  fontSize: 12,
+                  fontSize: 10,
                 ),
               ),
             ),
