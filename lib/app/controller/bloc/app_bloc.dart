@@ -152,5 +152,19 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ));
       }
     });
+
+    on<CONFIGRENT>((event, emit) async {
+      try {
+        await rentalContrat(
+          data: event.data,
+        );
+      } on Exception catch (e) {
+        emit(
+          ERROR(
+            dueTo: e.toString(),
+          ),
+        );
+      }
+    });
   }
 }

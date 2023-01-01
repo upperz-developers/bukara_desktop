@@ -26,6 +26,8 @@ class ShowTenantDialog extends StatefulWidget {
 class _ShowTenantDialogState extends State<ShowTenantDialog> {
   ValueNotifier<bool> isShowTenant = ValueNotifier(false);
   TenantModel? selectedTenant;
+  ValueNotifier<String> selectedTenantId = ValueNotifier("");
+  TenantModel? selectedTenantToRent;
   AppBloc? _bloc;
   @override
   void initState() {
@@ -52,7 +54,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pop(context);
+                    Navigator.pop(context, selectedTenantToRent);
                   },
                   borderRadius: BorderRadius.circular(4),
                   child: Container(
@@ -453,7 +455,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
     required TenantModel tenant,
   }) {
     double space = 10;
-    ValueNotifier<bool> isSelected = ValueNotifier(false);
+
     return Container(
       padding: const EdgeInsets.only(
         left: 30,
@@ -469,18 +471,20 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ValueListenableBuilder(
-              valueListenable: isSelected,
-              builder: (context, bool isSelectedValue, child) {
-                return SizedBox(
-                  width: 50,
-                  child: RadioButton(
-                    checked: isSelectedValue,
-                    onChanged: (bool value) {
-                      isSelected.value = value;
-                    },
-                  ),
-                );
-              }),
+            valueListenable: selectedTenantId,
+            builder: (context, String isSelectedValue, child) {
+              return SizedBox(
+                width: 50,
+                child: RadioButton(
+                  checked: isSelectedValue == tenant.id,
+                  onChanged: (bool value) {
+                    selectedTenantToRent = tenant;
+                    selectedTenantId.value = tenant.id!;
+                  },
+                ),
+              );
+            },
+          ),
           space.widthBox,
           SizedBox(
             width: 50,
