@@ -1,4 +1,5 @@
 import 'package:bukara/app/ui/views/home/profile/profile.dart';
+import 'package:bukara/app/ui/views/home/recoveries/home_recoveries.dart';
 import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
 import 'package:bukara/app/ui/shared/app_architecture.dart';
 import 'package:bukara/app/ui/shared/style.dart';
@@ -73,11 +74,11 @@ class _HomeState extends State<Home> {
         ],
         content: NavigationBody(
           index: selectedNav,
-          children: [
-            const SuiteHome(),
-            const Tenant(),
-            Container(),
-            const Profile(),
+          children: const [
+            SuiteHome(),
+            Tenant(),
+            RecoveryHome(),
+            Profile(),
           ],
         ),
       ),

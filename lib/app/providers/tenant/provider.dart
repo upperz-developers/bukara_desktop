@@ -13,8 +13,9 @@ Future<Response> getTenant() async => await httpGetWithToken(
       endPoint: APIURL.GETTENANT,
     );
 
-Future<Response> rentalContrat({Map<String, dynamic>? data}) async =>
-    await httpPostWithToken(
-      endPoint: APIURL.CONTRATTENANT,
-      data: data,
-    );
+Future<Response> rentalContrat({Map<String, dynamic>? data}) async {
+  return await httpPostWithToken(
+    endPoint: APIURL.CONTRATTENANT,
+    data: data,
+  );
+}

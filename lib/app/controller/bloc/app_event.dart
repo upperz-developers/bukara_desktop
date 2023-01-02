@@ -55,3 +55,5 @@ class CONFIGRENT implements AppEvent {
 
   CONFIGRENT({this.data});
 }
+
+class GETRECOVERYINFO implements AppEvent {}

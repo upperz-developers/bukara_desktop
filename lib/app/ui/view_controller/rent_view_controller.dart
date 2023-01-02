@@ -12,14 +12,14 @@ class RentController {
 
   RentController() : price = TextEditingController();
 
-  void validate() =>
+  bool validate() =>
       price.text.isNotEmpty &&
       selectedSuiteId != null &&
       selectedTenantId != null;
 
   submit(AppBloc bloc) {
     Map<String, dynamic> data = {
-      "appatementId": selectedSuiteId,
+      "appartementId": selectedSuiteId,
       "landlordId": selectedTenantId,
       "amount": double.parse(price.text.trim()),
       "month": int.parse(selectedMonth),

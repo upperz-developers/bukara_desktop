@@ -2,7 +2,7 @@ import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
-import 'package:bukara/app/ui/shared/status_widgets.dart';
+import 'package:bukara/app/ui/squeletton/suite_squeletton.dart';
 import 'package:bukara/app/ui/views/home/suite/add_suite.dart';
 import 'package:bukara/app/ui/views/home/suite/show_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
@@ -40,10 +40,16 @@ class _SuiteHomeState extends State<SuiteHome>
   }
 
   ValueNotifier<bool> isShowingData = ValueNotifier(true);
+
   @override
   Widget build(BuildContext context) {
     return CustormScaffoldPage(
-      onSuccess: () {},
+      onSuccess: () {
+        setState(() {
+          isShowingData.value = true;
+          bloc.add(GETSUITE());
+        });
+      },
       content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -61,12 +67,7 @@ class _SuiteHomeState extends State<SuiteHome>
                 bloc: bloc,
                 builder: (context, state) {
                   if (state is LOADING) {
-                    return const Center(
-                      child: SizedBox(
-                        // height: ,
-                        child: LoandingInfo(),
-                      ),
-                    );
+                    return const SuiteSqueletton();
                   } else if (state is SUCCESS) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

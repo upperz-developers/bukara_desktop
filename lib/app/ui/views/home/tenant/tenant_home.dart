@@ -435,7 +435,7 @@ class _Tenant extends State<Tenant> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 50,
+            width: 30,
             child: suiteDetailModel(
               title: "00${index + 1}",
             ),
