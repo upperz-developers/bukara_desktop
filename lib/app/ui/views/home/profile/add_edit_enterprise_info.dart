@@ -326,7 +326,19 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
               OnHoverEffect(
                 child: InkWell(
                   onTap: () {
-                    widget.isEdit.value = false;
+                    alertMessage(context,
+                        action: "Annuler",
+                        action1: "Continuer",
+                        body:
+                            "Etes-vous sur de vouloir? Si vous anuuler l'operation les informations saisies seront effecees",
+                        onTap1: () {
+                          Navigator.pop(context);
+                        },
+                        head: "Annuler l'operation",
+                        onTap: () {
+                          Navigator.pop(context);
+                          widget.isEdit.value = false;
+                        });
                   },
                   borderRadius: BorderRadius.circular(4),
                   child: Container(

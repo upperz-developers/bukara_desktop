@@ -1096,13 +1096,7 @@ class _AddSuiteState extends State<AddSuite> {
           Row(
             children: [
               BlocListener<AppBloc, AppState>(
-                listener: ((context, state) {
-                  // if (state is SUCCESS) {
-                  //   widget.showSuites.value = true;
-                  //   widget.hasSaved.value = true;
-                  //   setState(() {});
-                  // }
-                }),
+                listener: ((context, state) {}),
                 child: OnHoverEffect(
                   child: InkWell(
                     onTap: saveSuite,
@@ -1131,7 +1125,19 @@ class _AddSuiteState extends State<AddSuite> {
               OnHoverEffect(
                 child: InkWell(
                   onTap: () {
-                    widget.showSuites.value = true;
+                    alertMessage(context,
+                        action: "Annuler",
+                        action1: "Continuer",
+                        body:
+                            "Etes-vous sur de vouloir? Si vous anuuler l'operation les informations saisies seront effecees",
+                        onTap1: () {
+                          Navigator.pop(context);
+                        },
+                        head: "Annuler l'operation",
+                        onTap: () {
+                          Navigator.pop(context);
+                          widget.showSuites.value = true;
+                        });
                   },
                   borderRadius: BorderRadius.circular(4),
                   child: Container(
