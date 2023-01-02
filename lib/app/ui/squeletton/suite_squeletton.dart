@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class TenantSqueletton extends StatelessWidget {
-  const TenantSqueletton({super.key});
+class SuiteSqueletton extends StatelessWidget {
+  const SuiteSqueletton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +99,7 @@ class TenantSqueletton extends StatelessWidget {
                     height: 20,
                     width: 20,
                     decoration: BoxDecoration(
+                      color: AppColors.DISABLE_COLOR,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
@@ -131,12 +132,12 @@ class TenantSqueletton extends StatelessWidget {
             space.widthBox,
             Expanded(
               flex: 2,
-              child: tabDetailModel(title: "Responsable"),
+              child: tabDetailModel(title: "Designation"),
             ),
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Etat civile"),
+              child: tabDetailModel(title: "Responsable"),
             ),
             space.widthBox,
             Expanded(

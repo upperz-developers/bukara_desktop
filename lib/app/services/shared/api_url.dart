@@ -11,5 +11,6 @@ class APIURL {
   static const String ADDAPART = "$BASEURL/appartements";
   static const String ADDTENANT = "$BASEURL/landlords";
   static const String GETTENANT = "$BASEURL/landlords";
-  static const String CONTRATTENANT = "$BASEURL/rental_contrats";
+  static const String CONTRATTENANT = "$BASEURL/rental-contrats";
+  static const String GETRECOVERYINFO = "$BASEURL/recoveries";
 }

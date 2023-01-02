@@ -4,6 +4,8 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/enterprise/repository.dart';
+import 'package:bukara/app/providers/recovery/model.dart';
+import 'package:bukara/app/providers/recovery/provider.dart';
 import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
@@ -96,6 +98,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           data: event.data,
           imagePaths: event.imagePaths,
         );
+
         emit(
           const SUCCESS(),
         );
@@ -112,6 +115,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         var response = await getSuite();
         ResultSuite resultSuite = ResultSuite.fromJson(response.data);
         suites = resultSuite.data!.suites!;
+
         emit(const SUCCESS());
       } on Exception catch (e) {
         emit(ERROR(
@@ -153,17 +157,35 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       }
     });
 
-    on<CONFIGRENT>((event, emit) async {
+    on<CONFIGRENT>(
+      (event, emit) async {
+        emit(const LOADING());
+        try {
+          await rentalContrat(
+            data: event.data,
+          );
+          emit(const SUCCESS());
+        } on Exception catch (e) {
+          emit(
+            ERROR(
+              dueTo: e.toString(),
+            ),
+          );
+        }
+      },
+    );
+
+    on<GETRECOVERYINFO>((event, emit) async {
+      emit(const LOADING());
       try {
-        await rentalContrat(
-          data: event.data,
-        );
+        var response = await getRecoveryInfo();
+        ResultRecovery recovery = ResultRecovery.fromJson(response.data);
+        List<ContratData> contratData = recovery.data!.contratData!;
+        emit(SUCCESS(value: contratData));
       } on Exception catch (e) {
-        emit(
-          ERROR(
-            dueTo: e.toString(),
-          ),
-        );
+        emit(ERROR(
+          dueTo: e.toString(),
+        ));
       }
     });
   }

@@ -111,18 +111,19 @@ class _CustormScaffoldPageState extends State<CustormScaffoldPage> {
       content: BlocListener<AppBloc, AppState>(
         listener: (context, state) {
           if (state is SUCCESS || state is ERROR) {
-            isStart.value = true;
-            Future.delayed(
-              const Duration(
-                seconds: 1,
-              ),
-              (() {
-                isStart.value = false;
-                if (state is SUCCESS) {
-                  widget.onSuccess();
-                }
-              }),
-            );
+            if (state is SUCCESS) {
+              widget.onSuccess();
+            } else {
+              isStart.value = true;
+              Future.delayed(
+                const Duration(
+                  seconds: 5,
+                ),
+                (() {
+                  isStart.value = false;
+                }),
+              );
+            }
           }
         },
         child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {

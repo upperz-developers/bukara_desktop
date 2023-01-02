@@ -1097,10 +1097,11 @@ class _AddSuiteState extends State<AddSuite> {
             children: [
               BlocListener<AppBloc, AppState>(
                 listener: ((context, state) {
-                  if (state is SUCCESS) {
-                    widget.showSuites.value = true;
-                    setState(() {});
-                  }
+                  // if (state is SUCCESS) {
+                  //   widget.showSuites.value = true;
+                  //   widget.hasSaved.value = true;
+                  //   setState(() {});
+                  // }
                 }),
                 child: OnHoverEffect(
                   child: InkWell(

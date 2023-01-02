@@ -85,9 +85,9 @@ class AddressController {
 
   AddressController()
       : reference = TextEditingController(),
-        country = TextEditingController(),
-        city = TextEditingController(),
-        town = TextEditingController(),
+        country = TextEditingController(text: "Congo/kinshasa"),
+        city = TextEditingController(text: "Nord-kivu"),
+        town = TextEditingController(text: "Goma"),
         commune = TextEditingController(),
         quater = TextEditingController(),
         avenue = TextEditingController(),
