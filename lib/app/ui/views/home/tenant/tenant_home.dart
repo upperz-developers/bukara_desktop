@@ -136,10 +136,6 @@ class _Tenant extends State<Tenant> {
               ),
               15.widthBox,
               modelAction(
-                icon: Iconsax.shop_remove,
-              ),
-              15.widthBox,
-              modelAction(
                   icon: Icons.close,
                   onTap: () {
                     isShowTenant.value = false;
@@ -169,35 +165,6 @@ class _Tenant extends State<Tenant> {
                     style: GoogleFonts.montserrat(
                       color: AppColors.BLACK_COLOR,
                     ),
-                  ),
-                  30.heightBox,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Iconsax.home),
-                      15.widthBox,
-                      Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Name of suite",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.normal,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              5.heightBox,
-                              Text(
-                                "Goma, C de Goma, Q les volcan,av des avenues, num 10",
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 12,
-                                  color: AppColors.SECOND_TEXT_COLOR,
-                                ),
-                              ),
-                            ]),
-                      ),
-                    ],
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 20),
@@ -435,7 +402,7 @@ class _Tenant extends State<Tenant> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 30,
+            width: 50,
             child: suiteDetailModel(
               title: "00${index + 1}",
             ),

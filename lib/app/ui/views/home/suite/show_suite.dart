@@ -115,9 +115,9 @@ class _ShowSuiteState extends State<ShowSuite> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(
-              flex: 1,
-              child: tabDetailModel(title: "#numero"),
+            SizedBox(
+              width: 50,
+              child: tabDetailModel(title: "#Num."),
             ),
             space.widthBox,
             Expanded(
@@ -145,8 +145,8 @@ class _ShowSuiteState extends State<ShowSuite> {
               child: tabDetailModel(title: "Etat"),
             ),
             space.widthBox,
-            Expanded(
-              flex: 1,
+            SizedBox(
+              width: 70,
               child: tabDetailModel(title: "Plus"),
             ),
           ],
@@ -174,16 +174,16 @@ class _ShowSuiteState extends State<ShowSuite> {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(
-            flex: 1,
+          SizedBox(
+            width: 50,
             child: suiteDetailModel(
-              title: "00${suite!.number}",
+              title: "00${index + 1}",
             ),
           ),
           space.widthBox,
           Expanded(
             flex: 2,
-            child: suite.designation == null
+            child: suite!.designation == null
                 ? const SizedBox.shrink()
                 : suiteDetailModel(title: "${suite.designation}"),
           ),
@@ -229,16 +229,13 @@ class _ShowSuiteState extends State<ShowSuite> {
             ),
           ),
           space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          SizedBox(
+            width: 70,
+            child: Wrap(
+              spacing: 15,
               children: [
                 modelAction(
                   icon: Iconsax.edit,
-                ),
-                modelAction(
-                  icon: Iconsax.shop_remove,
                 ),
                 modelAction(
                   onTap: () {
