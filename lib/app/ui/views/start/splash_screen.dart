@@ -4,6 +4,7 @@ import 'package:bukara/app/ui/views/auth/auth.dart';
 import 'package:bukara/app/ui/views/home/home.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -45,36 +46,40 @@ class _SplashScreenState extends State<SplashScreen> {
             Expanded(
               child: Center(
                 child: Container(
-                  height: 100,
-                  width: 100,
+                  height: 180,
+                  width: 180,
                   decoration: const BoxDecoration(
                     color: AppColors.DISABLE_COLOR,
                     shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: AssetImage("assets/icons/bukara.jpg"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
             ),
             30.heightBox,
-            const Text(
+            Text(
               "BUKARA Sarl",
               textAlign: TextAlign.center,
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 fontWeight: FontWeight.bold,
                 fontSize: 12,
               ),
             ),
             3.heightBox,
-            const Text(
+            Text(
               "Build by Devinno in parternship with Upperz",
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 fontSize: 10,
                 color: AppColors.SECOND_TEXT_COLOR,
               ),
             ),
             3.heightBox,
-            const Text(
+            Text(
               "V1.0.0",
-              style: TextStyle(
+              style: GoogleFonts.montserrat(
                 fontSize: 10,
                 color: AppColors.SECOND_TEXT_COLOR,
               ),

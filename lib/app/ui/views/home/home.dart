@@ -1,3 +1,4 @@
+import 'package:bukara/app/ui/views/home/paiement/historic_of_paiement.dart';
 import 'package:bukara/app/ui/views/home/profile/profile.dart';
 import 'package:bukara/app/ui/views/home/recoveries/home_recoveries.dart';
 import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
@@ -63,11 +64,11 @@ class _HomeState extends State<Home> {
           modelMenuFootApp(
             context,
             icon: Iconsax.user,
-            index: 3,
+            index: 4,
             selectedIndex: selectedNav,
             onTap: () {
               setState(() {
-                selectedNav = 3;
+                selectedNav = 4;
               });
             },
           ),
@@ -78,6 +79,7 @@ class _HomeState extends State<Home> {
             SuiteHome(),
             Tenant(),
             RecoveryHome(),
+            HistoricOfPaiement(),
             Profile(),
           ],
         ),

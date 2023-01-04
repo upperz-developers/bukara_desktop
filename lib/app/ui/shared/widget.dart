@@ -13,12 +13,14 @@ List<IconData> kIcons = [
   Iconsax.home,
   Iconsax.user_add,
   Iconsax.folder,
+  Iconsax.receipt,
 ];
 
 List<IconData> kIcons25 = [
   Iconsax.home_25,
   Iconsax.user_add,
   Iconsax.folder_25,
+  Iconsax.receipt_25
 ];
 
 Widget modelMenuApp(
@@ -270,13 +272,11 @@ class CustomButton extends StatelessWidget {
                       color: AppColors.WHITE_COLOR,
                     ),
                   )
-                : Text(
-                    "$title",
-                    style: TextStyle(
+                : Text("$title",
+                    style: GoogleFonts.montserrat(
                       color: textColor,
                       fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                    )),
           ],
         ),
       ),

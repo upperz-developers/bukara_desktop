@@ -1,41 +1,106 @@
-import 'package:bukara/app/providers/suite/model.dart';
-import 'package:bukara/app/providers/suite/provider.dart';
-import 'package:bukara/app/ui/views/home/suite/detail_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/paiement/detail_historic.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class ShowSuite extends StatefulWidget {
-  const ShowSuite({super.key});
+class ShowPaiementHistoric extends StatelessWidget {
+  const ShowPaiementHistoric({super.key});
 
-  @override
-  State<ShowSuite> createState() => _ShowSuiteState();
-}
-
-class _ShowSuiteState extends State<ShowSuite> {
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
         children: [
           30.heightBox,
-          tabDetail(),
+          tabDetail(context),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: List.generate(
-                  suites.length,
-                  (index) => suiteDetail(
-                    index: index,
-                    suite: suites[index],
+                children: [
+                  ...List.generate(
+                    30,
+                    (index) => historicDetail(
+                      context,
+                      index: index,
+                    ),
+                  ),
+                  50.heightBox,
+                ],
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 20,
+              horizontal: 15,
+            ),
+            child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: 15,
+              children: [
+                Container(
+                  height: 30,
+                  width: 30,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.WHITE_COLOR,
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppColors.SHADOW_COLOR.withAlpha(125),
+                          offset: const Offset(0, 2),
+                          blurRadius: 4,
+                        ),
+                      ]),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    size: 14,
                   ),
                 ),
-              ),
+                Container(
+                  height: 30,
+                  width: 30,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.WHITE_COLOR,
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppColors.SHADOW_COLOR.withAlpha(125),
+                          offset: const Offset(0, 2),
+                          blurRadius: 4,
+                        ),
+                      ]),
+                  child: Text(
+                    "1",
+                    style: GoogleFonts.montserrat(),
+                  ),
+                ),
+                Container(
+                  height: 30,
+                  width: 30,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: AppColors.WHITE_COLOR,
+                      shape: BoxShape.circle,
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: AppColors.SHADOW_COLOR.withAlpha(125),
+                          offset: const Offset(0, 2),
+                          blurRadius: 4,
+                        ),
+                      ]),
+                  child: const Icon(
+                    Icons.arrow_forward_ios,
+                    size: 14,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -102,7 +167,7 @@ class _ShowSuiteState extends State<ShowSuite> {
     );
   }
 
-  Widget tabDetail() {
+  Widget tabDetail(BuildContext context) {
     double space = 10;
     return Padding(
       padding: EdgeInsets.only(
@@ -116,37 +181,42 @@ class _ShowSuiteState extends State<ShowSuite> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              width: 50,
-              child: tabDetailModel(title: "#Num."),
+              width: 40,
+              child: tabDetailModel(title: "#num"),
             ),
-            space.widthBox,
+            30.widthBox,
             Expanded(
               flex: 2,
-              child: tabDetailModel(title: "Designation"),
+              child: tabDetailModel(title: "Libele"),
             ),
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Prix par mois"),
+              child: tabDetailModel(title: "Montant"),
             ),
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Responsable"),
-            ),
-            space.widthBox,
-            Expanded(
-              flex: 3,
-              child: tabDetailModel(title: "Adresse complet"),
+              child: tabDetailModel(title: "Date debut"),
             ),
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Etat"),
+              child: tabDetailModel(title: "Date fin"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 1,
+              child: tabDetailModel(title: "Jours restants"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 1,
+              child: tabDetailModel(title: "Locataire"),
             ),
             space.widthBox,
             SizedBox(
-              width: 70,
+              width: 30,
               child: tabDetailModel(title: "Plus"),
             ),
           ],
@@ -155,11 +225,12 @@ class _ShowSuiteState extends State<ShowSuite> {
     );
   }
 
-  Widget suiteDetail({
+  Widget historicDetail(
+    BuildContext context, {
     int? index,
-    Suite? suite,
   }) {
     double space = 10;
+
     return Container(
       padding: EdgeInsets.only(
         left: horizontalSpace,
@@ -175,79 +246,65 @@ class _ShowSuiteState extends State<ShowSuite> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 50,
-            child: suiteDetailModel(
-              title: "00${index + 1}",
+            width: 40,
+            child: Text(
+              "0${index + 1}",
+              textAlign: TextAlign.center,
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                color: AppColors.SECOND_TEXT_COLOR,
+                height: 1.6,
+              ),
+            ),
+          ),
+          30.widthBox,
+          Expanded(
+            flex: 2,
+            child: suiteDetailModel(title: "Test"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: suiteDetailModel(title: "Test"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: suiteDetailModel(title: "Test"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: suiteDetailModel(title: "Test"),
+          ),
+          space.widthBox,
+          Expanded(
+            flex: 1,
+            child: Text(
+              "Test",
+              style: GoogleFonts.montserrat(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                height: 1.6,
+              ),
             ),
           ),
           space.widthBox,
           Expanded(
-            flex: 2,
-            child: suite!.designation == null
-                ? const SizedBox.shrink()
-                : suiteDetailModel(title: "${suite.designation}"),
-          ),
-          space.widthBox,
-          Expanded(
             flex: 1,
-            child: suiteDetailModel(title: "${suite.price} USD"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suite.status!
-                ? suiteDetailModel(title: "John jean")
-                : const SizedBox.shrink(),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 3,
             child: suiteDetailModel(
-                title:
-                    "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(right: 30),
-              padding: const EdgeInsets.symmetric(
-                vertical: 5,
-                horizontal: 10,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.DISABLE_COLOR,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                suite.status! ? "Occupe" : "Inoccupe",
-                style: GoogleFonts.montserrat(
-                  fontSize: 10,
-                ),
-              ),
+              title: "Test",
             ),
           ),
           space.widthBox,
           SizedBox(
-            width: 70,
-            child: Wrap(
-              spacing: 15,
-              children: [
-                modelAction(
-                  icon: Iconsax.edit,
-                ),
-                modelAction(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      SuiteDetail.routeName,
-                      arguments: suite,
-                    );
-                  },
-                  icon: Iconsax.more,
-                ),
-              ],
+            height: 30,
+            width: 30,
+            child: modelAction(
+              onTap: () {
+                Navigator.pushNamed(context, DetailHistoric.routeName);
+              },
+              icon: Iconsax.more,
             ),
           ),
         ],

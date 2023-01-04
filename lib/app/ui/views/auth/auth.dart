@@ -60,9 +60,11 @@ class _AuthState extends State<Auth> {
       body: Row(
         children: [
           Container(
+            margin: const EdgeInsets.all(20),
             width: MediaQuery.of(context).size.width / 2 + 250,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(30),
+              image: const DecorationImage(
                   image: AssetImage('assets/images/suite.jpg'),
                   fit: BoxFit.cover),
             ),

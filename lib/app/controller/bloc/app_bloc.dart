@@ -12,6 +12,7 @@ import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/providers/tenant/provider.dart';
 import 'package:bukara/app/providers/user/repository.dart';
 import 'package:bukara/app/providers/user/user.dart';
+import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(INITIALSTATE()) {
@@ -58,7 +59,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<ADDENTERPRISE>((event, emit) async {
       emit(const LOADING());
       try {
-        await addEnterprise(data: event.enterprise!.toJson());
+        var response = await addEnterprise(data: event.enterprise!.toJson());
+        ResultEnterprise resultEnterprise =
+            ResultEnterprise.fromJson(response.data);
+        AuthController().enterpriseData.value = resultEnterprise.data!;
         emit(
           const SUCCESS(),
         );
@@ -75,15 +79,11 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         var response = await getEnterprise();
         ResultEnterprise resultEnterprise =
             ResultEnterprise.fromJson(response.data);
-        Enterprise enterprise = Enterprise();
         if (resultEnterprise.data != null) {
-          enterprise = resultEnterprise.data!;
+          AuthController().enterpriseData.value = resultEnterprise.data!;
         }
-
         emit(
-          SUCCESS(
-            value: enterprise,
-          ),
+          const SUCCESS(),
         );
       } on Exception catch (e) {
         emit(ERROR(

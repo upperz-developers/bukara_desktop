@@ -1,5 +1,6 @@
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
@@ -209,21 +210,20 @@ class _ShowRecoveryState extends State<ShowRecovery> {
               Expanded(
                 flex: 1,
                 child: suiteDetailModel(
-                    title: "${startAt.day}/${startAt.month}/${startAt.year}"),
+                    title: CustomDate(date: startAt).getFullDate),
               ),
               space.widthBox,
               Expanded(
                 flex: 1,
                 child: suiteDetailModel(
-                    title:
-                        "${recoverAt.day}/${recoverAt.month}/${recoverAt.year}"),
+                    title: CustomDate(date: recoverAt).getFullDate),
               ),
               space.widthBox,
               Expanded(
                 flex: 1,
                 child: Text(
                   dayLeft(
-                      start: contratData.rentalContrat!.startDate!,
+                      start: DateTime.now().toString(),
                       end: contratData.dateRecovery!),
                   style: GoogleFonts.montserrat(
                     fontSize: 13,
@@ -264,8 +264,9 @@ class _ShowRecoveryState extends State<ShowRecovery> {
           left: horizontalSpace - 35,
           bottom: 5,
           child: Container(
-            width: 10,
-            decoration: const BoxDecoration(
+            width: 7,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
               color: AppColors.GREEN_COLOR,
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class DetailRecovery extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "${dayLeft(start: contratData.rentalContrat!.startDate!, end: contratData.dateRecovery!)} restants",
+                  "${dayLeft(start: DateTime.now().toString(), end: contratData.dateRecovery!)} restants",
                   style: GoogleFonts.montserrat(
                     height: 1.5,
                     fontSize: 24,
@@ -56,7 +57,7 @@ class DetailRecovery extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "${startAt.day}/${startAt.month}/${startAt.year} - ${recoverAt.day}/${recoverAt.month}/${recoverAt.year}",
+                  "${CustomDate(date: startAt).getFullDate} - ${CustomDate(date: recoverAt).getFullDate}",
                   style: GoogleFonts.montserrat(
                     color: AppColors.SECOND_TEXT_COLOR,
                     fontSize: 12,

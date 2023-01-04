@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/user/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -6,6 +7,7 @@ class AppPref {
   static SharedPreferences? prefs;
   static const String mobilTokenKey = "token";
   static const String appConfig = "config";
+  static const String enterprise = "enterprise";
 }
 
 Token getMobileToken() {
@@ -42,6 +44,25 @@ void setAppConfig(Config config) {
     AppPref.appConfig,
     jsonEncode(
       config.toJson(),
+    ),
+  );
+}
+
+Enterprise getEnterprisePrefs() {
+  var token = AppPref.prefs?.getString(AppPref.enterprise) ?? '';
+  if (token.isEmpty) {
+    return Enterprise();
+  } else {
+    var json = jsonDecode(token);
+    return Enterprise.fromJson(json);
+  }
+}
+
+void setEnterprisePrefs(Enterprise enterprise) {
+  AppPref.prefs!.setString(
+    AppPref.enterprise,
+    jsonEncode(
+      enterprise.toJson(),
     ),
   );
 }

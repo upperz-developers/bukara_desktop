@@ -1,3 +1,4 @@
+import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:flutter/material.dart';
 
 class AuthController {
@@ -8,4 +9,5 @@ class AuthController {
   TextEditingController userName = TextEditingController();
   TextEditingController passWord = TextEditingController();
   TextEditingController confirmPass = TextEditingController();
+  ValueNotifier<Enterprise> enterpriseData = ValueNotifier(Enterprise());
 }
