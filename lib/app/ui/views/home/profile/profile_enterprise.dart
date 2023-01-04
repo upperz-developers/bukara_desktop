@@ -2,6 +2,7 @@ import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 import 'package:bukara/app/ui/views/auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,9 +10,11 @@ import 'package:velocity_x/velocity_x.dart';
 
 class ProfileEnterprise extends StatefulWidget {
   final ValueNotifier<bool> isEdit;
-  final Enterprise enterprise;
-  const ProfileEnterprise(
-      {super.key, required this.isEdit, required this.enterprise});
+
+  const ProfileEnterprise({
+    super.key,
+    required this.isEdit,
+  });
 
   @override
   State<ProfileEnterprise> createState() => _ProfileEnterpriseState();
@@ -23,114 +26,117 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
   double elementSpacer = 20;
   @override
   Widget build(BuildContext context) {
-    return Wrap(
-      spacing: space,
-      children: [
-        SizedBox(
-          width: width,
-          child: entrepriseInfo(),
-        ),
-        SizedBox(
-          width: width,
-          child: addressInfo(),
-        ),
-        SizedBox(
-          width: width,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              contactInfo(),
-              elementSpacer.heightBox,
-              supportInfo(),
-              elementSpacer.heightBox,
-              OnHoverEffect(
-                child: InkWell(
-                  onTap: () {
-                    widget.isEdit.value = true;
-                  },
-                  borderRadius: BorderRadius.circular(4),
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 30),
-                    width: width,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
+    return ValueListenableBuilder(
+      valueListenable: AuthController().enterpriseData,
+      builder: (context, Enterprise enterprise, child) {
+        return Wrap(
+          spacing: space,
+          children: [
+            SizedBox(
+              width: width,
+              child: entrepriseInfo(enterprise),
+            ),
+            SizedBox(
+              width: width,
+              child: addressInfo(enterprise),
+            ),
+            SizedBox(
+              width: width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  contactInfo(enterprise),
+                  elementSpacer.heightBox,
+                  supportInfo(enterprise),
+                  elementSpacer.heightBox,
+                  OnHoverEffect(
+                    child: InkWell(
+                      onTap: () {
+                        widget.isEdit.value = true;
+                      },
                       borderRadius: BorderRadius.circular(4),
-                      color: AppColors.BLACK_COLOR,
-                    ),
-                    child: Text(
-                      "Modifier entreprise",
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                        color: AppColors.WHITE_COLOR,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 30),
+                        width: width,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: AppColors.BLACK_COLOR,
+                        ),
+                        child: Text(
+                          "Modifier entreprise",
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: AppColors.WHITE_COLOR,
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
-        ),
-        userInfo(),
-      ],
+            ),
+            userInfo(),
+          ],
+        );
+      },
     );
   }
 
-  Widget entrepriseInfo() {
+  Widget entrepriseInfo(Enterprise enterprise) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         infoTitle("Entreprise"),
-        modelInfo(title: "Nom", info: widget.enterprise.designation),
+        modelInfo(title: "Nom", info: enterprise.designation),
         modelInfo(
           title: "description",
-          info: widget.enterprise.description,
+          info: enterprise.description,
         ),
         modelInfo(
           title: "RCCM",
-          info: widget.enterprise.rccm,
+          info: enterprise.rccm,
         ),
         modelInfo(
           title: "IDNAT",
-          info: widget.enterprise.idnat,
+          info: enterprise.idnat,
         ),
         modelInfo(
           title: "Impot",
-          info: widget.enterprise.impot,
+          info: enterprise.impot,
         ),
       ],
     );
   }
 
-  Widget supportInfo() {
+  Widget supportInfo(Enterprise enterprise) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         infoTitle("Support"),
         modelInfo(
           title: "Banque",
-          info: widget.enterprise.banks!.isNotEmpty
-              ? widget.enterprise.banks![0].bank
-              : null,
+          info: enterprise.banks!.isNotEmpty ? enterprise.banks![0].bank : null,
         ),
         modelInfo(
           title: "Nom du compte",
-          info: widget.enterprise.banks!.isNotEmpty
-              ? widget.enterprise.banks![0].accountName
+          info: enterprise.banks!.isNotEmpty
+              ? enterprise.banks![0].accountName
               : null,
         ),
         modelInfo(
           title: "numero du compte",
-          info: widget.enterprise.banks!.isNotEmpty
-              ? widget.enterprise.banks![0].accountNumber
+          info: enterprise.banks!.isNotEmpty
+              ? enterprise.banks![0].accountNumber
               : null,
         ),
       ],
     );
   }
 
-  Widget contactInfo() {
+  Widget contactInfo(Enterprise enterprise) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -148,47 +154,47 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
     );
   }
 
-  Widget addressInfo() {
+  Widget addressInfo(Enterprise enterprise) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         infoTitle("Address"),
         modelInfo(
           title: "Reference",
-          info: widget.enterprise.addresses!.isNotEmpty
-              ? widget.enterprise.addresses![0].reference
+          info: enterprise.addresses!.isNotEmpty
+              ? enterprise.addresses![0].reference
               : null,
         ),
         modelInfo(
             title: "Pays",
-            info: widget.enterprise.addresses!.isNotEmpty
-                ? widget.enterprise.addresses![0].country
+            info: enterprise.addresses!.isNotEmpty
+                ? enterprise.addresses![0].country
                 : null),
         modelInfo(
             title: "Province",
-            info: widget.enterprise.addresses!.isNotEmpty
-                ? widget.enterprise.addresses![0].city
+            info: enterprise.addresses!.isNotEmpty
+                ? enterprise.addresses![0].city
                 : null),
         modelInfo(
           title: "Ville",
-          info: widget.enterprise.addresses!.isNotEmpty
-              ? widget.enterprise.addresses![0].town
+          info: enterprise.addresses!.isNotEmpty
+              ? enterprise.addresses![0].town
               : null,
         ),
         modelInfo(
             title: "Quartier",
-            info: widget.enterprise.addresses!.isNotEmpty
-                ? widget.enterprise.addresses![0].quarter
+            info: enterprise.addresses!.isNotEmpty
+                ? enterprise.addresses![0].quarter
                 : null),
         modelInfo(
             title: "Avenue",
-            info: widget.enterprise.addresses!.isNotEmpty
-                ? widget.enterprise.addresses![0].street
+            info: enterprise.addresses!.isNotEmpty
+                ? enterprise.addresses![0].street
                 : null),
         modelInfo(
             title: "Numero",
-            info: widget.enterprise.addresses!.isNotEmpty
-                ? widget.enterprise.addresses![0].number.toString()
+            info: enterprise.addresses!.isNotEmpty
+                ? enterprise.addresses![0].number.toString()
                 : null),
       ],
     );

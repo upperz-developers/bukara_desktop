@@ -57,7 +57,6 @@ class _ProfileState extends State<Profile> {
                           : state is SUCCESS
                               ? ProfileEnterprise(
                                   isEdit: isEdit,
-                                  enterprise: state.value,
                                 )
                               : const SizedBox.shrink(),
                     ),

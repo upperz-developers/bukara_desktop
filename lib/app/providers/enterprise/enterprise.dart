@@ -14,7 +14,6 @@ class ResultEnterprise {
 
 class Enterprise {
   String? id;
-
   String? designation;
   String? description;
   String? rccm;
@@ -68,7 +67,6 @@ class Enterprise {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['designation'] = designation;
-
     data['description'] = description;
     data['rccm'] = rccm;
     data['idnat'] = idnat;
