@@ -59,6 +59,7 @@ class _RecoveryHomeState extends State<RecoveryHome> {
                       infoTabBar(),
                       ShowRecovery(
                         contratData: contratData,
+                        bloc: bloc,
                       ),
                     ],
                   );

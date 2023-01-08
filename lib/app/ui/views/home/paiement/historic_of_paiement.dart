@@ -28,10 +28,12 @@ class HistoricOfPaiement extends StatelessWidget {
               child: appBar(context, title: "Historique de paiements"),
             ),
             Expanded(
-              child: Column(children: [
-                infoTabBar(),
-                const ShowPaiementHistoric(),
-              ]),
+              child: Column(
+                children: [
+                  infoTabBar(),
+                  const ShowPaiementHistoric(),
+                ],
+              ),
             ),
           ],
         ),

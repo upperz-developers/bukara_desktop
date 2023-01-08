@@ -1,3 +1,5 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
@@ -12,7 +14,9 @@ import 'package:velocity_x/velocity_x.dart';
 
 class ShowRecovery extends StatefulWidget {
   final List<ContratData> contratData;
-  const ShowRecovery({super.key, required this.contratData});
+  final AppBloc bloc;
+  const ShowRecovery(
+      {super.key, required this.contratData, required this.bloc});
 
   @override
   State<ShowRecovery> createState() => _ShowRecoveryState();
@@ -251,7 +255,11 @@ class _ShowRecoveryState extends State<ShowRecovery> {
                       builder: (context) => DetailRecovery(
                         contratData: contratData,
                       ),
-                    );
+                    ).then((value) {
+                      if (value == "success") {
+                        widget.bloc.add(GETRECOVERYINFO());
+                      }
+                    });
                   },
                   icon: Iconsax.more,
                 ),

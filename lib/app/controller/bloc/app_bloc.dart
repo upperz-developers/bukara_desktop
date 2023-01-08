@@ -188,5 +188,21 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         ));
       }
     });
+
+    on<PAYERENT>((event, emit) async {
+      emit(const LOADING());
+
+      try {
+        await payeRent(
+          data: event.data,
+        );
+      } on Exception catch (e) {
+        emit(
+          ERROR(
+            dueTo: e.toString(),
+          ),
+        );
+      }
+    });
   }
 }

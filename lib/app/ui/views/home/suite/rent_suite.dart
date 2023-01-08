@@ -249,7 +249,7 @@ class _RentSuiteState extends State<RentSuite> {
                           10.heightBox,
                           FormText(
                             width: 100,
-                            hint: "1 USD",
+                            hint: "montant en USD",
                             submitted: submitted,
                             controller: rentController.price,
                           ),

@@ -42,7 +42,7 @@ class DetailHistoric extends StatelessWidget {
                                   height: 70,
                                   width: 70,
                                   child: Image.asset(
-                                    "assets/icons/icon.png",
+                                    "assets/icons/bukara.jpg",
                                     fit: BoxFit.cover,
                                   )),
                               30.widthBox,

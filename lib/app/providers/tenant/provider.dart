@@ -19,3 +19,6 @@ Future<Response> rentalContrat({Map<String, dynamic>? data}) async {
     data: data,
   );
 }
+
+Future<Response> payeRent({Map<String, dynamic>? data}) async =>
+    await httpPostWithToken(endPoint: APIURL.PAYERENT, data: data);
