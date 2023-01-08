@@ -3,6 +3,7 @@ import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
+import 'package:bukara/app/ui/views/home/paiement/paye_rent.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -202,7 +203,16 @@ class DetailRecovery extends StatelessWidget {
                     Expanded(
                       child: OnHoverEffect(
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => PayeRent(
+                                contratData: contratData,
+                              ),
+                            );
+                          },
                           borderRadius: BorderRadius.circular(4),
                           child: Container(
                             alignment: Alignment.center,

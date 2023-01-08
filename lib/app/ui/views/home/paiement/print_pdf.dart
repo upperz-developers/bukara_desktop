@@ -9,7 +9,7 @@ import 'package:printing/printing.dart';
 void saveAndPrintPdf() async {
   final pdf = Document();
 
-  final image = await imageFromAssetBundle('assets/icons/icon.png');
+  final image = await imageFromAssetBundle('assets/icons/bukara.jpg');
   double horizontalPadding = 50;
 
   final font = await PdfGoogleFonts.montserratRegular();

@@ -57,3 +57,9 @@ class CONFIGRENT implements AppEvent {
 }
 
 class GETRECOVERYINFO implements AppEvent {}
+
+class PAYERENT implements AppEvent {
+  final Map<String, dynamic> data;
+
+  PAYERENT({required this.data});
+}
