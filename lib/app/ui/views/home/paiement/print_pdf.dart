@@ -353,11 +353,6 @@ void saveAndPrintPdf(
     ),
   );
 
-  final output = await getTemporaryDirectory();
-
-  final file = File('${output.path}/testUpperz.pdf');
-
-  await file.writeAsBytes(await pdf.save());
   await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => pdf.save());
 }
