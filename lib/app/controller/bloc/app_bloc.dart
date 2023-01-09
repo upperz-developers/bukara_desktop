@@ -29,6 +29,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           Token token = resultAuth.token!;
           setMobileToken(token);
           setAppConfig(resultAuth.data!.config!);
+          setUserPrefs(resultAuth.data!.user!);
           emit(const SUCCESS(value: "Vous avez ete bien authentifie"));
         } on Exception catch (e) {
           emit(
@@ -211,13 +212,26 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     });
     on<GETPAYEMENT>((event, emit) async {
       emit(const LOADING());
-
       try {
         AppBloc().add(GETENTERPRISE());
         var response = await getPayement();
         ResultHistoricPaiements resultPayement =
             ResultHistoricPaiements.fromJson(response.data);
         List<PayementHistoric> payements = resultPayement.data!.payments!;
+        emit(SUCCESS(value: payements));
+      } on Exception catch (e) {
+        emit(ERROR(dueTo: e.toString()));
+      }
+    });
+
+    on<GETPAYEMENTPERRECOVERY>((event, emit) async {
+      emit(const LOADING());
+      try {
+        AppBloc().add(GETENTERPRISE());
+        var response =
+            await getPayementPerRecovery(recoveryId: event.recoveryId);
+        RecoveryData resultPayement = RecoveryData.fromJson(response.data);
+        List<PayementHistoric> payements = resultPayement.payments!;
         emit(SUCCESS(value: payements));
       } on Exception catch (e) {
         emit(ERROR(dueTo: e.toString()));

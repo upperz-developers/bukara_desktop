@@ -6,3 +6,8 @@ import '../../services/shared/api_url.dart';
 Future<Response> getPayement() async => await httpGetWithToken(
       endPoint: APIURL.GETPAYEMENT,
     );
+
+Future<Response> getPayementPerRecovery({String? recoveryId}) async =>
+    await httpGetWithToken(
+      endPoint: APIURL.GETPAYEMENTPERRECOVERY + recoveryId!,
+    );

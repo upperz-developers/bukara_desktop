@@ -1,6 +1,6 @@
 import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
-import 'package:bukara/app/ui/views/home/suite/detail_suite.dart';
+import 'package:bukara/app/ui/views/app/suite/detail_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';

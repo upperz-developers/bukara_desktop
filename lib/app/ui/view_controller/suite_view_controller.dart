@@ -91,6 +91,7 @@ class SuiteViewController {
         quarter: addressController.quater.text.trim(),
         street: addressController.avenue.text.trim(),
         number: int.tryParse(addressController.number.text.trim()),
+        common: addressController.commune.text.trim(),
       );
       suiteAdress.toJson().removeWhere((key, value) => value == null);
 

@@ -1,10 +1,13 @@
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/constants.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
+import 'package:bukara/app/ui/views/app/paiement/paiement_per_recovery.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DetailRecovery extends StatelessWidget {
@@ -146,6 +149,37 @@ class DetailRecovery extends StatelessWidget {
                         ),
                       ),
                     ],
+                  ),
+                ),
+                10.heightBox,
+                InkWell(
+                  onTap: () {
+                    selectedRecoveryId = contratData.id;
+                    Navigator.pushNamed(context, PeymentPerRecovery.routeName);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Iconsax.activity,
+                        ),
+                        15.widthBox,
+                        Expanded(
+                          child: Text(
+                            "Historique de paiement",
+                            style: GoogleFonts.montserrat(
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                        15.widthBox,
+                        const Icon(
+                          Iconsax.arrow_right_3,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 const Padding(

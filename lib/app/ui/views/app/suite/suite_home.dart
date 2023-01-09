@@ -2,9 +2,10 @@ import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
+import 'package:bukara/app/ui/shared/utils/no_data.dart';
 import 'package:bukara/app/ui/squeletton/suite_squeletton.dart';
-import 'package:bukara/app/ui/views/home/suite/add_suite.dart';
-import 'package:bukara/app/ui/views/home/suite/show_suite.dart';
+import 'package:bukara/app/ui/views/app/suite/add_suite.dart';
+import 'package:bukara/app/ui/views/app/suite/show_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
@@ -50,50 +51,59 @@ class _SuiteHomeState extends State<SuiteHome>
           bloc.add(GETSUITE());
         });
       },
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: horizontalSpace,
-              right: horizontalSpace,
-              bottom: 20,
-              top: 15,
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: horizontalSpace,
+                right: horizontalSpace,
+                bottom: 20,
+                top: 15,
+              ),
+              child: appBar(context, title: "Appartements"),
             ),
-            child: appBar(context, title: "Appartements"),
-          ),
-          Expanded(
-            child: BlocBuilder<AppBloc, AppState>(
-                bloc: bloc,
-                builder: (context, state) {
-                  if (state is LOADING) {
-                    return const SuiteSqueletton();
-                  } else if (state is SUCCESS) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        infoTabBar(),
-                        ValueListenableBuilder(
-                          valueListenable: isShowingData,
-                          builder: (context, bool isData, child) {
-                            return isData
-                                ? const ShowSuite()
-                                : AddSuite(
-                                    showSuites: isShowingData,
-                                  );
-                          },
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Text(
-                      "Error model here",
-                      style: GoogleFonts.montserrat(),
-                    );
-                  }
-                }),
-          ),
-        ],
+            Expanded(
+              child: BlocBuilder<AppBloc, AppState>(
+                  bloc: bloc,
+                  builder: (context, state) {
+                    if (state is LOADING) {
+                      return const SuiteSqueletton();
+                    } else if (state is SUCCESS) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          infoTabBar(),
+                          ValueListenableBuilder(
+                            valueListenable: isShowingData,
+                            builder: (context, bool isData, child) {
+                              return isData
+                                  ? const ShowSuite()
+                                  : AddSuite(
+                                      showSuites: isShowingData,
+                                    );
+                            },
+                          ),
+                        ],
+                      );
+                    } else if (state is ERROR) {
+                      return NoData(
+                        message: state.dueTo!,
+                        onTap: () {
+                          bloc.add(
+                            GETSUITE(),
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  }),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
-import 'package:bukara/app/ui/views/home/profile/add_edit_enterprise_info.dart';
-import 'package:bukara/app/ui/views/home/profile/profile_enterprise.dart';
+import 'package:bukara/app/providers/app_prefs.dart';
+import 'package:bukara/app/ui/views/app/profile/add_edit_enterprise_info.dart';
+import 'package:bukara/app/ui/views/app/profile/profile_enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
@@ -74,7 +75,6 @@ class _ProfileState extends State<Profile> {
     String? image;
     String? name = "";
     if (state is SUCCESS) {
-      // image = state.value.logo;
       name = "";
     }
     return SizedBox(
@@ -142,18 +142,11 @@ class _ProfileState extends State<Profile> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "Current user",
+                          "${getUserPrefs().email}",
                           style: GoogleFonts.montserrat(
-                            fontSize: 13,
+                            fontSize: 12,
                           ),
                         ),
-                        // Text(
-                        //   "admin@gmail.com",
-                        //   style: GoogleFonts.montserrat(
-                        //     color: AppColors.SECOND_TEXT_COLOR,
-                        //     fontSize: 11,
-                        //   ),
-                        // ),
                       ],
                     ),
                   ],
@@ -182,28 +175,14 @@ class _ProfileState extends State<Profile> {
                                 image: CachedNetworkImageProvider(image),
                                 fit: BoxFit.cover,
                               )
-                            : null
-                        : null,
-                  ),
-                ),
-                Positioned(
-                  bottom: 10,
-                  right: 10,
-                  child: Container(
-                    height: 30,
-                    width: 30,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        width: 3,
-                        color: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
-                      ),
-                      color: AppColors.WHITE_COLOR,
-                    ),
-                    child: const Icon(
-                      Iconsax.gallery_edit,
-                      size: 16,
-                    ),
+                            : const DecorationImage(
+                                image: AssetImage("assets/icons/bukara.jpg"),
+                                fit: BoxFit.cover,
+                              )
+                        : const DecorationImage(
+                            image: AssetImage("assets/icons/bukara.jpg"),
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ],

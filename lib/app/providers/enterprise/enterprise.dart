@@ -20,8 +20,11 @@ class Enterprise {
   String? logo;
   String? idnat;
   String? impot;
+  String? phones;
   String? createdAt;
   String? updatedAt;
+  String? email;
+  String? site;
   List<Addresses>? addresses;
   List<Banks>? banks;
 
@@ -35,6 +38,9 @@ class Enterprise {
     this.updatedAt,
     this.idnat,
     this.impot,
+    this.phones,
+    this.site,
+    this.email,
   })  : addresses = [],
         banks = [];
 
@@ -45,6 +51,10 @@ class Enterprise {
     rccm = json['rccm'];
     logo = json['logo'];
     idnat = json['idnat'];
+    phones = json['phones'];
+    impot = json['tax_number'];
+    email = json['email'];
+    site = json['site'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
 
@@ -70,6 +80,10 @@ class Enterprise {
     data['description'] = description;
     data['rccm'] = rccm;
     data['idnat'] = idnat;
+    data['phones'] = phones;
+    data['email'] = email;
+    data['site'] = site;
+    data['tax_number'] = impot;
     if (addresses != null) {
       data['addresses'] = addresses!.map((v) => v.toJson()).toList();
     }

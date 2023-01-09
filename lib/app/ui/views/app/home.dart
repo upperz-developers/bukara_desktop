@@ -1,11 +1,11 @@
-import 'package:bukara/app/ui/views/home/paiement/historic_of_paiement.dart';
-import 'package:bukara/app/ui/views/home/profile/profile.dart';
-import 'package:bukara/app/ui/views/home/recoveries/home_recoveries.dart';
-import 'package:bukara/app/ui/views/home/suite/suite_home.dart';
+import 'package:bukara/app/ui/views/app/paiement/historic_of_paiement.dart';
+import 'package:bukara/app/ui/views/app/profile/profile.dart';
+import 'package:bukara/app/ui/views/app/recoveries/home_recoveries.dart';
+import 'package:bukara/app/ui/views/app/suite/suite_home.dart';
 import 'package:bukara/app/ui/shared/app_architecture.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
-import 'package:bukara/app/ui/views/home/tenant/tenant_home.dart';
+import 'package:bukara/app/ui/views/app/tenant/tenant_home.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:iconsax/iconsax.dart';
