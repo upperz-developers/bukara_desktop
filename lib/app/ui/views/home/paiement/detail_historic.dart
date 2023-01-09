@@ -395,6 +395,7 @@ class DetailHistoric extends StatelessWidget {
             left: 150,
             top: 50,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 OnHoverEffect(
                   child: InkWell(
@@ -402,11 +403,20 @@ class DetailHistoric extends StatelessWidget {
                     onTap: () {
                       Navigator.pop(context);
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 24,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.arrow_back,
+                            size: 18,
+                          ),
+                          10.widthBox,
+                          Text(
+                            "Retour",
+                            style: GoogleFonts.montserrat(),
+                          )
+                        ],
                       ),
                     ),
                   ),
@@ -419,11 +429,20 @@ class DetailHistoric extends StatelessWidget {
                       saveAndPrintPdf(
                           enterprise: enterprise, payement: payement);
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Icon(
-                        Iconsax.printer,
-                        size: 24,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Iconsax.printer,
+                            size: 18,
+                          ),
+                          10.widthBox,
+                          Text(
+                            "Imprimer",
+                            style: GoogleFonts.montserrat(),
+                          )
+                        ],
                       ),
                     ),
                   ),
