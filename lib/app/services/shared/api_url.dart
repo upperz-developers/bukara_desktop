@@ -15,4 +15,5 @@ class APIURL {
   static const String GETRECOVERYINFO = "$BASEURL/recoveries";
   static const String PAYERENT = "$BASEURL/payments";
   static const String GETPAYEMENT = "$BASEURL/payments";
+  static const String GETPAYEMENTPERRECOVERY = "$BASEURL/payments/historical/";
 }

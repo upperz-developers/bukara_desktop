@@ -2,23 +2,23 @@ import 'package:bukara/app/providers/recovery/model.dart';
 
 class ResultHistoricPaiements {
   bool? status;
-  Data? data;
+  RecoveryData? data;
 
   ResultHistoricPaiements({this.status, this.data});
 
   ResultHistoricPaiements.fromJson(Map<String, dynamic> json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? RecoveryData.fromJson(json['data']) : null;
   }
 }
 
-class Data {
+class RecoveryData {
   Meta? meta;
   List<PayementHistoric>? payments;
 
-  Data({this.meta, this.payments});
+  RecoveryData({this.meta, this.payments});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  RecoveryData.fromJson(Map<String, dynamic> json) {
     meta = json['meta'] != null ? Meta.fromJson(json['meta']) : null;
     if (json['data'] != null) {
       payments = <PayementHistoric>[];
@@ -98,7 +98,8 @@ class PayementHistoric {
         json['created_by'] != null ? User.fromJson(json['created_by']) : null;
     type = json['type'];
     transactionId = json['transaction_id'];
-    amount = double.parse(json['amount'].toString());
+    amount =
+        json['amount'] != null ? double.parse(json['amount'].toString()) : null;
     currenty = json['currenty'];
     status = json['status'];
     createdAt = json['created_at'];

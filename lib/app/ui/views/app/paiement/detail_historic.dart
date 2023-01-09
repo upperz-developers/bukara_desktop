@@ -4,8 +4,7 @@ import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
-import 'package:bukara/app/ui/views/home/paiement/print_pdf.dart';
+import 'package:bukara/app/ui/views/app/paiement/print_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -297,8 +296,6 @@ class DetailHistoric extends StatelessWidget {
                               title1(title: "Libele", flex: 2),
                               3.widthBox,
                               title1(title: "Paye", flex: 1),
-                              3.widthBox,
-                              title1(title: "Rest", flex: 1),
                             ],
                           ),
                           3.heightBox,
@@ -312,9 +309,7 @@ class DetailHistoric extends StatelessWidget {
                                 alignment: Alignment.center,
                                 child: Text(
                                   "1",
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                  style: GoogleFonts.montserrat(),
                                 ),
                               ),
                               3.widthBox,
@@ -322,30 +317,23 @@ class DetailHistoric extends StatelessWidget {
                                   flex: 2,
                                   title: "${payement.contratData!.labelStr}"),
                               content1(flex: 1, title: "${payement.amount}\$"),
-                              content1(
-                                flex: 1,
-                                title:
-                                    "${restToPay(amount: payement.contratData!.rentalContrat!.amount, paiements: payement.contratData!.paiements)}\$",
-                                isEnd: true,
-                              ),
                             ],
                           ),
                           customDivider(context),
                           const Spacer(),
                           Align(
-                            alignment: Alignment.bottomRight,
+                            alignment: Alignment.bottomCenter,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Text(
-                                  "Upperz",
+                                  "Merci de nous avoir fait confiance",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 12,
                                   ),
                                 ),
-                                5.heightBox,
                                 Text(
-                                  "52, avenu,himbi, de goma, goma, rdc",
+                                  "${enterprise.banks![0].accountName} | ${enterprise.banks![0].bank} | ${enterprise.banks![0].accountNumber}",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 12,
                                   ),

@@ -1,7 +1,7 @@
 import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/user/user.dart';
 import 'package:bukara/app/ui/views/auth/auth.dart';
-import 'package:bukara/app/ui/views/home/home.dart';
+import 'package:bukara/app/ui/views/app/home.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -46,8 +46,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Expanded(
               child: Center(
                 child: Container(
-                  height: 180,
-                  width: 180,
+                  height: 200,
+                  width: 200,
                   decoration: const BoxDecoration(
                     color: AppColors.DISABLE_COLOR,
                     shape: BoxShape.circle,

@@ -10,6 +10,7 @@ class Addresses {
   int? number;
   String? createdAt;
   String? updatedAt;
+  String? common;
 
   Addresses(
       {this.id,
@@ -22,10 +23,12 @@ class Addresses {
       this.number,
       this.createdAt,
       this.reference,
+      this.common,
       this.updatedAt});
 
   Addresses.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    common = json['common'];
     entrepriseId = json['entreprise_id'];
     country = json['country'];
     town = json['town'];
@@ -43,6 +46,7 @@ class Addresses {
     data['id'] = id;
     data['entreprise_id'] = entrepriseId;
     data['country'] = country;
+    data['common'] = common;
     data['town'] = town;
     data['reference'] = reference;
     data['city'] = city;

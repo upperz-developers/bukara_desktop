@@ -3,10 +3,12 @@ import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/no_data.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/squeletton/paiement_squeletton.dart';
-import 'package:bukara/app/ui/views/home/paiement/detail_historic.dart';
+import 'package:bukara/app/ui/views/app/paiement/detail_historic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,8 +41,15 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
           } else if (state is SUCCESS) {
             List<PayementHistoric> payements = state.value;
             return buidData(payements);
+          } else if (state is ERROR) {
+            return NoData(
+              message: state.dueTo!,
+              onTap: () {
+                bloc!.add(GETPAYEMENT());
+              },
+            );
           } else {
-            return Container();
+            return const SizedBox.shrink();
           }
         });
   }
@@ -221,7 +230,12 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
             ),
             30.widthBox,
             Expanded(
-              flex: 2,
+              flex: 1,
+              child: tabDetailModel(title: "Date"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 1,
               child: tabDetailModel(title: "Libele"),
             ),
             space.widthBox,
@@ -257,6 +271,7 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
   }) {
     double space = 10;
 
+    DateTime paiedAt = DateTime.parse(payement.createdAt!);
     return OnHoverEffect(
       child: InkWell(
         onTap: () {
@@ -294,7 +309,14 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
               ),
               30.widthBox,
               Expanded(
-                flex: 2,
+                flex: 1,
+                child: suiteDetailModel(
+                  title: CustomDate(date: paiedAt).getFullDate,
+                ),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
                 child: suiteDetailModel(
                     title: "${payement.contratData!.labelStr}"),
               ),

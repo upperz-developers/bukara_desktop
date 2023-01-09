@@ -4,30 +4,27 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/no_data.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/squeletton/tenant_squeletton.dart';
-import 'package:bukara/app/ui/views/home/tenant/add_tenant.dart';
-import 'package:fluent_ui/fluent_ui.dart';
-import 'package:flutter/material.dart' as mat;
+import 'package:bukara/app/ui/views/app/tenant/add_tenant.dart';
+import 'package:bukara/shared/custom_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class ShowTenantDialog extends StatefulWidget {
-  static String routeName = "select_tenant";
-  const ShowTenantDialog({super.key});
+class Tenant extends StatefulWidget {
+  const Tenant({super.key});
 
   @override
-  State<ShowTenantDialog> createState() => _ShowTenantDialogState();
+  State<Tenant> createState() => _Tenant();
 }
 
-class _ShowTenantDialogState extends State<ShowTenantDialog> {
+class _Tenant extends State<Tenant> {
   ValueNotifier<bool> isShowTenant = ValueNotifier(false);
   TenantModel? selectedTenant;
-  ValueNotifier<String> selectedTenantId = ValueNotifier("");
-  TenantModel? selectedTenantToRent;
   AppBloc? _bloc;
   @override
   void initState() {
@@ -38,57 +35,42 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return mat.Scaffold(
-      backgroundColor: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
-      body: Column(
+    return CustormScaffoldPage(
+      onSuccess: () {},
+      content: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(
-              left: 50,
-              right: 50,
+            padding: EdgeInsets.only(
+              left: horizontalSpace,
+              right: horizontalSpace,
               bottom: 20,
               top: 15,
             ),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context, selectedTenantToRent);
-                  },
-                  borderRadius: BorderRadius.circular(4),
-                  child: Container(
-                    padding: const EdgeInsets.all(10),
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(4)),
-                    child: const Icon(
-                      Icons.arrow_back,
-                      size: 20,
-                    ),
-                  ),
-                ),
-                30.widthBox,
-                Text(
-                  "Selectionner un locataire",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
+            child: appBar(context, title: "Locataires"),
           ),
           Expanded(
             child: BlocBuilder<AppBloc, AppState>(
               bloc: _bloc,
               builder: (context, state) {
-                List<TenantModel> tenants = [];
-                if (state is SUCCESS) {
-                  tenants = state.value;
+                if (state is LOADING) {
+                  return const TenantSqueletton();
                 }
-                return state is SUCCESS
-                    ? buidData(tenants)
-                    : const TenantSqueletton();
+
+                if (state is SUCCESS) {
+                  List<TenantModel> tenants = [];
+                  tenants = state.value;
+                  return buidData(tenants);
+                } else if (state is ERROR) {
+                  return NoData(
+                    message: state.dueTo!,
+                    onTap: () {
+                      _bloc!.add(GETTENANT());
+                    },
+                  );
+                } else {
+                  return const SizedBox.shrink();
+                }
               },
             ),
           ),
@@ -166,11 +148,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
               ),
               15.widthBox,
               modelAction(
-                icon: Iconsax.shop_remove,
-              ),
-              15.widthBox,
-              modelAction(
-                  icon: mat.Icons.close,
+                  icon: Icons.close,
                   onTap: () {
                     isShowTenant.value = false;
                   }),
@@ -191,7 +169,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
                     style: GoogleFonts.montserrat(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: mat.Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                   Text(
@@ -200,45 +178,16 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
                       color: AppColors.BLACK_COLOR,
                     ),
                   ),
-                  30.heightBox,
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Icon(Iconsax.home),
-                      15.widthBox,
-                      Expanded(
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Name of suite",
-                                style: GoogleFonts.montserrat(
-                                  fontWeight: FontWeight.normal,
-                                  color: mat.Colors.black,
-                                ),
-                              ),
-                              5.heightBox,
-                              Text(
-                                "Goma, C de Goma, Q les volcan,av des avenues, num 10",
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 12,
-                                  color: AppColors.SECOND_TEXT_COLOR,
-                                ),
-                              ),
-                            ]),
-                      ),
-                    ],
-                  ),
                   const Padding(
                     padding: EdgeInsets.only(top: 20, bottom: 20),
-                    child: mat.Divider(),
+                    child: Divider(),
                   ),
                   Text(
                     "Apropos du locataire",
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: mat.Colors.black,
+                      color: Colors.black,
                     ),
                   ),
                   25.heightBox,
@@ -300,7 +249,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
                 "$title",
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.normal,
-                  color: mat.Colors.black,
+                  color: Colors.black,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -330,11 +279,6 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: 50,
-              child: tabDetailModel(title: "#select."),
-            ),
-            space.widthBox,
             SizedBox(
               width: 50,
               child: tabDetailModel(title: "#Num."),
@@ -388,9 +332,9 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           OnHoverEffect(
-            child: mat.InkWell(
+            child: InkWell(
               onTap: () {
-                mat.showDialog(
+                showDialog(
                   context: context,
                   builder: (context) => const AddTenants(),
                   barrierDismissible: false,
@@ -423,12 +367,12 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
             child: Row(
               children: [
                 Expanded(
-                  child: mat.TextField(
+                  child: TextField(
                     style: GoogleFonts.montserrat(
                       fontSize: 12,
                     ),
-                    decoration: mat.InputDecoration(
-                        border: mat.InputBorder.none,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
                         isDense: true,
                         hintText: "Tapez un mot cle",
                         helperStyle: GoogleFonts.montserrat(
@@ -455,90 +399,83 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
     required TenantModel tenant,
   }) {
     double space = 10;
-
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-        bottom: 20,
-        top: 20,
-      ),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : mat.Colors.transparent,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ValueListenableBuilder(
-            valueListenable: selectedTenantId,
-            builder: (context, String isSelectedValue, child) {
-              return SizedBox(
+    return OnHoverEffect(
+      child: InkWell(
+        onTap: () {
+          isShowTenant.value = false;
+          isShowTenant.value = true;
+          selectedTenant = tenant;
+        },
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 30,
+            right: 30,
+            bottom: 20,
+            top: 20,
+          ),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
                 width: 50,
-                child: RadioButton(
-                  checked: isSelectedValue == tenant.id,
-                  onChanged: (bool value) {
-                    selectedTenantToRent = tenant;
-                    selectedTenantId.value = tenant.id!;
-                  },
+                child: suiteDetailModel(
+                  title: "00${index + 1}",
                 ),
-              );
-            },
-          ),
-          space.widthBox,
-          SizedBox(
-            width: 50,
-            child: suiteDetailModel(
-              title: "00${index + 1}",
-            ),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: suiteDetailModel(title: "${tenant.name} ${tenant.lastname}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: suiteDetailModel(title: "${tenant.landlordType}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "${tenant.maritalStatus}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 3,
-            child: suiteDetailModel(title: "${tenant.lastAdress}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: tenant.phones!.isNotEmpty
-                ? suiteDetailModel(
-                    title:
-                        "${tenant.phones![0].countryCode} (0) ${tenant.phones![0].number}")
-                : const SizedBox.shrink(),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                modelAction(
-                  onTap: () {
-                    isShowTenant.value = false;
-                    isShowTenant.value = true;
-                    selectedTenant = tenant;
-                  },
-                  icon: Iconsax.more,
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: suiteDetailModel(
+                    title: "${tenant.name} ${tenant.lastname}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: suiteDetailModel(title: "${tenant.landlordType}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(title: "${tenant.maritalStatus}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 3,
+                child: suiteDetailModel(title: "${tenant.lastAdress}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: tenant.phones!.isNotEmpty
+                    ? suiteDetailModel(
+                        title:
+                            "${tenant.phones![0].countryCode} (0) ${tenant.phones![0].number}")
+                    : const SizedBox.shrink(),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    modelAction(
+                      onTap: () {
+                        isShowTenant.value = false;
+                        isShowTenant.value = true;
+                        selectedTenant = tenant;
+                      },
+                      icon: Iconsax.more,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -547,7 +484,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
     Function()? onTap,
     IconData? icon,
   }) {
-    return mat.InkWell(
+    return InkWell(
       onTap: onTap,
       child: Icon(icon),
     );

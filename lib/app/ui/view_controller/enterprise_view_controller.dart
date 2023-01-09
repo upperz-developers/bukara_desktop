@@ -39,6 +39,12 @@ class EnterpriseController {
       description: description.text.trim(),
       designation: designation.text.trim(),
       rccm: rccm.text.trim(),
+      idnat: idnat.text.trim(),
+      impot: impot.text.trim(),
+      phones:
+          contactController.code + contactController.phoneNumber.text.trim(),
+      email: contactController.email.text.trim(),
+      site: contactController.internet.text.trim(),
     );
 
     Addresses addresse = Addresses(
@@ -48,6 +54,7 @@ class EnterpriseController {
       town: addressController.town.text.trim(),
       street: addressController.avenue.text.trim(),
       number: int.parse(addressController.number.text.trim()),
+      common: addressController.commune.text.trim(),
     );
 
     Banks bank = Banks(

@@ -3,7 +3,7 @@ import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 import 'package:bukara/app/ui/views/auth/loging.dart';
 import 'package:bukara/app/ui/views/auth/signup.dart';
-import 'package:bukara/app/ui/views/home/home.dart';
+import 'package:bukara/app/ui/views/app/home.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
 import 'package:flutter/material.dart';

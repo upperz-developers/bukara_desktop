@@ -340,6 +340,7 @@ alertMessage(
                     Text(
                       body!,
                       style: GoogleFonts.montserrat(
+                        fontSize: 12,
                         color: AppColors.SECOND_TEXT_COLOR,
                       ),
                     ),
@@ -372,7 +373,6 @@ alertMessage(
                         child: Text(
                           action!,
                           style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.bold,
                             fontSize: 12,
                           ),
                         ),
@@ -393,7 +393,6 @@ alertMessage(
                         child: Text(
                           action1!,
                           style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.bold,
                             color: AppColors.WHITE_COLOR,
                             fontSize: 12,
                           ),

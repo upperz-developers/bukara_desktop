@@ -6,8 +6,8 @@ import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
-import 'package:bukara/app/ui/views/home/paiement/paye_rent.dart';
-import 'package:bukara/app/ui/views/home/recoveries/detail_recovery.dart';
+import 'package:bukara/app/ui/views/app/paiement/paye_rent.dart';
+import 'package:bukara/app/ui/views/app/recoveries/detail_recovery.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -308,9 +308,9 @@ class _ShowRecoveryState extends State<ShowRecovery> {
               ),
             ),
             Positioned(
-              top: 5,
+              top: 15,
               left: horizontalSpace - 35,
-              bottom: 5,
+              bottom: 15,
               child: Container(
                 width: 7,
                 decoration: BoxDecoration(

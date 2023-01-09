@@ -2,6 +2,7 @@ import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 import 'package:bukara/app/ui/views/auth/auth.dart';
 import 'package:flutter/material.dart';
@@ -42,11 +43,13 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
             ),
             SizedBox(
               width: width,
+              child: contactInfo(enterprise),
+            ),
+            SizedBox(
+              width: width,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  contactInfo(enterprise),
-                  elementSpacer.heightBox,
                   supportInfo(enterprise),
                   elementSpacer.heightBox,
                   OnHoverEffect(
@@ -75,10 +78,47 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
                       ),
                     ),
                   ),
+                  10.heightBox,
+                  OnHoverEffect(
+                    child: InkWell(
+                      onTap: () {
+                        alertMessage(context,
+                            body:
+                                "Voulez-vous vraiment vous deconnecter de cette application?",
+                            action1: "Annuler",
+                            head: "Deconnexion",
+                            action: "Se deconnecter", onTap: () {
+                          AppPref.prefs!.clear();
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, Auth.routeName, (route) => false);
+                        }, onTap1: () {
+                          Navigator.pop(context);
+                        });
+                      },
+                      borderRadius: BorderRadius.circular(4),
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 30),
+                        width: width,
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: AppColors.DISABLE_COLOR,
+                        ),
+                        child: Text(
+                          "Se deconnecter",
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                            color: AppColors.BLACK_COLOR,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-            userInfo(),
           ],
         );
       },
@@ -160,12 +200,6 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
       children: [
         infoTitle("Address"),
         modelInfo(
-          title: "Reference",
-          info: enterprise.addresses!.isNotEmpty
-              ? enterprise.addresses![0].reference
-              : null,
-        ),
-        modelInfo(
             title: "Pays",
             info: enterprise.addresses!.isNotEmpty
                 ? enterprise.addresses![0].country
@@ -179,6 +213,12 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
           title: "Ville",
           info: enterprise.addresses!.isNotEmpty
               ? enterprise.addresses![0].town
+              : null,
+        ),
+        modelInfo(
+          title: "Commune",
+          info: enterprise.addresses!.isNotEmpty
+              ? enterprise.addresses![0].common
               : null,
         ),
         modelInfo(
@@ -302,7 +342,8 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
             title!,
             style: GoogleFonts.montserrat(
               textStyle: const TextStyle(
-                fontSize: 11,
+                fontSize: 10,
+                height: 1.5,
                 color: AppColors.SECOND_TEXT_COLOR,
               ),
             ),
@@ -311,9 +352,7 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
           Text(
             info ?? "Pas defini",
             style: GoogleFonts.montserrat(
-              textStyle: const TextStyle(
-                fontSize: 13,
-              ),
+              textStyle: const TextStyle(fontSize: 12, height: 1.5),
             ),
           ),
         ],

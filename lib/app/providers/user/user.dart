@@ -74,6 +74,20 @@ class User {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = {};
+    data['id'] = id;
+    data['name'] = name;
+    data['lastname'] = lastname;
+    data['country_code'] = countryCode;
+    data['phone_number'] = phoneNumber;
+    data['email'] = email;
+    data['profile'] = profile;
+    data['status'] = status;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
 }
 
 class Config {

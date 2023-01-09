@@ -4,14 +4,12 @@ import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
-import 'package:bukara/app/ui/views/home/suite/rent_suite.dart';
-import 'package:bukara/app/ui/views/home/tenant/show_tenant.dart';
-import 'package:bukara/app/ui/views/home/tenant/select_tenant_dialog.dart';
+import 'package:bukara/app/ui/views/app/suite/rent_suite.dart';
+import 'package:bukara/app/ui/views/app/tenant/select_tenant_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:velocity_x/velocity_x.dart';
 import 'package:bukara/app/providers/shared/common_models.dart' as img;
 
@@ -202,201 +200,41 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Location",
+                                        "John doe",
                                         style: GoogleFonts.montserrat(
-                                          color: AppColors.SECOND_TEXT_COLOR,
-                                          height: 1.5,
-                                        ),
-                                      ),
-                                      15.heightBox,
-                                      Text(
-                                        "20 jours restants",
-                                        style: GoogleFonts.montserrat(
-                                          height: 1.5,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.black,
                                         ),
                                       ),
                                       Text(
-                                        "20 dec - 30 janvier",
+                                        "Personne physique",
                                         style: GoogleFonts.montserrat(
-                                          color: AppColors.SECOND_TEXT_COLOR,
-                                          height: 1.5,
+                                          color: AppColors.BLACK_COLOR,
                                         ),
                                       ),
                                       const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
+                                        padding: EdgeInsets.only(
+                                            top: 20, bottom: 20),
                                         child: Divider(),
                                       ),
-                                      OnHoverEffect(
-                                        child: InkWell(
-                                          onTap: () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  const TenantInfo(),
-                                            );
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Container(
-                                                height: 45,
-                                                width: 45,
-                                                decoration: const BoxDecoration(
-                                                  color:
-                                                      AppColors.DISABLE_COLOR,
-                                                  shape: BoxShape.circle,
-                                                ),
-                                                child: const Icon(
-                                                  Iconsax.user,
-                                                ),
-                                              ),
-                                              15.widthBox,
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "John doe",
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        height: 1.5,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Personne physique",
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        color: AppColors
-                                                            .SECOND_TEXT_COLOR,
-                                                        height: 1.5,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              15.widthBox,
-                                              const Icon(
-                                                Iconsax.arrow_right,
-                                              )
-                                            ],
-                                          ),
+                                      Text(
+                                        "Apropos du locataire",
+                                        style: GoogleFonts.montserrat(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
                                         ),
                                       ),
-                                      const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
-                                        child: Divider(),
-                                      ),
-                                      OnHoverEffect(
-                                        child: InkWell(
-                                          onTap: () {},
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      "Historique de paiement",
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        height: 1.5,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      "Paiement sur location de l'appartement",
-                                                      style: GoogleFonts
-                                                          .montserrat(
-                                                        color: AppColors
-                                                            .SECOND_TEXT_COLOR,
-                                                        height: 1.5,
-                                                        fontSize: 12,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              15.widthBox,
-                                              const Icon(
-                                                Iconsax.arrow_right,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      const Padding(
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 20),
-                                        child: Divider(),
-                                      ),
-                                      TableCalendar(
-                                        daysOfWeekStyle: DaysOfWeekStyle(
-                                          weekdayStyle:
-                                              GoogleFonts.montserrat(),
-                                          weekendStyle: GoogleFonts.montserrat(
-                                            color: Colors.black38,
-                                          ),
-                                        ),
-                                        rowHeight: 53,
-                                        headerStyle: HeaderStyle(
-                                          formatButtonVisible: false,
-                                          headerPadding: const EdgeInsets.only(
-                                            bottom: 10,
-                                          ),
-                                          titleCentered: true,
-                                          leftChevronIcon: const Icon(
-                                            Iconsax.arrow_left_2,
-                                            color: AppColors.BLACK_COLOR,
-                                          ),
-                                          rightChevronIcon: const Icon(
-                                            Iconsax.arrow_right_3,
-                                            color: AppColors.BLACK_COLOR,
-                                          ),
-                                          titleTextStyle:
-                                              GoogleFonts.montserrat(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                        calendarStyle: CalendarStyle(
-                                          weekendTextStyle:
-                                              GoogleFonts.montserrat(
-                                            color: Colors.black38,
-                                          ),
-                                          outsideTextStyle:
-                                              GoogleFonts.montserrat(
-                                            color: Colors.black38,
-                                          ),
-                                          todayTextStyle:
-                                              GoogleFonts.montserrat(
-                                            color: AppColors.WHITE_COLOR,
-                                          ),
-                                          weekNumberTextStyle:
-                                              GoogleFonts.montserrat(),
-                                          selectedTextStyle:
-                                              GoogleFonts.montserrat(),
-                                          selectedDecoration:
-                                              const BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 0, 0, 0),
-                                                  shape: BoxShape.circle),
-                                          todayDecoration: const BoxDecoration(
-                                            color: AppColors.BLACK_COLOR,
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        availableGestures:
-                                            AvailableGestures.all,
-                                        focusedDay: DateTime.now(),
-                                        firstDay: DateTime.utc(2010, 10, 16),
-                                        lastDay: DateTime.utc(2050, 3, 14),
-                                        onDaySelected: (day1, day2) {},
-                                      ),
+                                      25.heightBox,
+                                      module(Iconsax.call, "adress"),
+                                      module(Iconsax.box_tick, "email"),
+                                      module(Iconsax.home, "etat civile"),
+                                      module2(Iconsax.tag, "Adresse", "Adddre"),
+                                      module(
+                                          Iconsax.wallet_check, "Nationalite"),
+                                      module2(Iconsax.tag, "Numero carte",
+                                          "type carte"),
                                     ],
                                   ),
                                 )
@@ -410,6 +248,61 @@ class _SuiteDetailState extends State<SuiteDetail> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget module2(IconData? icon, String? title, String? message) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon),
+          15.widthBox,
+          Expanded(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "$title",
+                style: GoogleFonts.montserrat(
+                  fontWeight: FontWeight.normal,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              Text(
+                "$message",
+                style: GoogleFonts.montserrat(
+                  color: AppColors.SECOND_TEXT_COLOR,
+                ),
+              ),
+            ]),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget module(
+    IconData? icon,
+    String? message,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Row(
+        children: [
+          Icon(icon),
+          15.widthBox,
+          Expanded(
+            child: Text(
+              "$message",
+              style: GoogleFonts.montserrat(
+                fontWeight: FontWeight.normal,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

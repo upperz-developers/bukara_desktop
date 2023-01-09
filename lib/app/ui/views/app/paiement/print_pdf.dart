@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
@@ -53,6 +50,25 @@ void saveAndPrintPdf(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Column(children: [
+                  Text(
+                    "Merci de nous avoir fait confiance",
+                    style: TextStyle(
+                      font: font,
+                      fontSize: 10,
+                    ),
+                  ),
+                  Text(
+                    "${enterprise.banks![0].accountName} | ${enterprise.banks![0].bank} | ${enterprise.banks![0].accountNumber}",
+                    style: TextStyle(
+                      font: font,
+                      fontSize: 10,
+                    ),
+                  ),
+                ]),
+              ),
               Text(
                 'Page ${context.pageNumber} sur ${context.pagesCount}',
                 style: TextStyle(
@@ -316,8 +332,6 @@ void saveAndPrintPdf(
             title1(title: "Libele", flex: 2, font: font),
             SizedBox(width: 1),
             title1(title: "Paye", flex: 1, font: font),
-            SizedBox(width: 1),
-            title1(title: "Rest", flex: 1, font: font),
           ],
         ),
         SizedBox(height: 3),
@@ -338,7 +352,6 @@ void saveAndPrintPdf(
                 title: "${payement.contratData!.labelStr}",
                 font: font),
             content1(flex: 1, title: "${payement.amount}\$", font: font),
-            content1(flex: 1, title: "-\$", isEnd: true, font: font),
           ],
         ),
         Container(

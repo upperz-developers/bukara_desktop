@@ -1,75 +1,42 @@
-import 'package:bukara/app/controller/bloc/app_bloc.dart';
-import 'package:bukara/app/controller/bloc/app_event.dart';
-import 'package:bukara/app/controller/bloc/app_state.dart';
-import 'package:bukara/app/providers/recovery/model.dart';
-import 'package:bukara/app/ui/squeletton/recovery_squeletton.dart';
-import 'package:bukara/app/ui/views/home/recoveries/show_recovery.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
-import 'package:bukara/shared/custom_scaffold.dart';
-
+import 'package:bukara/app/ui/views/app/paiement/show_historic.dart';
+import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class RecoveryHome extends StatefulWidget {
-  const RecoveryHome({super.key});
-
-  @override
-  State<RecoveryHome> createState() => _RecoveryHomeState();
-}
-
-class _RecoveryHomeState extends State<RecoveryHome> {
-  AppBloc bloc = AppBloc();
-  @override
-  void initState() {
-    bloc.add(GETRECOVERYINFO());
-    super.initState();
-  }
+class HistoricOfPaiement extends StatelessWidget {
+  const HistoricOfPaiement({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return CustormScaffoldPage(
-      onSuccess: () {},
-      content: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(
-              left: horizontalSpace,
-              right: horizontalSpace,
-              bottom: 20,
-              top: 15,
+    return ScaffoldPage(
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                left: horizontalSpace,
+                right: horizontalSpace,
+                bottom: 20,
+                top: 15,
+              ),
+              child: appBar(context, title: "Historique de paiements"),
             ),
-            child: appBar(context, title: "Recouvrement"),
-          ),
-          Expanded(
-            child: BlocBuilder<AppBloc, AppState>(
-              bloc: bloc,
-              builder: (context, state) {
-                if (state is LOADING) {
-                  return const RecoverySqueletton();
-                } else if (state is SUCCESS) {
-                  List<ContratData> contratData = state.value;
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      infoTabBar(),
-                      ShowRecovery(
-                        contratData: contratData,
-                        bloc: bloc,
-                      ),
-                    ],
-                  );
-                } else {
-                  return Container();
-                }
-              },
+            Expanded(
+              child: Column(
+                children: [
+                  infoTabBar(),
+                  const ShowPaiementHistoric(),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

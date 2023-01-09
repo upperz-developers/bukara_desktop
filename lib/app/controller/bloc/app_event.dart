@@ -65,3 +65,9 @@ class PAYERENT implements AppEvent {
 }
 
 class GETPAYEMENT implements AppEvent {}
+
+class GETPAYEMENTPERRECOVERY implements AppEvent {
+  final String recoveryId;
+
+  GETPAYEMENTPERRECOVERY({required this.recoveryId});
+}
