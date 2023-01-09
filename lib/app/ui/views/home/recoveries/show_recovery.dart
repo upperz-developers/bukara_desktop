@@ -6,6 +6,7 @@ import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/home/paiement/paye_rent.dart';
 import 'package:bukara/app/ui/views/home/recoveries/detail_recovery.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -171,115 +172,156 @@ class _ShowRecoveryState extends State<ShowRecovery> {
     double space = 10;
     DateTime startAt = DateTime.parse(contratData.createdAt!);
     DateTime recoverAt = DateTime.parse(contratData.dateRecovery!);
-    return Stack(
-      children: [
-        Container(
-          padding: EdgeInsets.only(
-            left: horizontalSpace,
-            right: horizontalSpace,
-            bottom: 20,
-            top: 20,
-          ),
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-            color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 40,
-                child: Text(
-                  "0${index + 1}",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.montserrat(
-                    fontSize: 13,
-                    color: AppColors.SECOND_TEXT_COLOR,
-                    height: 1.6,
-                  ),
-                ),
-              ),
-              30.widthBox,
-              Expanded(
-                flex: 2,
-                child: suiteDetailModel(title: "${contratData.labelStr}"),
-              ),
-              space.widthBox,
-              Expanded(
-                flex: 1,
-                child: suiteDetailModel(
-                    title: "${contratData.rentalContrat!.amount} USD"),
-              ),
-              space.widthBox,
-              Expanded(
-                flex: 1,
-                child: suiteDetailModel(
-                    title: CustomDate(date: startAt).getFullDate),
-              ),
-              space.widthBox,
-              Expanded(
-                flex: 1,
-                child: suiteDetailModel(
-                    title: CustomDate(date: recoverAt).getFullDate),
-              ),
-              space.widthBox,
-              Expanded(
-                flex: 1,
-                child: Text(
-                  dayLeft(
-                      start: DateTime.now().toString(),
-                      end: contratData.dateRecovery!),
-                  style: GoogleFonts.montserrat(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    height: 1.6,
-                  ),
-                ),
-              ),
-              space.widthBox,
-              Expanded(
-                flex: 1,
-                child: suiteDetailModel(
-                  title:
-                      "${contratData.rentalContrat!.landlord!.name} ${contratData.rentalContrat!.landlord!.lastname}",
-                ),
-              ),
-              space.widthBox,
-              SizedBox(
-                height: 30,
-                width: 30,
-                child: modelAction(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => DetailRecovery(
-                        contratData: contratData,
-                      ),
-                    ).then((value) {
-                      if (value == "success") {
-                        widget.bloc.add(GETRECOVERYINFO());
-                      }
-                    });
-                  },
-                  icon: Iconsax.more,
-                ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 5,
-          left: horizontalSpace - 35,
-          bottom: 5,
-          child: Container(
-            width: 7,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: AppColors.GREEN_COLOR,
+    return OnHoverEffect(
+      child: InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => DetailRecovery(
+              contratData: contratData,
             ),
-          ),
+          ).then((value) {
+            if (value == "payement") {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => PayeRent(
+                  contratData: contratData,
+                ),
+              ).then((value) {
+                if (value == "success") {
+                  widget.bloc.add(GETRECOVERYINFO());
+                }
+              });
+            }
+          });
+        },
+        child: Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.only(
+                left: horizontalSpace,
+                right: horizontalSpace,
+                bottom: 20,
+                top: 20,
+              ),
+              width: MediaQuery.of(context).size.width,
+              decoration: BoxDecoration(
+                color: index! % 2 == 0
+                    ? AppColors.WHITE_COLOR
+                    : Colors.transparent,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 40,
+                    child: Text(
+                      "0${index + 1}",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 13,
+                        color: AppColors.SECOND_TEXT_COLOR,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                  30.widthBox,
+                  Expanded(
+                    flex: 2,
+                    child: suiteDetailModel(title: "${contratData.labelStr}"),
+                  ),
+                  space.widthBox,
+                  Expanded(
+                    flex: 1,
+                    child: suiteDetailModel(
+                        title: "${restToPay(
+                      amount: contratData.rentalContrat!.amount,
+                      paiements: contratData.paiements,
+                    )} USD"),
+                  ),
+                  space.widthBox,
+                  Expanded(
+                    flex: 1,
+                    child: suiteDetailModel(
+                        title: CustomDate(date: startAt).getFullDate),
+                  ),
+                  space.widthBox,
+                  Expanded(
+                    flex: 1,
+                    child: suiteDetailModel(
+                        title: CustomDate(date: recoverAt).getFullDate),
+                  ),
+                  space.widthBox,
+                  Expanded(
+                    flex: 1,
+                    child: Text(
+                      dayLeft(
+                          start: DateTime.now().toString(),
+                          end: contratData.dateRecovery!),
+                      style: GoogleFonts.montserrat(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        height: 1.6,
+                      ),
+                    ),
+                  ),
+                  space.widthBox,
+                  Expanded(
+                    flex: 1,
+                    child: suiteDetailModel(
+                      title:
+                          "${contratData.rentalContrat!.landlord!.name} ${contratData.rentalContrat!.landlord!.lastname}",
+                    ),
+                  ),
+                  space.widthBox,
+                  SizedBox(
+                    height: 30,
+                    width: 30,
+                    child: modelAction(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => DetailRecovery(
+                            contratData: contratData,
+                          ),
+                        ).then((value) {
+                          if (value == "payement") {
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (context) => PayeRent(
+                                contratData: contratData,
+                              ),
+                            ).then((value) {
+                              if (value == "success") {
+                                widget.bloc.add(GETRECOVERYINFO());
+                              }
+                            });
+                          }
+                        });
+                      },
+                      icon: Iconsax.more,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Positioned(
+              top: 5,
+              left: horizontalSpace - 35,
+              bottom: 5,
+              child: Container(
+                width: 7,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: HexColor.fromHex(contratData.color!),
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

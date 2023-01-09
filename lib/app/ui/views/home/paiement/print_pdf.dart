@@ -1,17 +1,21 @@
 import 'dart:io';
 
+import 'package:bukara/app/providers/enterprise/enterprise.dart';
+import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 import 'package:printing/printing.dart';
 
-void saveAndPrintPdf() async {
+void saveAndPrintPdf(
+    {required Enterprise enterprise,
+    required PayementHistoric payement}) async {
   final pdf = Document();
 
   final image = await imageFromAssetBundle('assets/icons/bukara.jpg');
   double horizontalPadding = 50;
-
+  DateTime paiedAt = DateTime.parse(payement.createdAt!);
   final font = await PdfGoogleFonts.montserratRegular();
   final fontBold = await PdfGoogleFonts.montserratBold();
 
@@ -68,25 +72,25 @@ void saveAndPrintPdf() async {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Upperz",
+                    "${enterprise.designation}",
                     style: TextStyle(
                       font: font,
                     ),
                   ),
                   Text(
-                    "www.upper-z.com",
+                    "www.bukara.sarl",
                     style: TextStyle(
                       font: font,
                     ),
                   ),
                   Text(
-                    "baruka99.david@gmail.com",
+                    "bukara@gmail.sarl",
                     style: TextStyle(
                       font: font,
                     ),
                   ),
                   Text(
-                    "+243 (0) 973969675",
+                    "+243 (0) 9700000000",
                     style: TextStyle(
                       font: font,
                     ),
@@ -127,46 +131,55 @@ void saveAndPrintPdf() async {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (enterprise.designation != null)
+                    Text(
+                      "${enterprise.designation}",
+                      style: TextStyle(
+                        font: fontBold,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  SizedBox(height: 10),
                   Text(
-                    "Upperz",
+                    "${enterprise.addresses![0].number}, ${enterprise.addresses![0].street}, ${enterprise.addresses![0].quarter}, commune, ${enterprise.addresses![0].town}, ${enterprise.addresses![0].country}",
                     style: TextStyle(
-                      font: fontBold,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      font: font,
+                      fontSize: 10,
                     ),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "52, avenu,himbi, de goma, goma, rdc",
+                    "${enterprise.rccm}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Id Nat: 19-G4701-N9812J",
-                    style: TextStyle(
-                      font: font,
-                      fontSize: 12,
+                  if (enterprise.idnat != null)
+                    Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Text(
+                          "${enterprise.idnat}",
+                          style: TextStyle(
+                            font: font,
+                            fontSize: 10,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "Num Impot: A2283021Q",
-                    style: TextStyle(
-                      font: font,
-                      fontSize: 12,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "CD/GOM/RCCM/21-A-01044",
-                    style: TextStyle(
-                      font: font,
-                      fontSize: 12,
-                    ),
-                  ),
+                  if (enterprise.impot != null)
+                    Column(children: [
+                      SizedBox(height: 10),
+                      Text(
+                        "${enterprise.impot}",
+                        style: TextStyle(
+                          font: font,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ]),
                 ],
               ),
             ),
@@ -175,19 +188,19 @@ void saveAndPrintPdf() async {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  CustomDate(date: DateTime.now()).getFullDate,
+                  CustomDate(date: paiedAt).getFullDate,
                   style: TextStyle(
                     font: font,
-                    fontSize: 12,
+                    fontSize: 10,
                   ),
                 ),
                 SizedBox(height: 15),
                 Row(children: [
                   Text(
-                    "Facture: UP3012220001",
+                    "Facture: ${enterprise.designation?.substring(0, 3)}${paiedAt.day}${paiedAt.month}${paiedAt.year}${paiedAt.second}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                 ]),
@@ -220,26 +233,26 @@ void saveAndPrintPdf() async {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "David Baruka",
+                    "${payement.contratData!.rentalContrat!.landlord!.name} ${payement.contratData!.rentalContrat!.landlord!.lastname}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 12,
-                    ),
-                  ),
-                  SizedBox(height: 12),
-                  Text(
-                    "+243 (0) 973959675 | baruka99.david@gmail.com",
-                    style: TextStyle(
-                      font: font,
-                      fontSize: 12,
+                      fontSize: 10,
                     ),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "Maison louee | 3 chambres & 2 salons | 52, avenu,himbi, de goma, goma, rdc",
+                    "${payement.contratData!.rentalContrat!.landlord!.email}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 12,
+                      fontSize: 10,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "${payement.contratData!.rentalContrat!.appartement!.designation} | numero ${payement.contratData!.rentalContrat!.appartement!.number},${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon| ${payement.contratData!.rentalContrat!.appartement!.address}",
+                    style: TextStyle(
+                      font: font,
+                      fontSize: 10,
                     ),
                   ),
                 ],
@@ -268,16 +281,14 @@ void saveAndPrintPdf() async {
             children: [
               content1(
                   flex: 1,
-                  title: "Paiement du loyer du moi de fevrier",
+                  title: "${payement.contratData!.labelStr}",
                   font: font),
+              content1(flex: 1, title: "${payement.type}", font: font),
               content1(
                   flex: 1,
-                  title:
-                      "This property is utilized so we can indicate a horizontal",
-                  font: font),
-              content1(
-                  flex: 1,
-                  title: "Numero de bordereau",
+                  title: payement.type == "cash"
+                      ? ""
+                      : "${payement.transactionId}",
                   isEnd: true,
                   font: font),
             ],
@@ -288,7 +299,7 @@ void saveAndPrintPdf() async {
           children: [
             Container(
               width: 100,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               decoration: const BoxDecoration(
                 color: PdfColor(43 / 255, 81 / 255, 133 / 255),
               ),
@@ -324,10 +335,10 @@ void saveAndPrintPdf() async {
             SizedBox(width: 3),
             content1(
                 flex: 2,
-                title: "Paiement du loyer du moi de fevrier",
+                title: "${payement.contratData!.labelStr}",
                 font: font),
-            content1(flex: 1, title: "450\$", font: font),
-            content1(flex: 1, title: "200\$", isEnd: true, font: font),
+            content1(flex: 1, title: "${payement.amount}\$", font: font),
+            content1(flex: 1, title: "-\$", isEnd: true, font: font),
           ],
         ),
         Container(
@@ -355,7 +366,7 @@ Widget title1({String? title, int? flex, required Font font}) {
   return Expanded(
     flex: flex!,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
       decoration: const BoxDecoration(
         color: PdfColor(43 / 255, 81 / 255, 133 / 255),
       ),
@@ -377,13 +388,13 @@ Widget content1(
   return Expanded(
     flex: flex,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
       decoration: const BoxDecoration(),
       alignment: Alignment.center,
       child: Text(
         title!,
         style:
-            TextStyle(color: const PdfColor(0, 0, 0), fontSize: 12, font: font),
+            TextStyle(color: const PdfColor(0, 0, 0), fontSize: 10, font: font),
       ),
     ),
   );

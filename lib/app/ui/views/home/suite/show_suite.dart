@@ -160,97 +160,108 @@ class _ShowSuiteState extends State<ShowSuite> {
     Suite? suite,
   }) {
     double space = 10;
-    return Container(
-      padding: EdgeInsets.only(
-        left: horizontalSpace,
-        right: horizontalSpace,
-        bottom: 20,
-        top: 20,
-      ),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 50,
-            child: suiteDetailModel(
-              title: "00${index + 1}",
-            ),
+    return OnHoverEffect(
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            SuiteDetail.routeName,
+            arguments: suite,
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+            left: horizontalSpace,
+            right: horizontalSpace,
+            bottom: 20,
+            top: 20,
           ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: suite!.designation == null
-                ? const SizedBox.shrink()
-                : suiteDetailModel(title: "${suite.designation}"),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
           ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "${suite.price} USD"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suite.status!
-                ? suiteDetailModel(title: "John jean")
-                : const SizedBox.shrink(),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 3,
-            child: suiteDetailModel(
-                title:
-                    "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.only(right: 30),
-              padding: const EdgeInsets.symmetric(
-                vertical: 5,
-                horizontal: 10,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.DISABLE_COLOR,
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                suite.status! ? "Occupe" : "Inoccupe",
-                style: GoogleFonts.montserrat(
-                  fontSize: 10,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 50,
+                child: suiteDetailModel(
+                  title: "00${index + 1}",
                 ),
               ),
-            ),
-          ),
-          space.widthBox,
-          SizedBox(
-            width: 70,
-            child: Wrap(
-              spacing: 15,
-              children: [
-                modelAction(
-                  icon: Iconsax.edit,
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: suite!.designation == null
+                    ? const SizedBox.shrink()
+                    : suiteDetailModel(title: "${suite.designation}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(title: "${suite.price} USD"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suite.status!
+                    ? suiteDetailModel(title: "John jean")
+                    : const SizedBox.shrink(),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 3,
+                child: suiteDetailModel(
+                    title:
+                        "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.only(right: 30),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 10,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.DISABLE_COLOR,
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    suite.status! ? "Occupe" : "Inoccupe",
+                    style: GoogleFonts.montserrat(
+                      fontSize: 10,
+                    ),
+                  ),
                 ),
-                modelAction(
-                  onTap: () {
-                    Navigator.pushNamed(
-                      context,
-                      SuiteDetail.routeName,
-                      arguments: suite,
-                    );
-                  },
-                  icon: Iconsax.more,
+              ),
+              space.widthBox,
+              SizedBox(
+                width: 70,
+                child: Wrap(
+                  spacing: 15,
+                  children: [
+                    modelAction(
+                      icon: Iconsax.edit,
+                    ),
+                    modelAction(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          SuiteDetail.routeName,
+                          arguments: suite,
+                        );
+                      },
+                      icon: Iconsax.more,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/paiement_controller.dart';
 import 'package:flutter/material.dart';
@@ -28,9 +29,20 @@ class _PayeRentState extends State<PayeRent> {
     super.initState();
   }
 
+  bool submitted = false;
   void submit() {
+    isError.value = false;
     paiementController.recoveryId = widget.contratData.id;
+    if (paiementController.validation()) {
+      paiementController.submit(bloc!);
+      return;
+    }
+    setState(() {
+      submitted = true;
+    });
   }
+
+  ValueNotifier<bool> isError = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +51,8 @@ class _PayeRentState extends State<PayeRent> {
       listener: (context, state) {
         if (state is SUCCESS) {
           Navigator.pop(context, "success");
+        } else if (state is ERROR) {
+          isError.value = true;
         }
       },
       child: BlocBuilder<AppBloc, AppState>(
@@ -85,7 +99,7 @@ class _PayeRentState extends State<PayeRent> {
                       ),
                       5.heightBox,
                       Text(
-                        "${widget.contratData.rentalContrat!.amount} USD",
+                        "${restToPay(amount: widget.contratData.rentalContrat!.amount, paiements: widget.contratData.paiements)} USD",
                         style: GoogleFonts.montserrat(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -143,7 +157,7 @@ class _PayeRentState extends State<PayeRent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Paiement en",
+                                "Paye en",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   color: AppColors.SECOND_TEXT_COLOR,
@@ -217,8 +231,18 @@ class _PayeRentState extends State<PayeRent> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
                                     border: Border.all(
-                                      width: 1,
-                                      color: AppColors.BORDER_COLOR,
+                                      width: paiementController.amount.text
+                                                  .trim()
+                                                  .isEmpty &&
+                                              submitted
+                                          ? 1.5
+                                          : 1,
+                                      color: paiementController.amount.text
+                                                  .trim()
+                                                  .isEmpty &&
+                                              submitted
+                                          ? AppColors.RED_COLOR
+                                          : AppColors.BORDER_COLOR,
                                     ),
                                   ),
                                   child: TextField(
@@ -258,9 +282,115 @@ class _PayeRentState extends State<PayeRent> {
                               width: 330,
                               controller: paiementController.transId,
                               hint: "Entrez le numero de bordereau",
+                              submitted: submitted,
                             ),
                           ],
                         ),
+                      ValueListenableBuilder(
+                          valueListenable: isError,
+                          builder: (context, bool isErrorValue, child) {
+                            String error = "";
+                            if (state is ERROR) {
+                              error = state.dueTo ?? "";
+                            }
+                            return isErrorValue
+                                ? Column(
+                                    children: [
+                                      const Padding(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 20),
+                                        child: Divider(),
+                                      ),
+                                      Stack(
+                                        children: [
+                                          Container(
+                                            width: 300,
+                                            padding: const EdgeInsets.only(
+                                                left: 14,
+                                                top: 10,
+                                                bottom: 10,
+                                                right: 10),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.WHITE_COLOR,
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
+                                              boxShadow: <BoxShadow>[
+                                                BoxShadow(
+                                                  color: AppColors.BOXSHADOW
+                                                      .withAlpha(125),
+                                                  offset: const Offset(0, 3),
+                                                  blurRadius: 4,
+                                                ),
+                                              ],
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Text(
+                                                        "Erreur",
+                                                        style: GoogleFonts
+                                                            .montserrat(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    15.widthBox,
+                                                    InkWell(
+                                                      onTap: () {
+                                                        isError.value = false;
+                                                      },
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              4),
+                                                      child: const Padding(
+                                                        padding:
+                                                            EdgeInsets.all(10),
+                                                        child: Icon(
+                                                          Icons.close,
+                                                          size: 18,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                10.heightBox,
+                                                Text(
+                                                  error,
+                                                  style: GoogleFonts.montserrat(
+                                                    fontSize: 12,
+                                                    color: AppColors
+                                                        .SECOND_TEXT_COLOR,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Positioned(
+                                            top: 0,
+                                            bottom: 0,
+                                            child: Container(
+                                              width: 4,
+                                              decoration: const BoxDecoration(
+                                                color: AppColors.RED_COLOR,
+                                                borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(4),
+                                                  bottomLeft:
+                                                      Radius.circular(4),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink();
+                          }),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 10),
                         child: Divider(),

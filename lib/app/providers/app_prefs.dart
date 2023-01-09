@@ -49,11 +49,11 @@ void setAppConfig(Config config) {
 }
 
 Enterprise getEnterprisePrefs() {
-  var token = AppPref.prefs?.getString(AppPref.enterprise) ?? '';
-  if (token.isEmpty) {
+  var enterprise = AppPref.prefs?.getString(AppPref.enterprise) ?? '';
+  if (enterprise.isEmpty) {
     return Enterprise();
   } else {
-    var json = jsonDecode(token);
+    var json = jsonDecode(enterprise);
     return Enterprise.fromJson(json);
   }
 }

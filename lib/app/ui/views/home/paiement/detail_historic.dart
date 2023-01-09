@@ -1,6 +1,10 @@
+import 'package:bukara/app/providers/app_prefs.dart';
+import 'package:bukara/app/providers/enterprise/enterprise.dart';
+import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/views/home/paiement/print_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -13,6 +17,10 @@ class DetailHistoric extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PayementHistoric payement =
+        ModalRoute.of(context)!.settings.arguments as PayementHistoric;
+    Enterprise enterprise = getEnterprisePrefs();
+    DateTime paiedAt = DateTime.parse(payement.createdAt!);
     return Scaffold(
       backgroundColor: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
       body: Stack(
@@ -51,7 +59,7 @@ class DetailHistoric extends StatelessWidget {
                                   "Recu de paiement",
                                   textAlign: TextAlign.end,
                                   style: GoogleFonts.montserrat(
-                                    fontSize: 30,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
@@ -66,37 +74,67 @@ class DetailHistoric extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Upperz",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
+                                    if (enterprise.designation != null)
+                                      Text(
+                                        "${enterprise.designation}",
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                    15.heightBox,
-                                    Text(
-                                      "Une entreprise de developpement de solution informatique",
-                                      style: GoogleFonts.montserrat(),
-                                    ),
-                                    15.heightBox,
-                                    Text(
-                                      "Id Nat: 19-G4701-N9812J",
-                                      style: GoogleFonts.montserrat(),
-                                    ),
-                                    10.heightBox,
-                                    Text(
-                                      "Num Impot: A2283021Q",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 12,
+                                    if (enterprise.description != null)
+                                      Column(
+                                        children: [
+                                          15.heightBox,
+                                          Text(
+                                            "${enterprise.description}",
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    10.heightBox,
-                                    Text(
-                                      "CD/GOM/RCCM/21-A-01044",
-                                      style: GoogleFonts.montserrat(
-                                        fontSize: 12,
+                                    if (enterprise.idnat != null)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          15.heightBox,
+                                          Text(
+                                            "${enterprise.idnat}",
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
+                                    if (enterprise.impot != null)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          10.heightBox,
+                                          Text(
+                                            "${enterprise.impot}",
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    if (enterprise.rccm != null)
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          10.heightBox,
+                                          Text(
+                                            "${enterprise.rccm}",
+                                            style: GoogleFonts.montserrat(
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                   ],
                                 ),
                               ),
@@ -104,8 +142,7 @@ class DetailHistoric extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
                                   Text(
-                                    CustomDate(date: DateTime.now())
-                                        .getFullDate,
+                                    CustomDate(date: paiedAt).getFullDate,
                                     style: GoogleFonts.montserrat(
                                       fontSize: 12,
                                     ),
@@ -113,13 +150,14 @@ class DetailHistoric extends StatelessWidget {
                                   21.heightBox,
                                   Text.rich(
                                     TextSpan(
-                                      text: "Facture Num        ",
+                                      text: "Facture: ",
                                       style: GoogleFonts.montserrat(
                                         fontWeight: FontWeight.bold,
                                       ),
                                       children: [
                                         TextSpan(
-                                          text: "UP3012220001",
+                                          text:
+                                              "${enterprise.designation?.substring(0, 3)}${paiedAt.day}${paiedAt.month}${paiedAt.year}${paiedAt.second}",
                                           style: GoogleFonts.montserrat(
                                             fontSize: 12,
                                             fontWeight: FontWeight.normal,
@@ -139,7 +177,6 @@ class DetailHistoric extends StatelessWidget {
                               Text(
                                 "Locataire:",
                                 style: GoogleFonts.montserrat(
-                                  fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -150,23 +187,24 @@ class DetailHistoric extends StatelessWidget {
                                   children: [
                                     4.heightBox,
                                     Text(
-                                      "David Baruka",
-                                      style: GoogleFonts.montserrat(),
+                                      "${payement.contratData!.rentalContrat!.landlord!.name} ${payement.contratData!.rentalContrat!.landlord!.lastname}",
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                      ),
                                     ),
                                     10.heightBox,
                                     Text(
-                                      "Personne physique",
-                                      style: GoogleFonts.montserrat(),
+                                      "${payement.contratData!.rentalContrat!.landlord!.email}",
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                      ),
                                     ),
                                     10.heightBox,
                                     Text(
-                                      "+243 (0) 973959675 | baruka99.david@gmail.com",
-                                      style: GoogleFonts.montserrat(),
-                                    ),
-                                    10.heightBox,
-                                    Text(
-                                      "Maison louee | 3 chambres & 2 salons | 52, avenu,himbi, de goma, goma, rdc",
-                                      style: GoogleFonts.montserrat(),
+                                      "${payement.contratData!.rentalContrat!.appartement!.designation} | numero ${payement.contratData!.rentalContrat!.appartement!.number},${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon| ${payement.contratData!.rentalContrat!.appartement!.address}",
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -198,14 +236,14 @@ class DetailHistoric extends StatelessWidget {
                                     content1(
                                         flex: 1,
                                         title:
-                                            "Paiement du loyer du moi de fevrier"),
+                                            "${payement.contratData!.labelStr}"),
+                                    content1(
+                                        flex: 1, title: "${payement.type}"),
                                     content1(
                                         flex: 1,
-                                        title:
-                                            "This property is utilized so we can indicate a horizontal"),
-                                    content1(
-                                        flex: 1,
-                                        title: "Numero de bordereau",
+                                        title: payement.type == "cash"
+                                            ? ""
+                                            : "${payement.transactionId}",
                                         isEnd: true),
                                   ],
                                 ),
@@ -282,11 +320,12 @@ class DetailHistoric extends StatelessWidget {
                               3.widthBox,
                               content1(
                                   flex: 2,
-                                  title: "Paiement du loyer du moi de fevrier"),
-                              content1(flex: 1, title: "450\$"),
+                                  title: "${payement.contratData!.labelStr}"),
+                              content1(flex: 1, title: "${payement.amount}\$"),
                               content1(
                                 flex: 1,
-                                title: "200\$",
+                                title:
+                                    "${restToPay(amount: payement.contratData!.rentalContrat!.amount, paiements: payement.contratData!.paiements)}\$",
                                 isEnd: true,
                               ),
                             ],
@@ -300,12 +339,16 @@ class DetailHistoric extends StatelessWidget {
                               children: [
                                 Text(
                                   "Upperz",
-                                  style: GoogleFonts.montserrat(),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                  ),
                                 ),
                                 5.heightBox,
                                 Text(
                                   "52, avenu,himbi, de goma, goma, rdc",
-                                  style: GoogleFonts.montserrat(),
+                                  style: GoogleFonts.montserrat(
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ],
                             ),
@@ -316,19 +359,27 @@ class DetailHistoric extends StatelessWidget {
                             children: [
                               Text(
                                 "Upperz",
-                                style: GoogleFonts.montserrat(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                ),
                               ),
                               Text(
                                 "www.upper-z.com",
-                                style: GoogleFonts.montserrat(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                ),
                               ),
                               Text(
                                 "baruka99.david@gmail.com",
-                                style: GoogleFonts.montserrat(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                ),
                               ),
                               Text(
                                 "+243 (0) 973969675",
-                                style: GoogleFonts.montserrat(),
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                ),
                               ),
                             ],
                           ),
@@ -364,7 +415,10 @@ class DetailHistoric extends StatelessWidget {
                 OnHoverEffect(
                   child: InkWell(
                     borderRadius: BorderRadius.circular(4),
-                    onTap: saveAndPrintPdf,
+                    onTap: () {
+                      saveAndPrintPdf(
+                          enterprise: enterprise, payement: payement);
+                    },
                     child: const Padding(
                       padding: EdgeInsets.all(10),
                       child: Icon(
@@ -396,6 +450,7 @@ class DetailHistoric extends StatelessWidget {
           style: GoogleFonts.montserrat(
             fontWeight: FontWeight.bold,
             color: AppColors.WHITE_COLOR,
+            fontSize: 12,
           ),
         ),
       ),
@@ -413,6 +468,7 @@ class DetailHistoric extends StatelessWidget {
           title!,
           style: GoogleFonts.montserrat(
             color: AppColors.BLACK_COLOR,
+            fontSize: 12,
           ),
         ),
       ),

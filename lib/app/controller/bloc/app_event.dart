@@ -63,3 +63,5 @@ class PAYERENT implements AppEvent {
 
   PAYERENT({required this.data});
 }
+
+class GETPAYEMENT implements AppEvent {}
