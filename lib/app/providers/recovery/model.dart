@@ -62,35 +62,47 @@ class Meta {
 class ContratData {
   String? id;
   RentalContrat? rentalContrat;
+  List<Payment>? paiements;
   String? labelMonth;
   String? labelStr;
   String? dateRecovery;
   bool? status;
+  String? color;
   String? createdAt;
   String? updatedAt;
+  bool? deslay;
 
-  ContratData({
-    this.id,
-    this.rentalContrat,
-    this.labelMonth,
-    this.labelStr,
-    this.dateRecovery,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
-  });
+  ContratData(
+      {this.id,
+      this.rentalContrat,
+      this.labelMonth,
+      this.labelStr,
+      this.dateRecovery,
+      this.status,
+      this.color,
+      this.createdAt,
+      this.updatedAt,
+      this.deslay});
 
   ContratData.fromJson(Map<String, dynamic> json) {
+    paiements = [];
     id = json['id'];
     rentalContrat = json['rental_contrat'] != null
         ? RentalContrat.fromJson(json['rental_contrat'])
         : null;
     labelMonth = json['label_month'];
+    if (json['payments'] != null) {
+      json['payments'].forEach((paiement) {
+        paiements!.add(Payment.fromJson(paiement));
+      });
+    }
     labelStr = json['label_str'];
     dateRecovery = json['date_recovery'];
     status = json['status'];
+    color = json['color'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    deslay = json['deslay'];
   }
 }
 
@@ -100,7 +112,7 @@ class RentalContrat {
   Suite? appartement;
   Landlord? landlord;
   int? numberOfHabitant;
-  int? amount;
+  double? amount;
   String? currency;
   String? startDate;
   bool? current;
@@ -125,7 +137,7 @@ class RentalContrat {
     landlord =
         json['landlord'] != null ? Landlord.fromJson(json['landlord']) : null;
     numberOfHabitant = json['number_of_habitant'];
-    amount = json['amount'];
+    amount = double.parse(json['amount'].toString());
     currency = json['currency'];
     startDate = json['start_date'];
     current = json['current'];
@@ -176,5 +188,43 @@ class Landlord {
     lastname = json['lastname'];
     email = json['email'];
     profile = json['profile'];
+  }
+}
+
+class Payment {
+  String? id;
+  String? recovery;
+  String? createdBy;
+  String? type;
+  String? transactionId;
+  double? amount;
+  String? currenty;
+  bool? status;
+  String? createdAt;
+  String? updatedAt;
+
+  Payment(
+      {this.id,
+      this.recovery,
+      this.createdBy,
+      this.type,
+      this.transactionId,
+      this.amount,
+      this.currenty,
+      this.status,
+      this.createdAt,
+      this.updatedAt});
+
+  Payment.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    recovery = json['recovery'];
+    createdBy = json['created_by'];
+    type = json['type'];
+    transactionId = json['transaction_id'];
+    amount = double.tryParse(json['amount'].toString());
+    currenty = json['currenty'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 }

@@ -20,7 +20,7 @@ class PaiementController {
       "amount": double.tryParse(amount.text.trim()),
     };
     if (selectedPaiementType == 'bank') {
-      data['transactionId'] = transId.text.trim();
+      data['transaction_id'] = transId.text.trim();
     }
     bloc.add(PAYERENT(data: data));
   }

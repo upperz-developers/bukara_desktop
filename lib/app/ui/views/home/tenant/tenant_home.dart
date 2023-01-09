@@ -387,73 +387,83 @@ class _Tenant extends State<Tenant> {
     required TenantModel tenant,
   }) {
     double space = 10;
-    return Container(
-      padding: const EdgeInsets.only(
-        left: 30,
-        right: 30,
-        bottom: 20,
-        top: 20,
-      ),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 50,
-            child: suiteDetailModel(
-              title: "00${index + 1}",
-            ),
+    return OnHoverEffect(
+      child: InkWell(
+        onTap: () {
+          isShowTenant.value = false;
+          isShowTenant.value = true;
+          selectedTenant = tenant;
+        },
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 30,
+            right: 30,
+            bottom: 20,
+            top: 20,
           ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: suiteDetailModel(title: "${tenant.name} ${tenant.lastname}"),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
           ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: suiteDetailModel(title: "${tenant.landlordType}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "${tenant.maritalStatus}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 3,
-            child: suiteDetailModel(title: "${tenant.lastAdress}"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 2,
-            child: tenant.phones!.isNotEmpty
-                ? suiteDetailModel(
-                    title:
-                        "${tenant.phones![0].countryCode} (0) ${tenant.phones![0].number}")
-                : const SizedBox.shrink(),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                modelAction(
-                  onTap: () {
-                    isShowTenant.value = false;
-                    isShowTenant.value = true;
-                    selectedTenant = tenant;
-                  },
-                  icon: Iconsax.more,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 50,
+                child: suiteDetailModel(
+                  title: "00${index + 1}",
                 ),
-              ],
-            ),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: suiteDetailModel(
+                    title: "${tenant.name} ${tenant.lastname}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: suiteDetailModel(title: "${tenant.landlordType}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(title: "${tenant.maritalStatus}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 3,
+                child: suiteDetailModel(title: "${tenant.lastAdress}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 2,
+                child: tenant.phones!.isNotEmpty
+                    ? suiteDetailModel(
+                        title:
+                            "${tenant.phones![0].countryCode} (0) ${tenant.phones![0].number}")
+                    : const SizedBox.shrink(),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    modelAction(
+                      onTap: () {
+                        isShowTenant.value = false;
+                        isShowTenant.value = true;
+                        selectedTenant = tenant;
+                      },
+                      icon: Iconsax.more,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

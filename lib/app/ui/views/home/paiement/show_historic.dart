@@ -1,17 +1,51 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/payement/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/squeletton/paiement_squeletton.dart';
 import 'package:bukara/app/ui/views/home/paiement/detail_historic.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class ShowPaiementHistoric extends StatelessWidget {
+class ShowPaiementHistoric extends StatefulWidget {
   const ShowPaiementHistoric({super.key});
 
   @override
+  State<ShowPaiementHistoric> createState() => _ShowPaiementHistoricState();
+}
+
+class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
+  AppBloc? bloc;
+  @override
+  void initState() {
+    bloc = AppBloc();
+    bloc!.add(GETPAYEMENT());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    return BlocBuilder<AppBloc, AppState>(
+        bloc: bloc,
+        builder: (context, state) {
+          if (state is LOADING) {
+            return const PaiementHistoricSqueletton();
+          } else if (state is SUCCESS) {
+            List<PayementHistoric> payements = state.value;
+            return buidData(payements);
+          } else {
+            return Container();
+          }
+        });
+  }
+
+  Widget buidData(List<PayementHistoric> payements) {
     return Expanded(
       child: Column(
         children: [
@@ -23,10 +57,11 @@ class ShowPaiementHistoric extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ...List.generate(
-                    30,
+                    payements.length,
                     (index) => historicDetail(
                       context,
                       index: index,
+                      payement: payements[index],
                     ),
                   ),
                   50.heightBox,
@@ -197,22 +232,12 @@ class ShowPaiementHistoric extends StatelessWidget {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Date debut"),
-            ),
-            space.widthBox,
-            Expanded(
-              flex: 1,
-              child: tabDetailModel(title: "Date fin"),
-            ),
-            space.widthBox,
-            Expanded(
-              flex: 1,
-              child: tabDetailModel(title: "Jours restants"),
-            ),
-            space.widthBox,
-            Expanded(
-              flex: 1,
               child: tabDetailModel(title: "Locataire"),
+            ),
+            space.widthBox,
+            Expanded(
+              flex: 1,
+              child: tabDetailModel(title: "Enregistre par"),
             ),
             space.widthBox,
             SizedBox(
@@ -228,86 +253,88 @@ class ShowPaiementHistoric extends StatelessWidget {
   Widget historicDetail(
     BuildContext context, {
     int? index,
+    required PayementHistoric payement,
   }) {
     double space = 10;
 
-    return Container(
-      padding: EdgeInsets.only(
-        left: horizontalSpace,
-        right: horizontalSpace,
-        bottom: 20,
-        top: 20,
-      ),
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 40,
-            child: Text(
-              "0${index + 1}",
-              textAlign: TextAlign.center,
-              style: GoogleFonts.montserrat(
-                fontSize: 13,
-                color: AppColors.SECOND_TEXT_COLOR,
-                height: 1.6,
+    return OnHoverEffect(
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            DetailHistoric.routeName,
+            arguments: payement,
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.only(
+            left: horizontalSpace,
+            right: horizontalSpace,
+            bottom: 20,
+            top: 20,
+          ),
+          width: MediaQuery.of(context).size.width,
+          decoration: BoxDecoration(
+            color: index! % 2 == 0 ? AppColors.WHITE_COLOR : Colors.transparent,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                width: 40,
+                child: Text(
+                  "0${index + 1}",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.montserrat(
+                    fontSize: 13,
+                    color: AppColors.SECOND_TEXT_COLOR,
+                    height: 1.6,
+                  ),
+                ),
               ),
-            ),
-          ),
-          30.widthBox,
-          Expanded(
-            flex: 2,
-            child: suiteDetailModel(title: "Test"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "Test"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "Test"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(title: "Test"),
-          ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: Text(
-              "Test",
-              style: GoogleFonts.montserrat(
-                fontSize: 13,
-                fontWeight: FontWeight.bold,
-                height: 1.6,
+              30.widthBox,
+              Expanded(
+                flex: 2,
+                child: suiteDetailModel(
+                    title: "${payement.contratData!.labelStr}"),
               ),
-            ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(title: "${payement.amount} USD"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(
+                    title:
+                        "${payement.contratData!.rentalContrat!.landlord!.name} ${payement.contratData!.rentalContrat!.landlord!.lastname}"),
+              ),
+              space.widthBox,
+              Expanded(
+                flex: 1,
+                child: suiteDetailModel(
+                  title: "${payement.createdBy!.email}",
+                ),
+              ),
+              space.widthBox,
+              SizedBox(
+                height: 30,
+                width: 30,
+                child: modelAction(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      context,
+                      DetailHistoric.routeName,
+                      arguments: payement,
+                    );
+                  },
+                  icon: Iconsax.more,
+                ),
+              ),
+            ],
           ),
-          space.widthBox,
-          Expanded(
-            flex: 1,
-            child: suiteDetailModel(
-              title: "Test",
-            ),
-          ),
-          space.widthBox,
-          SizedBox(
-            height: 30,
-            width: 30,
-            child: modelAction(
-              onTap: () {
-                Navigator.pushNamed(context, DetailHistoric.routeName);
-              },
-              icon: Iconsax.more,
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

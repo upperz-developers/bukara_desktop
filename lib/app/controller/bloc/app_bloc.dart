@@ -4,6 +4,8 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/enterprise/repository.dart';
+import 'package:bukara/app/providers/payement/model.dart';
+import 'package:bukara/app/providers/payement/provider.dart';
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/providers/recovery/provider.dart';
 import 'package:bukara/app/providers/suite/model.dart';
@@ -79,8 +81,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         var response = await getEnterprise();
         ResultEnterprise resultEnterprise =
             ResultEnterprise.fromJson(response.data);
+
         if (resultEnterprise.data != null) {
           AuthController().enterpriseData.value = resultEnterprise.data!;
+          setEnterprisePrefs(resultEnterprise.data!);
         }
         emit(
           const SUCCESS(),
@@ -196,12 +200,27 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         await payeRent(
           data: event.data,
         );
+        emit(const SUCCESS());
       } on Exception catch (e) {
         emit(
           ERROR(
             dueTo: e.toString(),
           ),
         );
+      }
+    });
+    on<GETPAYEMENT>((event, emit) async {
+      emit(const LOADING());
+
+      try {
+        AppBloc().add(GETENTERPRISE());
+        var response = await getPayement();
+        ResultHistoricPaiements resultPayement =
+            ResultHistoricPaiements.fromJson(response.data);
+        List<PayementHistoric> payements = resultPayement.data!.payments!;
+        emit(SUCCESS(value: payements));
+      } on Exception catch (e) {
+        emit(ERROR(dueTo: e.toString()));
       }
     });
   }
