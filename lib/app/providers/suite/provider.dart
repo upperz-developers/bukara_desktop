@@ -36,6 +36,47 @@ Future<Response> addAppart(
   return response;
 }
 
+Future<Response> editAppart(
+    {Map<String, dynamic>? data,
+    List<String>? imagePaths,
+    String? appartId,
+    Map<String, dynamic>? address}) async {
+  var endPoint = "${APIURL.ADDAPART}/$appartId";
+  var response = await httpPutWithToken(
+    endPoint: endPoint,
+    data: data,
+  );
+
+  response = await httpPutWithToken(
+    endPoint: APIURL.EDITADDRESSURL + appartId!,
+    data: address,
+  );
+
+  if (imagePaths!.isNotEmpty) {
+    List<MultipartFile> sendImages = [];
+    for (String path in imagePaths) {
+      String fileName = path.split("/").last;
+      sendImages.add(
+        await MultipartFile.fromFile(
+          path,
+          filename: fileName,
+        ),
+      );
+    }
+
+    FormData formData = FormData.fromMap(
+      {
+        "image": sendImages,
+      },
+    );
+    response = await httpPostWithToken(
+      endPoint: APIURL.EDITAPARTIMAGE + appartId,
+      data: formData,
+    );
+  }
+  return response;
+}
+
 Future<Response> getSuite() async => httpGetWithToken(
       endPoint: APIURL.GETAPARTURL,
     );

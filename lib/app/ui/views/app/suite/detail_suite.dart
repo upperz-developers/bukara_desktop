@@ -2,7 +2,7 @@ import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
+import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/views/app/suite/rent_suite.dart';
 import 'package:bukara/app/ui/views/app/tenant/select_tenant_dialog.dart';
@@ -317,7 +317,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
         ),
         caracteristicModel(
           title:
-              "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}",
+              "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, ${suite.address!.common}, ${suite.address!.town}, province, ${suite.address!.country}",
           icon: Iconsax.map_1,
         ),
         caracteristicModel(
@@ -470,7 +470,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
           child: OnHoverEffect(
             child: InkWell(
               onTap: () {
-                showImageGalerie(images: images, index: 0);
+                showImageGalerie(context, images: images, index: 0);
               },
               child: Container(
                 height: 560,
@@ -499,7 +499,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 1);
+                      showImageGalerie(context, images: images, index: 1);
                     },
                     child: Container(
                       height: 276,
@@ -518,7 +518,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 2);
+                      showImageGalerie(context, images: images, index: 2);
                     },
                     child: Container(
                       height: 276,
@@ -544,7 +544,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 3);
+                      showImageGalerie(context, images: images, index: 3);
                     },
                     child: Container(
                       height: 276,
@@ -563,7 +563,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 4);
+                      showImageGalerie(context, images: images, index: 4);
                     },
                     child: Container(
                       height: 276,
@@ -586,16 +586,6 @@ class _SuiteDetailState extends State<SuiteDetail> {
           ],
         ),
       ],
-    );
-  }
-
-  void showImageGalerie({List<img.Image>? images, int? index}) {
-    showDialog(
-      context: context,
-      builder: (context) => SuiteGaleryImage(
-        images: images,
-        index: index,
-      ),
     );
   }
 }

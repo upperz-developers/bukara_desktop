@@ -24,10 +24,43 @@ class RecoveryHome extends StatefulWidget {
 
 class _RecoveryHomeState extends State<RecoveryHome> {
   AppBloc bloc = AppBloc();
+  TextEditingController? search;
   @override
   void initState() {
+    search = TextEditingController()..addListener(searchListener);
     bloc.add(GETRECOVERYINFO());
     super.initState();
+  }
+
+  bool isSearch = false;
+  List<ContratData> contratData = [];
+  List<ContratData> searchContratData = [];
+  void searchListener() {
+    setState(() {
+      isSearch = search!.text.trim().isNotEmpty;
+      if (isSearch) {
+        searchContratData = contratData
+            .where(
+              (c) =>
+                  c.rentalContrat!.landlord!.name!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ) ||
+                  c.rentalContrat!.landlord!.lastname!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ) ||
+                  c.rentalContrat!.landlord!.email!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ),
+            )
+            .toList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    search!.removeListener(searchListener);
+    super.dispose();
   }
 
   @override
@@ -53,20 +86,20 @@ class _RecoveryHomeState extends State<RecoveryHome> {
                 if (state is LOADING) {
                   return const RecoverySqueletton();
                 } else if (state is SUCCESS) {
-                  List<ContratData> contratData = state.value;
+                  contratData = state.value;
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       infoTabBar(),
                       ShowRecovery(
-                        contratData: contratData,
+                        contratData: isSearch ? searchContratData : contratData,
                         bloc: bloc,
                       ),
                     ],
                   );
                 } else if (state is ERROR) {
                   return NoData(
-                    message: state.dueTo!,
+                    dueTo: state.dueTo!.errors!,
                     onTap: () {
                       bloc.add(GETRECOVERYINFO());
                     },
@@ -112,10 +145,11 @@ class _RecoveryHomeState extends State<RecoveryHome> {
                         style: GoogleFonts.montserrat(
                           fontSize: 12,
                         ),
+                        controller: search,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           isDense: true,
-                          hintText: "Tapez un mot clé",
+                          hintText: "Tapez un locataire",
                           helperStyle: GoogleFonts.montserrat(
                             fontSize: 12,
                           ),

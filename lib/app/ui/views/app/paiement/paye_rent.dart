@@ -3,6 +3,7 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/paiement_controller.dart';
@@ -291,7 +292,7 @@ class _PayeRentState extends State<PayeRent> {
                           builder: (context, bool isErrorValue, child) {
                             String error = "";
                             if (state is ERROR) {
-                              error = state.dueTo ?? "";
+                              errorModel(context, dueTo: state.dueTo!.errors!);
                             }
                             return isErrorValue
                                 ? Column(

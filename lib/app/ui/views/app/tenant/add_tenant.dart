@@ -1,6 +1,8 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/tenant_controller.dart';
 import 'package:country_pickers/country.dart';
@@ -10,8 +12,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:velocity_x/velocity_x.dart';
 
+bool? isEditTenant;
+
 class AddTenants extends StatefulWidget {
-  const AddTenants({super.key});
+  final TenantModel? tenant;
+  const AddTenants({super.key, this.tenant});
 
   @override
   State<AddTenants> createState() => _AddTenantsState();
@@ -25,12 +30,21 @@ class _AddTenantsState extends State<AddTenants> {
   @override
   void initState() {
     _bloc = AppBloc();
+    if (isEditTenant == true) {
+      setState(() {
+        tenantController.selectedCardType = widget.tenant!.cardType!;
+        tenantController.selectedTenantCivilState =
+            widget.tenant!.maritalStatus!;
+        tenantController.selectedTenantType = widget.tenant!.landlordType!;
+      });
+    }
     super.initState();
   }
 
   void submit() {
-    if (tenantController.addValidation()) {
-      tenantController.submit(_bloc!);
+    if (tenantController.addValidation() || isEditTenant == true) {
+      tenantController.submit(
+          bloc: _bloc, tenant: widget.tenant, isEdit: isEditTenant);
       return;
     }
     setState(() {
@@ -45,6 +59,8 @@ class _AddTenantsState extends State<AddTenants> {
       listener: (context, state) {
         if (state is SUCCESS) {
           Navigator.pop(context);
+        } else if (state is ERROR) {
+          errorModel(context, dueTo: state.dueTo!.errors!);
         }
       },
       child: BlocBuilder<AppBloc, AppState>(
@@ -57,7 +73,7 @@ class _AddTenantsState extends State<AddTenants> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height - 290,
+                    height: MediaQuery.of(context).size.height - 370,
                     width: 525,
                     child: Column(
                       children: [
@@ -107,7 +123,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint: "Entrez le nom",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.name != null
+                                          ? widget.tenant!.name
+                                          : "Entrez le nom",
                                       controller: tenantController.firstName,
                                       submitted: submitted,
                                     ),
@@ -120,7 +139,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint: "Entrez le postnom",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.lastname != null
+                                          ? widget.tenant!.lastname
+                                          : "Entrez le postnom",
                                       controller: tenantController.lastname,
                                       submitted: submitted,
                                     ),
@@ -133,7 +155,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint: "Entrez l'adresse mail",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.email != null
+                                          ? widget.tenant!.email
+                                          : "Entrez l'adresse mail",
                                       controller: tenantController.email,
                                       submitted: submitted,
                                     ),
@@ -146,8 +171,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint:
-                                          "Entrez le dernier adresse du locataire",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.lastAdress != null
+                                          ? widget.tenant!.lastAdress
+                                          : "Entrez le dernier adresse du locataire",
                                       controller: tenantController.lastAddress,
                                       submitted: submitted,
                                     ),
@@ -232,8 +259,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint:
-                                          "Entrez le numero de la carte d'indentite",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.cardTypeId != null
+                                          ? widget.tenant!.cardTypeId
+                                          : "Entrez le numero de la carte d'indentite",
                                       controller: tenantController.cartId,
                                       submitted: submitted,
                                     ),
@@ -250,8 +279,10 @@ class _AddTenantsState extends State<AddTenants> {
                                     ),
                                     8.heightBox,
                                     FormText(
-                                      hint:
-                                          "Entrez la nationnalite du locataire",
+                                      hint: isEditTenant == true &&
+                                              widget.tenant!.nationality != null
+                                          ? widget.tenant!.nationality
+                                          : "Entrez la nationnalite du locataire",
                                       controller: tenantController.nationalite,
                                       submitted: submitted,
                                     ),
@@ -478,7 +509,12 @@ class _AddTenantsState extends State<AddTenants> {
                                         ),
                                         8.heightBox,
                                         FormText(
-                                          hint: "097 000 000",
+                                          hint: isEditTenant == true &&
+                                                  widget.tenant!.phones![0]
+                                                          .number !=
+                                                      null
+                                              ? widget.tenant!.phones![0].number
+                                              : "097 000 000",
                                           controller:
                                               tenantController.phoneNumber,
                                           submitted: submitted,

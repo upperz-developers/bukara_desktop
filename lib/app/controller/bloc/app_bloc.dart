@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/controller/shared/shared.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/enterprise/repository.dart';
@@ -32,11 +33,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           setUserPrefs(resultAuth.data!.user!);
           emit(const SUCCESS(value: "Vous avez ete bien authentifie"));
         } on Exception catch (e) {
-          emit(
-            ERROR(
-              dueTo: e.toString(),
-            ),
-          );
+          hundleError(e: e, emit: emit);
         }
       },
     );
@@ -51,11 +48,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         );
         emit(const SUCCESS());
       } on Exception catch (e) {
-        emit(
-          ERROR(
-            dueTo: e.toString(),
-          ),
-        );
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -70,9 +63,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           const SUCCESS(),
         );
       } on Exception catch (e) {
-        emit(
-          ERROR(dueTo: e.toString()),
-        );
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -90,9 +81,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           const SUCCESS(),
         );
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
       }
     });
     on<ADDSUITE>((event, emit) async {
@@ -107,9 +96,25 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           const SUCCESS(),
         );
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
+      }
+    });
+
+    on<EDITSUITE>((event, emit) async {
+      emit(const LOADING());
+      try {
+        await editAppart(
+          data: event.data,
+          imagePaths: event.imagePaths,
+          appartId: event.appartId,
+          address: event.address,
+        );
+
+        emit(
+          const SUCCESS(),
+        );
+      } on Exception catch (e) {
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -122,9 +127,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
         emit(const SUCCESS());
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -138,9 +141,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           const SUCCESS(),
         );
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
       }
     });
     on<GETTENANT>((event, emit) async {
@@ -155,9 +156,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           ),
         );
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -170,11 +169,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           );
           emit(const SUCCESS());
         } on Exception catch (e) {
-          emit(
-            ERROR(
-              dueTo: e.toString(),
-            ),
-          );
+          hundleError(e: e, emit: emit);
         }
       },
     );
@@ -187,9 +182,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         List<ContratData> contratData = recovery.data!.contratData!;
         emit(SUCCESS(value: contratData));
       } on Exception catch (e) {
-        emit(ERROR(
-          dueTo: e.toString(),
-        ));
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -202,11 +195,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         );
         emit(const SUCCESS());
       } on Exception catch (e) {
-        emit(
-          ERROR(
-            dueTo: e.toString(),
-          ),
-        );
+        hundleError(e: e, emit: emit);
       }
     });
     on<GETPAYEMENT>((event, emit) async {
@@ -219,7 +208,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         List<PayementHistoric> payements = resultPayement.data!.payments!;
         emit(SUCCESS(value: payements));
       } on Exception catch (e) {
-        emit(ERROR(dueTo: e.toString()));
+        hundleError(e: e, emit: emit);
       }
     });
 
@@ -230,11 +219,27 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         var response =
             await getPayementPerRecovery(recoveryId: event.recoveryId);
 
-        RecoveryData resultPayement = RecoveryData.fromJson(response.data);
-        List<PayementHistoric> payements = resultPayement.payments!;
+        ResultHistoricPaiements resultPayement =
+            ResultHistoricPaiements.fromJson(response.data);
+        List<PayementHistoric> payements = resultPayement.data!.payments!;
+
         emit(SUCCESS(value: payements));
       } on Exception catch (e) {
-        emit(ERROR(dueTo: e.toString()));
+        hundleError(e: e, emit: emit);
+      }
+    });
+
+    on<EDDITTENANT>((event, emit) async {
+      emit(const LOADING());
+      try {
+        await updateTenant(
+          data: event.data,
+          tenantId: event.tenantId,
+          phone: event.phone,
+        );
+        emit(const SUCCESS());
+      } on Exception catch (e) {
+        hundleError(e: e, emit: emit);
       }
     });
   }

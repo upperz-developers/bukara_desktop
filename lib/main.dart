@@ -21,7 +21,7 @@ void main() async {
     SystemTheme.accentColor.load();
   }
 
-  if (isDesktop) {
+  if (isDesktop && defaultTargetPlatform == TargetPlatform.windows) {
     await WindowManager.instance.ensureInitialized();
 
     windowManager.waitUntilReadyToShow().then((_) async {

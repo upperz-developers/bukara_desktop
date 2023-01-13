@@ -1,14 +1,19 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/ui/view_controller/suite_view_controller.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
+
+bool? isSuiteEdit;
+Suite? suiteToEdit;
 
 class AddSuite extends StatefulWidget {
   final ValueNotifier<bool> showSuites;
@@ -42,17 +47,34 @@ class _AddSuiteState extends State<AddSuite> {
   @override
   void initState() {
     suiteCaracteristiqueModel();
+    if (isSuiteEdit == true) {
+      suiteViewController.selectedSuiteNumber = suiteToEdit!.number.toString();
+      suiteViewController.selectedCountBedRoom =
+          suiteToEdit!.features!.bedroom.toString();
+      suiteViewController.selectedCountExternToilet =
+          suiteToEdit!.features!.externtoilet.toString();
+      suiteViewController.selectedCountInternToilet =
+          suiteToEdit!.features!.interntoilet.toString();
+      suiteViewController.selectedCountLeavingRoom =
+          suiteToEdit!.features!.livingroom.toString();
+      suiteViewController.selectedGoods = suiteToEdit!.typeBien!.designation!;
+      suiteViewController.selectedSuite =
+          suiteToEdit!.typeAppartement!.designation!;
+      suiteViewController.selectedCaracteristics
+          .addAll(suiteToEdit!.features!.other!);
+    }
     super.initState();
   }
 
   bool submitted = false;
   void saveSuite() {
+    if (suiteViewController.validated(context) || isSuiteEdit == true) {
+      suiteViewController.submit(context);
+      return;
+    }
     setState(() {
       submitted = true;
     });
-    if (suiteViewController.validated()) {
-      suiteViewController.submit(context);
-    }
   }
 
   @override
@@ -75,7 +97,9 @@ class _AddSuiteState extends State<AddSuite> {
                   children: [
                     20.heightBox,
                     Text(
-                      "Ajouter un appartement",
+                      isSuiteEdit == true
+                          ? "Modification de ${suiteToEdit!.designation}"
+                          : "Ajouter un appartement",
                       style: GoogleFonts.montserrat(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -114,37 +138,51 @@ class _AddSuiteState extends State<AddSuite> {
         ),
         modelInfo(
           title: "Pays",
-          hint: "Rep dem du congo",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.country != null
+              ? suiteToEdit!.address!.country
+              : "Rep dem du congo",
           controller: suiteViewController.addressController.country,
         ),
         modelInfo(
           title: "Province",
-          hint: "Nord-kivu",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.city != null
+              ? suiteToEdit!.address!.city
+              : "Nord-kivu",
           controller: suiteViewController.addressController.city,
         ),
         modelInfo(
           title: "Ville",
-          hint: "Goma",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.town != null
+              ? suiteToEdit!.address!.town
+              : "Goma",
           controller: suiteViewController.addressController.town,
         ),
         modelInfo(
           title: "Commune",
-          hint: "Goma",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.common != null
+              ? suiteToEdit!.address!.common
+              : "Goma",
           controller: suiteViewController.addressController.commune,
         ),
         modelInfo(
           title: "Quartier",
-          hint: "Entrer le cartier",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.quarter != null
+              ? suiteToEdit!.address!.quarter
+              : "Entrer le cartier",
           controller: suiteViewController.addressController.quater,
         ),
         modelInfo(
           title: "Avenue",
-          hint: "Entrer l'avenu",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.street != null
+              ? suiteToEdit!.address!.street
+              : "Entrer l'avenu",
           controller: suiteViewController.addressController.avenue,
         ),
         modelInfo(
           title: "Numéro",
-          hint: "Entrer le numéro",
+          hint: isSuiteEdit == true && suiteToEdit!.address!.number != null
+              ? suiteToEdit!.address!.number.toString()
+              : "Entrer le numéro",
           controller: suiteViewController.addressController.number,
         ),
       ],
@@ -203,38 +241,57 @@ class _AddSuiteState extends State<AddSuite> {
                         setState(() {});
                       });
                     },
-                    child: Container(
-                      height: 448,
-                      width: 600,
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        color: AppColors.SECOND_CARD_COLOR,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(10),
-                          bottomLeft: Radius.circular(10),
-                        ),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Iconsax.image5,
-                            size: 40,
-                            color: AppColors.SECOND_TEXT_COLOR,
-                          ),
-                          10.heightBox,
-                          Text(
-                            "Cliquer sur une des cases\npour ajouter une image ou  plusieurs images",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.montserrat(
-                              fontSize: 12,
-                              color: AppColors.SECOND_TEXT_COLOR,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    child:
+                        isSuiteEdit == true && suiteToEdit!.images!.isNotEmpty
+                            ? Container(
+                                height: 448,
+                                width: 620,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: AppColors.SECOND_CARD_COLOR,
+                                  borderRadius: const BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                  image: DecorationImage(
+                                    image: CachedNetworkImageProvider(
+                                        suiteToEdit!.images![0].url!),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                height: 448,
+                                width: 600,
+                                alignment: Alignment.center,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.SECOND_CARD_COLOR,
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  ),
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      Iconsax.image5,
+                                      size: 40,
+                                      color: AppColors.SECOND_TEXT_COLOR,
+                                    ),
+                                    10.heightBox,
+                                    Text(
+                                      "Cliquer sur une des cases\npour ajouter une image ou  plusieurs images",
+                                      textAlign: TextAlign.center,
+                                      style: GoogleFonts.montserrat(
+                                        fontSize: 12,
+                                        color: AppColors.SECOND_TEXT_COLOR,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                   ),
           ),
         ),
@@ -289,13 +346,27 @@ class _AddSuiteState extends State<AddSuite> {
                               setState(() {});
                             });
                           },
-                          child: Container(
-                            height: 220,
-                            width: 250,
-                            decoration: const BoxDecoration(
-                              color: AppColors.SECOND_CARD_COLOR,
-                            ),
-                          ),
+                          child: isSuiteEdit == true &&
+                                  suiteToEdit!.images!.isNotEmpty
+                              ? Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          suiteToEdit!.images![1].url!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                  ),
+                                ),
                         ),
                 ),
                 8.widthBox,
@@ -348,16 +419,33 @@ class _AddSuiteState extends State<AddSuite> {
                               setState(() {});
                             });
                           },
-                          child: Container(
-                            height: 220,
-                            width: 250,
-                            decoration: const BoxDecoration(
-                              color: AppColors.SECOND_CARD_COLOR,
-                              borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                          ),
+                          child: isSuiteEdit == true &&
+                                  suiteToEdit!.images!.isNotEmpty
+                              ? Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                    ),
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          suiteToEdit!.images![2].url!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
                         ),
                 ),
               ],
@@ -411,13 +499,27 @@ class _AddSuiteState extends State<AddSuite> {
                               setState(() {});
                             });
                           },
-                          child: Container(
-                            height: 220,
-                            width: 250,
-                            decoration: const BoxDecoration(
-                              color: AppColors.SECOND_CARD_COLOR,
-                            ),
-                          ),
+                          child: isSuiteEdit == true &&
+                                  suiteToEdit!.images!.isNotEmpty
+                              ? Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          suiteToEdit!.images![3].url!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                  ),
+                                ),
                         ),
                 ),
                 8.widthBox,
@@ -470,16 +572,33 @@ class _AddSuiteState extends State<AddSuite> {
                               setState(() {});
                             });
                           },
-                          child: Container(
-                            height: 220,
-                            width: 250,
-                            decoration: const BoxDecoration(
-                              color: AppColors.SECOND_CARD_COLOR,
-                              borderRadius: BorderRadius.only(
-                                bottomRight: Radius.circular(10),
-                              ),
-                            ),
-                          ),
+                          child: isSuiteEdit == true &&
+                                  suiteToEdit!.images!.isNotEmpty
+                              ? Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                    image: DecorationImage(
+                                      image: CachedNetworkImageProvider(
+                                          suiteToEdit!.images![3].url!),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                )
+                              : Container(
+                                  height: 220,
+                                  width: 250,
+                                  decoration: const BoxDecoration(
+                                    color: AppColors.SECOND_CARD_COLOR,
+                                    borderRadius: BorderRadius.only(
+                                      bottomRight: Radius.circular(10),
+                                    ),
+                                  ),
+                                ),
                         ),
                 ),
               ],
@@ -499,12 +618,16 @@ class _AddSuiteState extends State<AddSuite> {
         ),
         modelInfo(
           title: "Designation",
-          hint: "Designation de l'entreprise",
+          hint: isSuiteEdit == true && suiteToEdit!.designation != null
+              ? suiteToEdit!.designation
+              : "Designation de l'entreprise",
           controller: suiteViewController.designation,
         ),
         modelInfo(
           title: "Prix",
-          hint: "1 USD",
+          hint: isSuiteEdit == true && suiteToEdit!.price != null
+              ? "${suiteToEdit!.price} USD"
+              : "montant en USD",
           controller: suiteViewController.price,
         ),
         Text(
@@ -544,7 +667,9 @@ class _AddSuiteState extends State<AddSuite> {
             decoration: InputDecoration(
               border: InputBorder.none,
               isDense: true,
-              hintText: "Description de l'entreprise",
+              hintText: isSuiteEdit == true && suiteToEdit!.description != null
+                  ? suiteToEdit!.description
+                  : "Description de l'entreprise",
               hintStyle: GoogleFonts.montserrat(
                 fontSize: 12,
               ),
@@ -699,7 +824,9 @@ class _AddSuiteState extends State<AddSuite> {
                       8.heightBox,
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 10),
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           border: Border.all(
@@ -1136,6 +1263,8 @@ class _AddSuiteState extends State<AddSuite> {
                         head: "Annuler l'opération",
                         onTap: () {
                           Navigator.pop(context);
+                          isSuiteEdit = false;
+                          suiteToEdit = null;
                           widget.showSuites.value = true;
                         });
                   },

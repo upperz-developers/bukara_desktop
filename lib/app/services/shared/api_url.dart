@@ -9,7 +9,11 @@ class APIURL {
   static const String ADDAPARTIMAGE = "$BASEURL/appartements/images/";
   static const String GETAPARTURL = "$BASEURL/appartements";
   static const String ADDAPART = "$BASEURL/appartements";
+  static const String EDITAPARTIMAGE = "$BASEURL/appartements/images/";
+  static const String EDITADDRESSURL = "$BASEURL/appartements/address/";
   static const String ADDTENANT = "$BASEURL/landlords";
+  static const String EDITTENANT = "$BASEURL/landlords/";
+  static const String EDITTENANTPHONE = "$BASEURL/landlords/phones";
   static const String GETTENANT = "$BASEURL/landlords";
   static const String CONTRATTENANT = "$BASEURL/rental-contrats";
   static const String GETRECOVERYINFO = "$BASEURL/recoveries";

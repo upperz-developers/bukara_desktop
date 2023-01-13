@@ -16,7 +16,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ShowPaiementHistoric extends StatefulWidget {
-  const ShowPaiementHistoric({super.key});
+  final TextEditingController? search;
+  const ShowPaiementHistoric({super.key, this.search});
 
   @override
   State<ShowPaiementHistoric> createState() => _ShowPaiementHistoricState();
@@ -26,9 +27,39 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
   AppBloc? bloc;
   @override
   void initState() {
+    widget.search!.addListener(searchListener);
     bloc = AppBloc();
     bloc!.add(GETPAYEMENT());
     super.initState();
+  }
+
+  bool isSearch = false;
+  List<PayementHistoric> searchPaiement = [];
+  List<PayementHistoric> payements = [];
+  void searchListener() {
+    setState(() {
+      isSearch = widget.search!.text.isNotEmpty;
+      if (isSearch) {
+        searchPaiement = payements
+            .where((p) =>
+                p.contratData!.rentalContrat!.landlord!.name!
+                    .toLowerCase()
+                    .contains(widget.search!.text.toLowerCase()) ||
+                p.contratData!.rentalContrat!.landlord!.lastname!
+                    .toLowerCase()
+                    .contains(widget.search!.text.toLowerCase()) ||
+                p.contratData!.rentalContrat!.landlord!.email!
+                    .toLowerCase()
+                    .contains(widget.search!.text.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    widget.search!.removeListener(searchListener);
+    super.dispose();
   }
 
   @override
@@ -39,11 +70,11 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
           if (state is LOADING) {
             return const PaiementHistoricSqueletton();
           } else if (state is SUCCESS) {
-            List<PayementHistoric> payements = state.value;
-            return buidData(payements);
+            payements = state.value;
+            return buidData(isSearch ? searchPaiement : payements);
           } else if (state is ERROR) {
             return NoData(
-              message: state.dueTo!,
+              dueTo: state.dueTo!.errors!,
               onTap: () {
                 bloc!.add(GETPAYEMENT());
               },
@@ -76,75 +107,6 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
                   50.heightBox,
                 ],
               ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: 20,
-              horizontal: 15,
-            ),
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 15,
-              children: [
-                Container(
-                  height: 30,
-                  width: 30,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.WHITE_COLOR,
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppColors.SHADOW_COLOR.withAlpha(125),
-                          offset: const Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ]),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    size: 14,
-                  ),
-                ),
-                Container(
-                  height: 30,
-                  width: 30,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.WHITE_COLOR,
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppColors.SHADOW_COLOR.withAlpha(125),
-                          offset: const Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ]),
-                  child: Text(
-                    "1",
-                    style: GoogleFonts.montserrat(),
-                  ),
-                ),
-                Container(
-                  height: 30,
-                  width: 30,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      color: AppColors.WHITE_COLOR,
-                      shape: BoxShape.circle,
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: AppColors.SHADOW_COLOR.withAlpha(125),
-                          offset: const Offset(0, 2),
-                          blurRadius: 4,
-                        ),
-                      ]),
-                  child: const Icon(
-                    Icons.arrow_forward_ios,
-                    size: 14,
-                  ),
-                ),
-              ],
             ),
           ),
         ],
