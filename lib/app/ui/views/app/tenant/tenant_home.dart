@@ -374,7 +374,7 @@ class _Tenant extends State<Tenant> {
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         isDense: true,
-                        hintText: "Tapez un mot cle",
+                        hintText: "Tapez un mot clé",
                         helperStyle: GoogleFonts.montserrat(
                           fontSize: 12,
                         )),

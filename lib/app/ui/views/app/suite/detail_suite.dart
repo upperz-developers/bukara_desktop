@@ -48,7 +48,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Detail de l'appartement",
+                      "Détail de l'appartement",
                       style: GoogleFonts.montserrat(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                           ),
                                           10.heightBox,
                                           Text(
-                                            "#numero ${suiteDetail.number} (${suiteDetail.features!.bedroom} chambres - ${suiteDetail.features!.livingroom} salon)",
+                                            "#numéro ${suiteDetail.number} (${suiteDetail.features!.bedroom} chambres - ${suiteDetail.features!.livingroom} salon)",
                                             style: GoogleFonts.montserrat(),
                                           ),
                                           20.heightBox,
@@ -227,13 +227,14 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                         ),
                                       ),
                                       25.heightBox,
-                                      module(Iconsax.call, "adress"),
+                                      module(Iconsax.call, "adresse"),
                                       module(Iconsax.box_tick, "email"),
-                                      module(Iconsax.home, "etat civile"),
-                                      module2(Iconsax.tag, "Adresse", "Adddre"),
+                                      module(Iconsax.home, "état civile"),
+                                      module2(
+                                          Iconsax.tag, "Adresse", "Adresse"),
                                       module(
-                                          Iconsax.wallet_check, "Nationalite"),
-                                      module2(Iconsax.tag, "Numero carte",
+                                          Iconsax.wallet_check, "Nationalité"),
+                                      module2(Iconsax.tag, "Numéro carte",
                                           "type carte"),
                                     ],
                                   ),
@@ -311,7 +312,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
     return Column(
       children: [
         caracteristicModel(
-          title: "#numero ${suite.number}",
+          title: "#numéro ${suite.number}",
           icon: Iconsax.box,
         ),
         caracteristicModel(

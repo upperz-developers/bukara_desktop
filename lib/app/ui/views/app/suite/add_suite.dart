@@ -143,8 +143,8 @@ class _AddSuiteState extends State<AddSuite> {
           controller: suiteViewController.addressController.avenue,
         ),
         modelInfo(
-          title: "Numero",
-          hint: "Entrer le numero",
+          title: "Numéro",
+          hint: "Entrer le numéro",
           controller: suiteViewController.addressController.number,
         ),
       ],
@@ -225,7 +225,7 @@ class _AddSuiteState extends State<AddSuite> {
                           ),
                           10.heightBox,
                           Text(
-                            "Cliquer sur une des cases\npour ajouter une image plusieurs images",
+                            "Cliquer sur une des cases\npour ajouter une image ou  plusieurs images",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
@@ -562,7 +562,7 @@ class _AddSuiteState extends State<AddSuite> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "#numero",
+                        "#numéro",
                         style: GoogleFonts.montserrat(
                           textStyle: const TextStyle(
                             fontSize: 12,
@@ -1015,7 +1015,7 @@ class _AddSuiteState extends State<AddSuite> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           infoTitle(
-            "Caracteristiques",
+            "Caractéristiques",
           ),
           Wrap(
             spacing: 10,
@@ -1129,11 +1129,11 @@ class _AddSuiteState extends State<AddSuite> {
                         action: "Annuler",
                         action1: "Continuer",
                         body:
-                            "Etes-vous sur de vouloir? Si vous anuuler l'operation les informations saisies seront effecees",
+                            "Etes-vous sûr de vouloir annuler? Si vous annulez l'opération les informations saisies seront effacées",
                         onTap1: () {
                           Navigator.pop(context);
                         },
-                        head: "Annuler l'operation",
+                        head: "Annuler l'opération",
                         onTap: () {
                           Navigator.pop(context);
                           widget.showSuites.value = true;

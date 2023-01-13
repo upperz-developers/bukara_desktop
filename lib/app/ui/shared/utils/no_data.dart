@@ -12,45 +12,47 @@ class NoData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SvgPicture.asset(
-            "assets/svg/no_data.svg",
-          ),
-          15.heightBox,
-          Text(
-            message,
-            style: GoogleFonts.montserrat(
-              color: AppColors.SECOND_TEXT_COLOR,
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SvgPicture.asset(
+              "assets/svg/no_data.svg",
             ),
-          ),
-          15.heightBox,
-          OnHoverEffect(
-            child: InkWell(
-              onTap: onTap,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 10, horizontal: 15),
-                    decoration: BoxDecoration(
-                        color: AppColors.DISABLE_COLOR,
-                        borderRadius: BorderRadius.circular(4)),
-                    alignment: Alignment.center,
-                    child: Text(
-                      "Reessayer",
-                      style: GoogleFonts.montserrat(),
-                    ),
-                  ),
-                ],
+            15.heightBox,
+            Text(
+              message,
+              style: GoogleFonts.montserrat(
+                color: AppColors.SECOND_TEXT_COLOR,
               ),
             ),
-          ),
-        ],
+            15.heightBox,
+            OnHoverEffect(
+              child: InkWell(
+                onTap: onTap,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 15),
+                      decoration: BoxDecoration(
+                          color: AppColors.DISABLE_COLOR,
+                          borderRadius: BorderRadius.circular(4)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Reessayer",
+                        style: GoogleFonts.montserrat(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

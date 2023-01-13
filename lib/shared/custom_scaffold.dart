@@ -56,9 +56,9 @@ class _CustormScaffoldState extends State<CustormScaffold> {
                         duration: const Duration(seconds: 1),
                         top: 20,
                         child: const AppInfo(
-                          title: "Succes",
+                          title: "Succès",
                           statusColor: AppColors.GREEN_COLOR,
-                          subtitle: "Operation effectuee avec succes",
+                          subtitle: "Operation effectuée avec succès",
                         ),
                       );
                     } else if (state is ERROR) {

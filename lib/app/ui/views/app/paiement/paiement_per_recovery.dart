@@ -275,7 +275,7 @@ class _PeymentPerRecoveryState extends State<PeymentPerRecovery> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Libele"),
+              child: tabDetailModel(title: "Libellé"),
             ),
             space.widthBox,
             Expanded(
@@ -290,7 +290,7 @@ class _PeymentPerRecoveryState extends State<PeymentPerRecovery> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Enregistre par"),
+              child: tabDetailModel(title: "Enregistrer par"),
             ),
             space.widthBox,
             SizedBox(
@@ -357,7 +357,7 @@ class _PeymentPerRecoveryState extends State<PeymentPerRecovery> {
               Expanded(
                 flex: 1,
                 child: suiteDetailModel(
-                    title: "${payement.contratData!.labelStr}"),
+                    title: "${payement.contratData?.labelStr}"),
               ),
               space.widthBox,
               Expanded(
@@ -369,13 +369,13 @@ class _PeymentPerRecoveryState extends State<PeymentPerRecovery> {
                 flex: 1,
                 child: suiteDetailModel(
                     title:
-                        "${payement.contratData!.rentalContrat!.landlord!.name} ${payement.contratData!.rentalContrat!.landlord!.lastname}"),
+                        "${payement.contratData?.rentalContrat?.landlord?.name} ${payement.contratData?.rentalContrat?.landlord?.lastname}"),
               ),
               space.widthBox,
               Expanded(
                 flex: 1,
                 child: suiteDetailModel(
-                  title: "${payement.createdBy!.email}",
+                  title: "${payement.createdBy?.email}",
                 ),
               ),
               space.widthBox,

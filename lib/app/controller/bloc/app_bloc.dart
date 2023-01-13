@@ -82,7 +82,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         var response = await getEnterprise();
         ResultEnterprise resultEnterprise =
             ResultEnterprise.fromJson(response.data);
-
         if (resultEnterprise.data != null) {
           AuthController().enterpriseData.value = resultEnterprise.data!;
           setEnterprisePrefs(resultEnterprise.data!);
@@ -230,6 +229,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         AppBloc().add(GETENTERPRISE());
         var response =
             await getPayementPerRecovery(recoveryId: event.recoveryId);
+
         RecoveryData resultPayement = RecoveryData.fromJson(response.data);
         List<PayementHistoric> payements = resultPayement.payments!;
         emit(SUCCESS(value: payements));

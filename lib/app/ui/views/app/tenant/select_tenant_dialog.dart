@@ -430,7 +430,7 @@ class _ShowTenantDialogState extends State<ShowTenantDialog> {
                     decoration: mat.InputDecoration(
                         border: mat.InputBorder.none,
                         isDense: true,
-                        hintText: "Tapez un mot cle",
+                        hintText: "Tapez un mot clé",
                         helperStyle: GoogleFonts.montserrat(
                           fontSize: 12,
                         )),

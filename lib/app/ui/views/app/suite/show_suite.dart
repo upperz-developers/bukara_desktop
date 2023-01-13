@@ -230,7 +230,7 @@ class _ShowSuiteState extends State<ShowSuite> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    suite.status! ? "Occupe" : "Inoccupe",
+                    suite.status! ? "Occuper" : "Inoccuper",
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
                     ),

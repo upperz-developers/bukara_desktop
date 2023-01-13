@@ -25,6 +25,7 @@ class _AppState extends State<App> {
   // fuction for initializing user app prefs
   void _initPrefs() async {
     AppPref.prefs = await SharedPreferences.getInstance();
+    AppPref.prefs!.clear();
   }
 
   @override

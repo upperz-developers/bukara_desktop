@@ -236,7 +236,7 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Libele"),
+              child: tabDetailModel(title: "Libellé"),
             ),
             space.widthBox,
             Expanded(
@@ -251,7 +251,7 @@ class _ShowPaiementHistoricState extends State<ShowPaiementHistoric> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Enregistre par"),
+              child: tabDetailModel(title: "Enregistrer par"),
             ),
             space.widthBox,
             SizedBox(

@@ -61,7 +61,7 @@ void saveAndPrintPdf(
                     ),
                   ),
                   Text(
-                    "${enterprise.banks![0].accountName} | ${enterprise.banks![0].bank} | ${enterprise.banks![0].accountNumber}",
+                    "${enterprise.banks?[0].accountName} | ${enterprise.banks?[0].bank} | ${enterprise.banks?[0].accountNumber}",
                     style: TextStyle(
                       font: font,
                       fontSize: 10,
@@ -74,6 +74,7 @@ void saveAndPrintPdf(
                 style: TextStyle(
                   font: font,
                   color: PdfColors.grey,
+                  fontSize: 10,
                 ),
               ),
               Container(
@@ -91,24 +92,28 @@ void saveAndPrintPdf(
                     "${enterprise.designation}",
                     style: TextStyle(
                       font: font,
+                      fontSize: 10,
                     ),
                   ),
                   Text(
-                    "www.bukara.sarl",
+                    "${enterprise.site}",
                     style: TextStyle(
                       font: font,
+                      fontSize: 10,
                     ),
                   ),
                   Text(
-                    "bukara@gmail.sarl",
+                    "${enterprise.email}",
                     style: TextStyle(
                       font: font,
+                      fontSize: 10,
                     ),
                   ),
                   Text(
-                    "+243 (0) 9700000000",
+                    "${enterprise.phones}",
                     style: TextStyle(
                       font: font,
+                      fontSize: 10,
                     ),
                   ),
                 ],
@@ -131,7 +136,7 @@ void saveAndPrintPdf(
                 child: Image(image),
               ),
               Text(
-                'Recu de paiement',
+                'Reçu de paiement',
                 textScaleFactor: 2,
                 style: TextStyle(
                   font: fontBold,
@@ -279,7 +284,7 @@ void saveAndPrintPdf(
         SizedBox(height: 25),
         Row(
           children: [
-            title1(title: "Libele", flex: 1, font: font),
+            title1(title: "Libellé", flex: 1, font: font),
             SizedBox(width: 1),
             title1(title: "Methode de paiement", flex: 1, font: font),
             SizedBox(width: 1),
@@ -329,9 +334,9 @@ void saveAndPrintPdf(
               ),
             ),
             SizedBox(width: 1),
-            title1(title: "Libele", flex: 2, font: font),
+            title1(title: "Libellé", flex: 2, font: font),
             SizedBox(width: 1),
-            title1(title: "Paye", flex: 1, font: font),
+            title1(title: "Payer", flex: 1, font: font),
           ],
         ),
         SizedBox(height: 3),

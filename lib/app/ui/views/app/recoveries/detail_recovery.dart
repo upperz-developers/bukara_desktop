@@ -1,10 +1,8 @@
 import 'package:bukara/app/providers/recovery/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
-import 'package:bukara/app/ui/shared/utils/constants.dart';
 import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
-import 'package:bukara/app/ui/views/app/paiement/paiement_per_recovery.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
@@ -25,7 +23,7 @@ class DetailRecovery extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                "Detail recouvrement",
+                "Détail recouvrement",
                 style: GoogleFonts.montserrat(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -154,8 +152,8 @@ class DetailRecovery extends StatelessWidget {
                 10.heightBox,
                 InkWell(
                   onTap: () {
-                    selectedRecoveryId = contratData.id;
-                    Navigator.pushNamed(context, PeymentPerRecovery.routeName);
+                    // selectedRecoveryId = contratData.id;
+                    // Navigator.pushNamed(context, PeymentPerRecovery.routeName);
                   },
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 15),

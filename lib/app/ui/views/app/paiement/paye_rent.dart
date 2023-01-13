@@ -157,7 +157,7 @@ class _PayeRentState extends State<PayeRent> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Paye en",
+                                "Payer en",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                   color: AppColors.SECOND_TEXT_COLOR,
@@ -218,7 +218,7 @@ class _PayeRentState extends State<PayeRent> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Montant paye",
+                                  "Montant payé",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 12,
                                     color: AppColors.SECOND_TEXT_COLOR,
@@ -424,7 +424,7 @@ class _PayeRentState extends State<PayeRent> {
                                               ),
                                             )
                                           : Text(
-                                              "Enregistre",
+                                              "Enregistrer",
                                               style: GoogleFonts.montserrat(
                                                 color: AppColors.WHITE_COLOR,
                                                 fontWeight: FontWeight.bold,

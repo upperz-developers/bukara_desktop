@@ -17,7 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-List<String> infoBar = ["Tout", "Occupe", "Non occupe"];
+List<String> infoBar = ["Tout", "Occuper", "Non occuper"];
 
 class SuiteHome extends StatefulWidget {
   const SuiteHome({super.key});
@@ -190,7 +190,7 @@ class _SuiteHomeState extends State<SuiteHome>
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             isDense: true,
-                            hintText: "Tapez un mot cle",
+                            hintText: "Tapez un mot clé",
                             helperStyle: GoogleFonts.montserrat(
                               fontSize: 12,
                             )),
