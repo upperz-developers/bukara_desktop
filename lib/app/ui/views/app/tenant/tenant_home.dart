@@ -183,7 +183,7 @@ class _Tenant extends State<Tenant> {
                     child: Divider(),
                   ),
                   Text(
-                    "Apropos du locataire",
+                    "À propos du locataire",
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
