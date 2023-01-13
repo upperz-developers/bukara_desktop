@@ -167,7 +167,7 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
               : null,
         ),
         modelInfo(
-          title: "numero du compte",
+          title: "numéro du compte",
           info: enterprise.banks!.isNotEmpty
               ? enterprise.banks![0].accountNumber
               : null,
@@ -232,7 +232,7 @@ class _ProfileEnterpriseState extends State<ProfileEnterprise> {
                 ? enterprise.addresses![0].street
                 : null),
         modelInfo(
-            title: "Numero",
+            title: "Numéro",
             info: enterprise.addresses!.isNotEmpty
                 ? enterprise.addresses![0].number.toString()
                 : null),

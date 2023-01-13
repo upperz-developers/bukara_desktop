@@ -1,6 +1,7 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
+import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
 import 'package:bukara/app/ui/shared/utils/no_data.dart';
 import 'package:bukara/app/ui/squeletton/suite_squeletton.dart';
@@ -17,7 +18,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-List<String> infoBar = ["Tout", "Occupe", "Non occupe"];
+List<String> infoBar = ["Tout", "Occuper", "Non occuper"];
 
 class SuiteHome extends StatefulWidget {
   const SuiteHome({super.key});
@@ -30,14 +31,23 @@ class _SuiteHomeState extends State<SuiteHome>
     with SingleTickerProviderStateMixin {
   TabController? controller;
   AppBloc bloc = AppBloc();
+  TextEditingController? search;
   @override
   void initState() {
+    isSuiteEdit = false;
+    suiteToEdit = null;
     controller = TabController(length: 3, vsync: this);
+    search = TextEditingController();
     suites = [];
     bloc.add(
       GETSUITE(),
     );
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   ValueNotifier<bool> isShowingData = ValueNotifier(true);
@@ -80,7 +90,10 @@ class _SuiteHomeState extends State<SuiteHome>
                             valueListenable: isShowingData,
                             builder: (context, bool isData, child) {
                               return isData
-                                  ? const ShowSuite()
+                                  ? ShowSuite(
+                                      isShowingData: isShowingData,
+                                      search: search,
+                                    )
                                   : AddSuite(
                                       showSuites: isShowingData,
                                     );
@@ -90,7 +103,7 @@ class _SuiteHomeState extends State<SuiteHome>
                       );
                     } else if (state is ERROR) {
                       return NoData(
-                        message: state.dueTo!,
+                        dueTo: state.dueTo!.errors!,
                         onTap: () {
                           bloc.add(
                             GETSUITE(),
@@ -187,10 +200,11 @@ class _SuiteHomeState extends State<SuiteHome>
                         style: GoogleFonts.montserrat(
                           fontSize: 12,
                         ),
+                        controller: search,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             isDense: true,
-                            hintText: "Tapez un mot cle",
+                            hintText: "Tapez un mot clé",
                             helperStyle: GoogleFonts.montserrat(
                               fontSize: 12,
                             )),

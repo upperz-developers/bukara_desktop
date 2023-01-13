@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+
+import '../../providers/shared/common_models.dart';
 
 @immutable
 class ApiInterceptor extends Interceptor {
@@ -8,7 +12,6 @@ class ApiInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    debugPrint(err.response.toString());
     switch (err.type) {
       case DioErrorType.sendTimeout:
       case DioErrorType.connectTimeout:
@@ -27,13 +30,25 @@ class ApiInterceptor extends Interceptor {
           case 500:
             throw InternalServerErrorException(err.requestOptions);
           default:
-            throw ValidationInternalServerErrorException(err.requestOptions);
+            throw ValidationInternalServerErrorException(err.requestOptions,
+                data: err.response!.data);
         }
       case DioErrorType.cancel:
         break;
       case DioErrorType.other:
         throw NoInternetConnectionException(requestOptions: err.requestOptions);
     }
+  }
+}
+
+class ValidationInternalServerErrorException extends DioError {
+  final Map<String, dynamic>? data;
+  ValidationInternalServerErrorException(RequestOptions r, {this.data})
+      : super(requestOptions: r);
+
+  @override
+  String toString() {
+    return jsonEncode(data);
   }
 }
 
@@ -45,7 +60,13 @@ class DeadLineExcededException extends DioError {
 
   @override
   String toString() {
-    return "Une erreur s'est produite en essayant de joindre le serveur";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message: "Une erreur s'est produite en essayant de joindre le serveur",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -54,8 +75,13 @@ class BadRequestException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Mauvaise requette | Bad request error";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message: "Mauvaise requette | Bad request error",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -64,7 +90,13 @@ class UnauthorizedException extends DioError {
 
   @override
   String toString() {
-    return "Erreur de l'auhentification au serveur | Unauthorized error";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message: "Erreur de l'auhentification au serveur | Unauthorized error",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -73,8 +105,14 @@ class NotFoundException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite, ceci est du à l'url que vous entrez | not found error";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message:
+            "Une erreur s'est produite, ceci est du à l'url que vous entrez | not found error",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -83,8 +121,13 @@ class ConflictException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite, conflit";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message: "Une erreur s'est produite, conflit",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -93,8 +136,13 @@ class InternalServerErrorException extends DioError {
 
   @override
   String toString() {
-    // this will be shown only in debug mode, in release we will change the sentence
-    return "Une erreur s'est produite au serveur | internal server error";
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message: "Une erreur s'est produite au serveur | internal server error",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }
 
@@ -103,16 +151,13 @@ class NoInternetConnectionException extends DioError {
 
   @override
   String toString() {
-    return "Aucune connexion internet";
-  }
-}
-
-class ValidationInternalServerErrorException extends DioError {
-  ValidationInternalServerErrorException(RequestOptions r)
-      : super(requestOptions: r);
-
-  @override
-  String toString() {
-    return requestOptions.data.toString();
+    ErrorModel errormodel = ErrorModel();
+    errormodel.errors!.add(
+      ErrorData(
+        message:
+            "Aucune connexion internet!\nActiver votre connexion ou verifiez l'état de votre connexion",
+      ),
+    );
+    return jsonEncode(errormodel.toJson());
   }
 }

@@ -3,6 +3,7 @@ import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/rent_view_controller.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,8 @@ class _RentSuiteState extends State<RentSuite> {
           Navigator.pop(context);
         } else if (state is ERROR) {
           isError.value = true;
+
+          errorModel(context, dueTo: state.dueTo!.errors!);
         }
       }),
       child: BlocBuilder<AppBloc, AppState>(
@@ -316,104 +319,6 @@ class _RentSuiteState extends State<RentSuite> {
                     ),
                   ],
                 ),
-                ValueListenableBuilder(
-                    valueListenable: isError,
-                    builder: (context, bool isErrorValue, child) {
-                      String? error;
-                      if (state is ERROR) {
-                        error = state.dueTo;
-                      }
-                      return isErrorValue
-                          ? Column(
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 20),
-                                  child: Divider(),
-                                ),
-                                Stack(
-                                  children: [
-                                    Container(
-                                      width: 300,
-                                      padding: const EdgeInsets.only(
-                                          left: 14,
-                                          top: 10,
-                                          bottom: 10,
-                                          right: 10),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.WHITE_COLOR,
-                                        borderRadius: BorderRadius.circular(4),
-                                        boxShadow: <BoxShadow>[
-                                          BoxShadow(
-                                            color: AppColors.BOXSHADOW
-                                                .withAlpha(125),
-                                            offset: const Offset(0, 3),
-                                            blurRadius: 4,
-                                          ),
-                                        ],
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                child: Text(
-                                                  "Erreur",
-                                                  style: GoogleFonts.montserrat(
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              15.widthBox,
-                                              InkWell(
-                                                onTap: () {
-                                                  isError.value = false;
-                                                },
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                child: const Padding(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Icon(
-                                                    Icons.close,
-                                                    size: 18,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          10.heightBox,
-                                          Text(
-                                            error!,
-                                            style: GoogleFonts.montserrat(
-                                              fontSize: 12,
-                                              color:
-                                                  AppColors.SECOND_TEXT_COLOR,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      child: Container(
-                                        width: 4,
-                                        decoration: const BoxDecoration(
-                                          color: AppColors.RED_COLOR,
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(4),
-                                            bottomLeft: Radius.circular(4),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            )
-                          : const SizedBox.shrink();
-                    }),
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Divider(),

@@ -1,5 +1,7 @@
 import 'package:bukara/app/providers/recovery/model.dart';
-import 'package:flutter/material.dart' show Color;
+import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
+import 'package:flutter/material.dart';
+import 'package:bukara/app/providers/shared/common_models.dart' as img;
 
 String dayLeft({required String start, required String end}) {
   DateTime startAt = DateTime.parse(start);
@@ -31,4 +33,15 @@ extension HexColor on Color {
       '${red.toRadixString(16).padLeft(2, '0')}'
       '${green.toRadixString(16).padLeft(2, '0')}'
       '${blue.toRadixString(16).padLeft(2, '0')}';
+}
+
+void showImageGalerie(BuildContext context,
+    {List<img.Image>? images, int? index}) {
+  showDialog(
+    context: context,
+    builder: (context) => SuiteGaleryImage(
+      images: images,
+      index: index,
+    ),
+  );
 }

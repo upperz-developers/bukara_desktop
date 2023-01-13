@@ -2,6 +2,7 @@ import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/ui/shared/status_widgets.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,20 +23,10 @@ class _CustormScaffoldState extends State<CustormScaffold> {
     return Scaffold(
       body: BlocListener<AppBloc, AppState>(
         listener: (context, state) {
-          if (state is SUCCESS || state is ERROR) {
-            if (state is SUCCESS) {
-              widget.onSuccess();
-            } else {
-              isStart.value = true;
-              Future.delayed(
-                const Duration(
-                  seconds: 3,
-                ),
-                (() {
-                  isStart.value = false;
-                }),
-              );
-            }
+          if (state is SUCCESS) {
+            widget.onSuccess();
+          } else if (state is ERROR) {
+            errorModel(context, dueTo: state.dueTo!.errors!);
           }
         },
         child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
@@ -56,20 +47,9 @@ class _CustormScaffoldState extends State<CustormScaffold> {
                         duration: const Duration(seconds: 1),
                         top: 20,
                         child: const AppInfo(
-                          title: "Succes",
+                          title: "Succès",
                           statusColor: AppColors.GREEN_COLOR,
-                          subtitle: "Operation effectuee avec succes",
-                        ),
-                      );
-                    } else if (state is ERROR) {
-                      return AnimatedPositioned(
-                        duration: const Duration(seconds: 1),
-                        right: isStartValue ? 20 : -350,
-                        top: 20,
-                        child: AppInfo(
-                          title: "Erreur",
-                          statusColor: AppColors.RED_COLOR,
-                          subtitle: state.dueTo,
+                          subtitle: "Operation effectuée avec succès",
                         ),
                       );
                     } else {
@@ -111,20 +91,10 @@ class _CustormScaffoldPageState extends State<CustormScaffoldPage> {
       header: widget.header,
       content: BlocListener<AppBloc, AppState>(
         listener: (context, state) {
-          if (state is SUCCESS || state is ERROR) {
-            if (state is SUCCESS) {
-              widget.onSuccess();
-            } else {
-              isStart.value = true;
-              Future.delayed(
-                const Duration(
-                  seconds: 5,
-                ),
-                (() {
-                  isStart.value = false;
-                }),
-              );
-            }
+          if (state is SUCCESS) {
+            widget.onSuccess();
+          } else if (state is ERROR) {
+            errorModel(context, dueTo: state.dueTo!.errors!);
           }
         },
         child: BlocBuilder<AppBloc, AppState>(builder: (context, state) {
@@ -136,37 +106,6 @@ class _CustormScaffoldPageState extends State<CustormScaffoldPage> {
                 ignoring: state is LOADING,
                 child: widget.content!,
               ),
-
-              ValueListenableBuilder(
-                  valueListenable: isStart,
-                  builder: (context, bool isStartValue, childe) {
-                    // if (state is SUCCESS) {
-                    //   return AnimatedPositioned(
-                    //     right: isStartValue ? 20 : -350,
-                    //     duration: const Duration(seconds: 1),
-                    //     top: 20,
-                    //     child: const AppInfo(
-                    //       title: "Succes",
-                    //       statusColor: AppColors.GREEN_COLOR,
-                    //       subtitle: "Operation effectuee avec succes",
-                    //     ),
-                    //   );
-                    // } else
-                    if (state is ERROR) {
-                      return AnimatedPositioned(
-                        duration: const Duration(seconds: 1),
-                        right: isStartValue ? 20 : -350,
-                        top: 20,
-                        child: AppInfo(
-                          title: "Erreur",
-                          statusColor: AppColors.RED_COLOR,
-                          subtitle: state.dueTo,
-                        ),
-                      );
-                    } else {
-                      return const SizedBox.shrink();
-                    }
-                  }),
 
               //while the event is loading
               if (state is LOADING)

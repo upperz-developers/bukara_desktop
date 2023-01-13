@@ -55,7 +55,7 @@ class DetailHistoric extends StatelessWidget {
                               30.widthBox,
                               Expanded(
                                 child: Text(
-                                  "Recu de paiement",
+                                  "Reçu de paiement",
                                   textAlign: TextAlign.end,
                                   style: GoogleFonts.montserrat(
                                     fontSize: 24,
@@ -213,7 +213,7 @@ class DetailHistoric extends StatelessWidget {
                           35.heightBox,
                           Row(
                             children: [
-                              title1(title: "Libele", flex: 1),
+                              title1(title: "Libellé", flex: 1),
                               3.widthBox,
                               title1(title: "Methode de paiement", flex: 1),
                               3.widthBox,
@@ -293,7 +293,7 @@ class DetailHistoric extends StatelessWidget {
                                 ),
                               ),
                               3.widthBox,
-                              title1(title: "Libele", flex: 2),
+                              title1(title: "Libellé", flex: 2),
                               3.widthBox,
                               title1(title: "Paye", flex: 1),
                             ],
@@ -333,7 +333,7 @@ class DetailHistoric extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  "${enterprise.banks![0].accountName} | ${enterprise.banks![0].bank} | ${enterprise.banks![0].accountNumber}",
+                                  "${enterprise.banks?[0].accountName} | ${enterprise.banks?[0].bank} | ${enterprise.banks?[0].accountNumber}",
                                   style: GoogleFonts.montserrat(
                                     fontSize: 12,
                                   ),
@@ -346,25 +346,25 @@ class DetailHistoric extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Upperz",
+                                "${enterprise.designation}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                 ),
                               ),
                               Text(
-                                "www.upper-z.com",
+                                "${enterprise.site}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                 ),
                               ),
                               Text(
-                                "baruka99.david@gmail.com",
+                                "${enterprise.email}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                 ),
                               ),
                               Text(
-                                "+243 (0) 973969675",
+                                "${enterprise.phones}",
                                 style: GoogleFonts.montserrat(
                                   fontSize: 12,
                                 ),

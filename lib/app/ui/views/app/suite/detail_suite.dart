@@ -2,7 +2,7 @@ import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
-import 'package:bukara/app/ui/shared/utils/image_galerie.dart';
+import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/views/app/suite/rent_suite.dart';
 import 'package:bukara/app/ui/views/app/tenant/select_tenant_dialog.dart';
@@ -48,7 +48,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Detail de l'appartement",
+                      "Détail de l'appartement",
                       style: GoogleFonts.montserrat(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                           ),
                                           10.heightBox,
                                           Text(
-                                            "#numero ${suiteDetail.number} (${suiteDetail.features!.bedroom} chambres - ${suiteDetail.features!.livingroom} salon)",
+                                            "#numéro ${suiteDetail.number} (${suiteDetail.features!.bedroom} chambres - ${suiteDetail.features!.livingroom} salon)",
                                             style: GoogleFonts.montserrat(),
                                           ),
                                           20.heightBox,
@@ -227,13 +227,14 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                         ),
                                       ),
                                       25.heightBox,
-                                      module(Iconsax.call, "adress"),
+                                      module(Iconsax.call, "adresse"),
                                       module(Iconsax.box_tick, "email"),
-                                      module(Iconsax.home, "etat civile"),
-                                      module2(Iconsax.tag, "Adresse", "Adddre"),
+                                      module(Iconsax.home, "état civile"),
+                                      module2(
+                                          Iconsax.tag, "Adresse", "Adresse"),
                                       module(
-                                          Iconsax.wallet_check, "Nationalite"),
-                                      module2(Iconsax.tag, "Numero carte",
+                                          Iconsax.wallet_check, "Nationalité"),
+                                      module2(Iconsax.tag, "Numéro carte",
                                           "type carte"),
                                     ],
                                   ),
@@ -311,12 +312,12 @@ class _SuiteDetailState extends State<SuiteDetail> {
     return Column(
       children: [
         caracteristicModel(
-          title: "#numero ${suite.number}",
+          title: "#numéro ${suite.number}",
           icon: Iconsax.box,
         ),
         caracteristicModel(
           title:
-              "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}",
+              "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, ${suite.address!.common}, ${suite.address!.town}, province, ${suite.address!.country}",
           icon: Iconsax.map_1,
         ),
         caracteristicModel(
@@ -469,7 +470,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
           child: OnHoverEffect(
             child: InkWell(
               onTap: () {
-                showImageGalerie(images: images, index: 0);
+                showImageGalerie(context, images: images, index: 0);
               },
               child: Container(
                 height: 560,
@@ -498,7 +499,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 1);
+                      showImageGalerie(context, images: images, index: 1);
                     },
                     child: Container(
                       height: 276,
@@ -517,7 +518,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 2);
+                      showImageGalerie(context, images: images, index: 2);
                     },
                     child: Container(
                       height: 276,
@@ -543,7 +544,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 3);
+                      showImageGalerie(context, images: images, index: 3);
                     },
                     child: Container(
                       height: 276,
@@ -562,7 +563,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                 OnHoverEffect(
                   child: InkWell(
                     onTap: () {
-                      showImageGalerie(images: images, index: 4);
+                      showImageGalerie(context, images: images, index: 4);
                     },
                     child: Container(
                       height: 276,
@@ -585,16 +586,6 @@ class _SuiteDetailState extends State<SuiteDetail> {
           ],
         ),
       ],
-    );
-  }
-
-  void showImageGalerie({List<img.Image>? images, int? index}) {
-    showDialog(
-      context: context,
-      builder: (context) => SuiteGaleryImage(
-        images: images,
-        index: index,
-      ),
     );
   }
 }

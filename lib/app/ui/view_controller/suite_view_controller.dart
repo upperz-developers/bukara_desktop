@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/shared/common_models.dart';
 import 'package:bukara/app/providers/user/user.dart';
+import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/enterprise_view_controller.dart';
+import 'package:bukara/app/ui/views/app/suite/add_suite.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,12 +57,38 @@ class SuiteViewController {
     }
   }
 
-  bool validated() =>
-      designation.text.trim().isNotEmpty &&
-      description.text.trim().isNotEmpty &&
-      price.text.trim().isNotEmpty &&
-      images.length == 5 &&
-      addressController.validated();
+  bool validated(BuildContext context) {
+    if (isSuiteEdit != true && images.length < 5) {
+      alertInfo(
+        context,
+        action: "Quitter",
+        onTap: () {
+          Navigator.pop(context);
+        },
+        body:
+            "Les images ne doivent pas etre nulle et doivent etre au nombre de cinq",
+        head: "Image",
+      );
+      return false;
+    }
+    if (isSuiteEdit == true && images.isNotEmpty && images.length < 5) {
+      alertInfo(
+        context,
+        action: "Quitter",
+        onTap: () {
+          Navigator.pop(context);
+        },
+        body: "Les images doivent etre au nombre de cinq",
+        head: "Image",
+      );
+      return false;
+    }
+
+    return designation.text.trim().isNotEmpty &&
+        description.text.trim().isNotEmpty &&
+        price.text.trim().isNotEmpty &&
+        addressController.validated();
+  }
 
   void submit(BuildContext context) {
     Map<String, dynamic> caracteristic = {
@@ -72,52 +99,83 @@ class SuiteViewController {
       "other": selectedCaracteristics,
     };
 
-    if (validated()) {
-      String? typeBienId = getAppConfig()
-          .typeBiens!
-          .where((typebien) => typebien.designation == selectedGoods)
-          .first
-          .id;
-      String? typeAppart = getAppConfig()
-          .typeAppart!
-          .where((typeAppart) => typeAppart.designation == selectedSuite)
-          .first
-          .id;
+    String? typeBienId = getAppConfig()
+        .typeBiens!
+        .where((typebien) => typebien.designation == selectedGoods)
+        .first
+        .id;
+    String? typeAppart = getAppConfig()
+        .typeAppart!
+        .where((typeAppart) => typeAppart.designation == selectedSuite)
+        .first
+        .id;
 
-      Addresses suiteAdress = Addresses(
-        city: addressController.city.text.trim(),
-        town: addressController.town.text.trim(),
-        country: addressController.country.text.trim(),
-        quarter: addressController.quater.text.trim(),
-        street: addressController.avenue.text.trim(),
-        number: int.tryParse(addressController.number.text.trim()),
-        common: addressController.commune.text.trim(),
-      );
-      suiteAdress.toJson().removeWhere((key, value) => value == null);
+    Addresses suiteAdress = Addresses(
+      city: isSuiteEdit == true && addressController.city.text.trim().isEmpty
+          ? suiteToEdit!.address!.city
+          : addressController.city.text.trim(),
+      town: isSuiteEdit == true && addressController.town.text.trim().isEmpty
+          ? suiteToEdit!.address!.town
+          : addressController.town.text.trim(),
+      country:
+          isSuiteEdit == true && addressController.country.text.trim().isEmpty
+              ? suiteToEdit!.address!.country
+              : addressController.country.text.trim(),
+      quarter:
+          isSuiteEdit == true && addressController.quater.text.trim().isEmpty
+              ? suiteToEdit!.address!.quarter
+              : addressController.quater.text.trim(),
+      street:
+          isSuiteEdit == true && addressController.avenue.text.trim().isEmpty
+              ? suiteToEdit!.address!.city
+              : addressController.avenue.text.trim(),
+      number:
+          isSuiteEdit == true && addressController.number.text.trim().isEmpty
+              ? suiteToEdit!.address!.number
+              : int.tryParse(addressController.number.text.trim()),
+      common:
+          isSuiteEdit == true && addressController.commune.text.trim().isEmpty
+              ? suiteToEdit!.address!.common
+              : addressController.commune.text.trim(),
+    );
 
-      Map<String, dynamic> data = {
-        "designation": designation.text.trim(),
-        "typeBienId": typeBienId,
-        "typeAppartementId": typeAppart,
-        "description": description.text.trim(),
-        "features": jsonEncode(caracteristic),
-        "address": suiteAdress.toJson(),
-        "number": selectedSuiteNumber,
-        "price": double.tryParse(price.text.trim()),
-      };
+    suiteAdress.toJson().removeWhere((key, value) => value == null);
 
-      List<String> imagePaths = [];
-      for (File image in images) {
-        imagePaths.add(image.path);
-      }
+    Map<String, dynamic> data = {
+      "designation": isSuiteEdit == true && designation.text.trim().isEmpty
+          ? suiteToEdit!.designation
+          : designation.text.trim(),
+      "typeBienId": typeBienId,
+      "typeAppartementId": typeAppart,
+      "description": isSuiteEdit == true && description.text.trim().isEmpty
+          ? suiteToEdit!.description
+          : description.text.trim(),
+      "features": jsonEncode(caracteristic),
+      "address": suiteAdress.toJson(),
+      "number": selectedSuiteNumber,
+      "price": isSuiteEdit == true && price.text.trim().isEmpty
+          ? suiteToEdit!.price
+          : double.tryParse(price.text.trim()),
+    };
 
-      context.read<AppBloc>().add(
-            ADDSUITE(
-              data: data,
-              imagePaths: imagePaths,
-            ),
-          );
+    List<String> imagePaths = [];
+    for (File image in images) {
+      imagePaths.add(image.path);
     }
+
+    context.read<AppBloc>().add(
+          isSuiteEdit == true
+              ? EDITSUITE(
+                  data: data,
+                  imagePaths: imagePaths,
+                  appartId: suiteToEdit!.id,
+                  address: suiteAdress.toJson(),
+                )
+              : ADDSUITE(
+                  data: data,
+                  imagePaths: imagePaths,
+                ),
+        );
   }
 
   Future<void> pickImages() async {

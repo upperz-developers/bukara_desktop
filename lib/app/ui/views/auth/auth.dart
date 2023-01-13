@@ -106,7 +106,7 @@ class _AuthState extends State<Auth> {
               context: context,
             );
           },
-          title: isLoginAction ? "Connexion" : "Creer un compte",
+          title: isLoginAction ? "Connexion" : "Créer un compte",
           textColor: AppColors.WHITE_COLOR,
           backgroundColor: AppColors.BLACK_COLOR,
         ),
@@ -147,7 +147,7 @@ class _AuthState extends State<Auth> {
           onTap: () {
             isLogin.value = !isLogin.value;
           },
-          title: isLoginAction ? "Creer un compte" : "Connexion",
+          title: isLoginAction ? "Créer un compte" : "Connexion",
           textColor: AppColors.BLACK_COLOR,
           backgroundColor: AppColors.DISABLE_COLOR,
         ),

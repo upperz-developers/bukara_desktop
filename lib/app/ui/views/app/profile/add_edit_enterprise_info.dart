@@ -77,12 +77,12 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
         ),
         modelInfo(
           title: "IDNAT",
-          hint: "Numero de l'indentification national",
+          hint: "Numéro de l'indentification national",
           controller: enterpriseController.idnat,
         ),
         modelInfo(
           title: "Impot",
-          hint: "Numero impot",
+          hint: "Numéro impot",
           controller: enterpriseController.impot,
         ),
         Text(
@@ -134,11 +134,6 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
           "Adresse",
         ),
         modelInfo(
-          title: "Reference",
-          hint: "Entrez la reference",
-          controller: enterpriseController.addressController.reference,
-        ),
-        modelInfo(
           title: "Pays",
           hint: "Rep dem du congo",
           controller: enterpriseController.addressController.country,
@@ -160,7 +155,7 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
         ),
         modelInfo(
           title: "Quartier",
-          hint: "Entrer le cartier",
+          hint: "Entrer le quartier",
           controller: enterpriseController.addressController.quater,
         ),
         modelInfo(
@@ -169,8 +164,8 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
           controller: enterpriseController.addressController.avenue,
         ),
         modelInfo(
-          title: "Numero",
-          hint: "Entrer le numero",
+          title: "Numéro",
+          hint: "Entrer le numéro",
           controller: enterpriseController.addressController.number,
         ),
       ],
@@ -236,7 +231,7 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
                 ),
               ),
               Text(
-                "Numero",
+                "Numéro",
                 style: GoogleFonts.montserrat(
                   textStyle: const TextStyle(
                     fontSize: 12,
@@ -273,29 +268,6 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            "Logo",
-            style: GoogleFonts.montserrat(
-              textStyle: const TextStyle(
-                fontSize: 12,
-                color: AppColors.SECOND_TEXT_COLOR,
-              ),
-            ),
-          ),
-          8.heightBox,
-          OnHoverEffect(
-            child: InkWell(
-              child: Container(
-                height: 200,
-                width: 200,
-                decoration: BoxDecoration(
-                  color: AppColors.WHITE_COLOR,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-            ),
-          ),
-          30.heightBox,
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -330,11 +302,11 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
                         action: "Annuler",
                         action1: "Continuer",
                         body:
-                            "Etes-vous sur de vouloir? Si vous anuuler l'operation les informations saisies seront effecees",
+                            "Etes-vous sur de vouloir annuler? Si vous annuler l'opération les informations saisies seront effacées",
                         onTap1: () {
                           Navigator.pop(context);
                         },
-                        head: "Annuler l'operation",
+                        head: "Annuler l'opération",
                         onTap: () {
                           Navigator.pop(context);
                           widget.isEdit.value = false;
@@ -385,7 +357,7 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
           controller: enterpriseController.bankController.accounName,
         ),
         modelInfo(
-          title: "Numero de compte",
+          title: "Numéro de compte",
           hint: "0000 0000 0000 0000 0000 000",
           controller: enterpriseController.bankController.accountNumber,
         ),

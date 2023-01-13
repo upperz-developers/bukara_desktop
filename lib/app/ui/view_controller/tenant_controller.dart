@@ -1,5 +1,7 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/providers/tenant/model.dart';
+import 'package:bukara/app/ui/views/app/tenant/add_tenant.dart';
 import 'package:flutter/material.dart';
 
 class TenantController {
@@ -28,28 +30,51 @@ class TenantController {
     lastAddress = TextEditingController();
   }
 
-  void submit(AppBloc bloc) {
+  void submit({AppBloc? bloc, bool? isEdit, TenantModel? tenant}) {
     List<Map<String, dynamic>> phones = [];
     phones.add({
-      "countryCode": countryCode,
-      "number": phoneNumber!.text.trim(),
+      "countryCode": isEdit == true && countryCode == "+243"
+          ? tenant!.phones![0].countryCode
+          : countryCode,
+      "number": isEdit == true && phoneNumber!.text.trim().isEmpty
+          ? tenant!.phones![0].number
+          : phoneNumber!.text.trim(),
       "running": true
     });
 
     Map<String, dynamic> data = {
-      "name": firstName!.text.trim(),
-      "lastname": lastname!.text.trim(),
-      "email": email!.text.trim(),
+      "name": isEdit == true && firstName!.text.trim().isEmpty
+          ? tenant!.name
+          : firstName!.text.trim(),
+      "lastname": isEdit == true && lastname!.text.trim().isEmpty
+          ? tenant!.lastname
+          : lastname!.text.trim(),
+      "email": isEdit == true && email!.text.trim().isEmpty
+          ? tenant!.email
+          : email!.text.trim(),
       "landlordType": selectedTenantType,
       "cardType": selectedCardType,
-      "lastAdress": lastAddress!.text.trim(),
-      "cardTypeId": cartId!.text.trim(),
+      "lastAdress": isEdit == true && lastAddress!.text.trim().isEmpty
+          ? tenant!.landlordType
+          : lastAddress!.text.trim(),
+      "cardTypeId": isEdit == true && cartId!.text.trim().isEmpty
+          ? null
+          : cartId!.text.trim(),
       "maritalStatus": selectedTenantCivilState,
       "phones": phones,
-      "nationality": nationalite!.text.trim(),
+      "nationality": isEdit == true && nationalite!.text.trim().isEmpty
+          ? tenant!.nationality
+          : nationalite!.text.trim(),
     };
-    bloc.add(
-      ADDTENANT(data: data),
+    data.removeWhere((key, value) => value == null);
+    bloc!.add(
+      isEditTenant == true
+          ? EDDITTENANT(
+              phone: phones.first,
+              tenantId: tenant!.id,
+              data: data,
+            )
+          : ADDTENANT(data: data),
     );
   }
 

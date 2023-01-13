@@ -26,11 +26,50 @@ class _Tenant extends State<Tenant> {
   ValueNotifier<bool> isShowTenant = ValueNotifier(false);
   TenantModel? selectedTenant;
   AppBloc? _bloc;
+
+  TextEditingController? search;
+
   @override
   void initState() {
+    isEditTenant = false;
+    search = TextEditingController()..addListener(searchListener);
     _bloc = AppBloc();
     _bloc!.add(GETTENANT());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    search!.removeListener(searchListener);
+    super.dispose();
+  }
+
+  List<TenantModel> tenants = [];
+  List<TenantModel> searchTenant = [];
+  bool isSearch = false;
+  void searchListener() {
+    setState(() {
+      isSearch = search!.text.isNotEmpty;
+      if (isSearch) {
+        searchTenant = tenants
+            .where(
+              (t) =>
+                  t.name!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ) ||
+                  t.lastname!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ) ||
+                  t.email!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ) ||
+                  t.phones![0].number!.toLowerCase().contains(
+                        search!.text.trim().toLowerCase(),
+                      ),
+            )
+            .toList();
+      }
+    });
   }
 
   @override
@@ -58,12 +97,11 @@ class _Tenant extends State<Tenant> {
                 }
 
                 if (state is SUCCESS) {
-                  List<TenantModel> tenants = [];
                   tenants = state.value;
-                  return buidData(tenants);
+                  return buidData(isSearch ? searchTenant : tenants);
                 } else if (state is ERROR) {
                   return NoData(
-                    message: state.dueTo!,
+                    dueTo: state.dueTo!.errors!,
                     onTap: () {
                       _bloc!.add(GETTENANT());
                     },
@@ -144,8 +182,17 @@ class _Tenant extends State<Tenant> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               modelAction(
-                icon: Iconsax.edit,
-              ),
+                  icon: Iconsax.edit,
+                  onTap: () {
+                    isEditTenant = true;
+                    showDialog(
+                      context: context,
+                      builder: (context) => AddTenants(
+                        tenant: selectedTenant,
+                      ),
+                      barrierDismissible: false,
+                    );
+                  }),
               15.widthBox,
               modelAction(
                   icon: Icons.close,
@@ -183,7 +230,7 @@ class _Tenant extends State<Tenant> {
                     child: Divider(),
                   ),
                   Text(
-                    "Apropos du locataire",
+                    "À propos du locataire",
                     style: GoogleFonts.montserrat(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -371,10 +418,11 @@ class _Tenant extends State<Tenant> {
                     style: GoogleFonts.montserrat(
                       fontSize: 12,
                     ),
+                    controller: search,
                     decoration: InputDecoration(
                         border: InputBorder.none,
                         isDense: true,
-                        hintText: "Tapez un mot cle",
+                        hintText: "Tapez un mot clé",
                         helperStyle: GoogleFonts.montserrat(
                           fontSize: 12,
                         )),

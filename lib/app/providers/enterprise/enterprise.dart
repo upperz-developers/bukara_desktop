@@ -90,6 +90,10 @@ class Enterprise {
     if (banks != null) {
       data['bank_accounts'] = banks!.map((v) => v.toJson()).toList();
     }
+
+    if (banks != null) {
+      data['banks'] = banks!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }

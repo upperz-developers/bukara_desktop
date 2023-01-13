@@ -409,3 +409,151 @@ alertMessage(
     ),
   );
 }
+
+alertInfo(
+  BuildContext context, {
+  String? head,
+  String? body,
+  String? action,
+  Function()? onTap,
+}) {
+  showDialog(
+    context: context,
+    barrierColor: Colors.black.withOpacity(.3),
+    barrierDismissible: true,
+    builder: (context) => SimpleDialog(
+      backgroundColor: fluent.FluentTheme.of(context).scaffoldBackgroundColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      contentPadding: const EdgeInsets.all(0),
+      children: [
+        SizedBox(
+          width: 330,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      head!,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      body!,
+                      style: GoogleFonts.montserrat(
+                        fontSize: 12,
+                        color: AppColors.SECOND_TEXT_COLOR,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  color: fluent.FluentTheme.of(context).cardColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(10),
+                    bottomRight: Radius.circular(10),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    InkWell(
+                      onTap: onTap,
+                      borderRadius: BorderRadius.circular(4),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: AppColors.DISABLE_COLOR,
+                        ),
+                        child: Text(
+                          action!,
+                          style: GoogleFonts.montserrat(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget line({double? padding}) {
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Container(
+          height: 1,
+          decoration: const BoxDecoration(
+            color: Color.fromARGB(255, 215, 214, 214),
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget custormButtonLogout(
+  BuildContext context, {
+  Color? color,
+  String? title,
+  Color? colorText,
+  Function()? onTap,
+  AppState? state,
+}) {
+  return InkWell(
+    onTap: onTap,
+    child: Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(
+        vertical: 10,
+        horizontal: 20,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(4),
+        color: color,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          state is LOADING
+              ? const SizedBox(
+                  height: 15,
+                  width: 15,
+                  child: CircularProgressIndicator(
+                    color: AppColors.WHITE_COLOR,
+                  ),
+                )
+              : Text("$title",
+                  style: GoogleFonts.montserrat(
+                    color: colorText,
+                    fontWeight: FontWeight.bold,
+                  )),
+        ],
+      ),
+    ),
+  );
+}

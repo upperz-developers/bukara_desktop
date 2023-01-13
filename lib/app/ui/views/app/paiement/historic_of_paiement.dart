@@ -7,8 +7,20 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class HistoricOfPaiement extends StatelessWidget {
+class HistoricOfPaiement extends StatefulWidget {
   const HistoricOfPaiement({super.key});
+
+  @override
+  State<HistoricOfPaiement> createState() => _HistoricOfPaiementState();
+}
+
+class _HistoricOfPaiementState extends State<HistoricOfPaiement> {
+  TextEditingController? search;
+  @override
+  void initState() {
+    search = TextEditingController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +43,9 @@ class HistoricOfPaiement extends StatelessWidget {
               child: Column(
                 children: [
                   infoTabBar(),
-                  const ShowPaiementHistoric(),
+                  ShowPaiementHistoric(
+                    search: search,
+                  ),
                 ],
               ),
             ),
@@ -68,13 +82,14 @@ class HistoricOfPaiement extends StatelessWidget {
                   children: [
                     Expanded(
                       child: TextField(
+                        controller: search,
                         style: GoogleFonts.montserrat(
                           fontSize: 12,
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           isDense: true,
-                          hintText: "Tapez un mot cle",
+                          hintText: "Tapez le nom du locataire",
                           helperStyle: GoogleFonts.montserrat(
                             fontSize: 12,
                           ),

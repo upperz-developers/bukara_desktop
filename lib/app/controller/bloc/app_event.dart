@@ -42,10 +42,36 @@ class ADDSUITE implements AppEvent {
   ADDSUITE({this.data, this.imagePaths});
 }
 
+class EDITSUITE implements AppEvent {
+  final Map<String, dynamic>? data;
+  final List<String>? imagePaths;
+  final String? appartId;
+  final Map<String, dynamic>? address;
+
+  EDITSUITE({
+    this.data,
+    this.imagePaths,
+    this.appartId,
+    this.address,
+  });
+}
+
 class ADDTENANT implements AppEvent {
   final Map<String, dynamic>? data;
 
   ADDTENANT({this.data});
+}
+
+class EDDITTENANT implements AppEvent {
+  final Map<String, dynamic>? data;
+  final Map<String, dynamic>? phone;
+  final String? tenantId;
+
+  EDDITTENANT({
+    this.data,
+    this.phone,
+    this.tenantId,
+  });
 }
 
 class GETTENANT implements AppEvent {}

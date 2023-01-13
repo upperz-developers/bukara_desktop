@@ -1,5 +1,6 @@
 import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
+import 'package:bukara/app/ui/views/app/suite/add_suite.dart';
 import 'package:bukara/app/ui/views/app/suite/detail_suite.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
@@ -10,13 +11,48 @@ import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class ShowSuite extends StatefulWidget {
-  const ShowSuite({super.key});
+  final ValueNotifier<bool> isShowingData;
+  final TextEditingController? search;
+  const ShowSuite({super.key, required this.isShowingData, this.search});
 
   @override
   State<ShowSuite> createState() => _ShowSuiteState();
 }
 
 class _ShowSuiteState extends State<ShowSuite> {
+  @override
+  void initState() {
+    widget.search!.addListener(searchListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    widget.search!.removeListener(searchListener);
+    super.dispose();
+  }
+
+  bool isSearch = false;
+  List<Suite> searchSuite = [];
+  void searchListener() {
+    setState(() {
+      isSearch = widget.search!.text.trim().isNotEmpty;
+      if (isSearch) {
+        searchSuite = suites
+            .where(
+              (s) =>
+                  s.designation!.toLowerCase().contains(
+                        widget.search!.text.trim().toLowerCase(),
+                      ) ||
+                  s.price!.toString().toLowerCase().contains(
+                        widget.search!.text.trim().toLowerCase(),
+                      ),
+            )
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(
@@ -29,10 +65,10 @@ class _ShowSuiteState extends State<ShowSuite> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(
-                  suites.length,
+                  isSearch ? searchSuite.length : suites.length,
                   (index) => suiteDetail(
                     index: index,
-                    suite: suites[index],
+                    suite: isSearch ? searchSuite[index] : suites[index],
                   ),
                 ),
               ),
@@ -213,7 +249,7 @@ class _ShowSuiteState extends State<ShowSuite> {
                 flex: 3,
                 child: suiteDetailModel(
                     title:
-                        "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, commune, ${suite.address!.town}, province, ${suite.address!.country}"),
+                        "${suite.address!.number}, ${suite.address!.street}, ${suite.address!.quarter}, ${suite.address!.common}, ${suite.address!.town}, ${suite.address!.country}"),
               ),
               space.widthBox,
               Expanded(
@@ -230,7 +266,7 @@ class _ShowSuiteState extends State<ShowSuite> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    suite.status! ? "Occupe" : "Inoccupe",
+                    suite.status! ? "Occuper" : "Inoccuper",
                     style: GoogleFonts.montserrat(
                       fontSize: 10,
                     ),
@@ -244,8 +280,12 @@ class _ShowSuiteState extends State<ShowSuite> {
                   spacing: 15,
                   children: [
                     modelAction(
-                      icon: Iconsax.edit,
-                    ),
+                        icon: Iconsax.edit,
+                        onTap: () {
+                          isSuiteEdit = true;
+                          widget.isShowingData.value = false;
+                          suiteToEdit = suite;
+                        }),
                     modelAction(
                       onTap: () {
                         Navigator.pushNamed(

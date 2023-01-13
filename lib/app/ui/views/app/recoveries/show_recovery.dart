@@ -127,7 +127,7 @@ class _ShowRecoveryState extends State<ShowRecovery> {
             30.widthBox,
             Expanded(
               flex: 2,
-              child: tabDetailModel(title: "Libele"),
+              child: tabDetailModel(title: "Libellé"),
             ),
             space.widthBox,
             Expanded(
@@ -137,7 +137,7 @@ class _ShowRecoveryState extends State<ShowRecovery> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Date debut"),
+              child: tabDetailModel(title: "Date début"),
             ),
             space.widthBox,
             Expanded(
