@@ -54,10 +54,9 @@ class _RentSuiteState extends State<RentSuite> {
       bloc: bloc,
       listener: ((context, state) {
         if (state is SUCCESS) {
-          Navigator.pop(context);
+          Navigator.pop(context, "success");
         } else if (state is ERROR) {
           isError.value = true;
-
           errorModel(context, dueTo: state.dueTo!.errors!);
         }
       }),

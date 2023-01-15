@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bukara/app/providers/contrat/model.dart';
 import 'package:bukara/app/providers/shared/common_models.dart';
 import 'package:bukara/app/providers/user/user.dart';
 
@@ -40,6 +41,7 @@ class Suite {
   SuiteFeature? features;
   bool? status;
   int? price;
+  List<Contrat>? contrats;
   String? createdAt;
   String? updatedAt;
   Addresses? address;
@@ -59,9 +61,10 @@ class Suite {
     this.address,
     this.images,
     this.designation,
+    this.contrats,
   });
 
-  Suite.fromJson(Map<String, dynamic> json) {
+  Suite.fromJson(Map<String, dynamic> json) : contrats = [] {
     images = [];
     id = json['id'];
     typeBien =
@@ -80,6 +83,11 @@ class Suite {
     price = json['price'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    if (json["rental_contrat"] != null) {
+      json["rental_contrat"].forEach((c) {
+        contrats!.add(Contrat.fromJson(c));
+      });
+    }
     address =
         json['address'] != null ? Addresses.fromJson(json['address']) : null;
     if (json['images'] != null) {

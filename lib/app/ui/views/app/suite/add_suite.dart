@@ -28,9 +28,10 @@ class _AddSuiteState extends State<AddSuite> {
 
   removeImage(index) {
     setState(() {
-      if (isSuiteEdit == true) {
+      if (isSuiteEdit == true && suiteToEdit!.images!.isNotEmpty) {
         suiteViewController.editedImage.removeWhere(
-            (img) => img['imageId'] == suiteToEdit!.images![index]);
+            (img) => img['imageId'] == suiteToEdit!.images![index].id);
+
         switch (index) {
           case 0:
             suiteViewController.changedImageAtIndex0 = null;
@@ -93,9 +94,11 @@ class _AddSuiteState extends State<AddSuite> {
       suiteViewController.submit(context);
       return;
     }
-    setState(() {
-      submitted = true;
-    });
+    if (isSuiteEdit != true) {
+      setState(() {
+        submitted = true;
+      });
+    }
   }
 
   @override

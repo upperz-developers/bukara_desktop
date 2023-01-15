@@ -128,67 +128,77 @@ class _SuiteHomeState extends State<SuiteHome>
       decoration: const BoxDecoration(
         color: AppColors.DISABLE_COLOR,
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          OnHoverEffect(
-            child: InkWell(
-              onTap: () {
-                isShowingData.value = false;
-                isSuiteEdit = false;
-              },
-              child: Container(
-                height: 25,
-                width: 25,
-                decoration: BoxDecoration(
-                  color: AppColors.BLACK_COLOR,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(
-                  Iconsax.add,
-                  color: AppColors.WHITE_COLOR,
-                ),
-              ),
-            ),
-          ),
-          15.widthBox,
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            width: 250,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(
-                color: AppColors.BORDER_COLOR,
-              ),
-            ),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    style: GoogleFonts.montserrat(
-                      fontSize: 12,
-                    ),
-                    controller: search,
-                    decoration: InputDecoration(
-                        border: InputBorder.none,
-                        isDense: true,
-                        hintText: "Tapez un mot clé",
-                        helperStyle: GoogleFonts.montserrat(
-                          fontSize: 12,
-                        )),
-                  ),
-                ),
-                10.widthBox,
-                const Icon(
-                  Iconsax.search_normal,
-                  color: AppColors.SECOND_TEXT_COLOR,
-                  size: 16,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+      child: ValueListenableBuilder(
+          valueListenable: isShowingData,
+          builder: (context, bool isShown, child) {
+            return !isShown
+                ? SizedBox(
+                    height: 30,
+                    width: MediaQuery.of(context).size.width,
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      OnHoverEffect(
+                        child: InkWell(
+                          onTap: () {
+                            isShowingData.value = false;
+                            isSuiteEdit = false;
+                          },
+                          child: Container(
+                            height: 25,
+                            width: 25,
+                            decoration: BoxDecoration(
+                              color: AppColors.BLACK_COLOR,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: const Icon(
+                              Iconsax.add,
+                              color: AppColors.WHITE_COLOR,
+                            ),
+                          ),
+                        ),
+                      ),
+                      15.widthBox,
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 10),
+                        width: 250,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                            color: AppColors.BORDER_COLOR,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                style: GoogleFonts.montserrat(
+                                  fontSize: 12,
+                                ),
+                                controller: search,
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    isDense: true,
+                                    hintText: "Tapez un mot clé",
+                                    helperStyle: GoogleFonts.montserrat(
+                                      fontSize: 12,
+                                    )),
+                              ),
+                            ),
+                            10.widthBox,
+                            const Icon(
+                              Iconsax.search_normal,
+                              color: AppColors.SECOND_TEXT_COLOR,
+                              size: 16,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+          }),
     );
   }
 }

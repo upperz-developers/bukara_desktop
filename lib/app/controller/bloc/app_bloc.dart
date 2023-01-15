@@ -3,6 +3,7 @@ import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/controller/shared/shared.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
+import 'package:bukara/app/providers/contrat/provider.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/enterprise/repository.dart';
 import 'package:bukara/app/providers/payement/model.dart';
@@ -240,6 +241,36 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           phoneId: event.phoneId,
         );
         emit(const SUCCESS());
+      } on Exception catch (e) {
+        hundleError(e: e, emit: emit);
+      }
+    });
+    on<BREACKCONTRAT>((event, emit) async {
+      emit(const LOADING());
+      try {
+        await breakContrat(
+          contratId: event.contratId,
+          tenantId: event.tenantId,
+        );
+        emit(const SUCCESS());
+      } on Exception catch (e) {
+        hundleError(e: e, emit: emit);
+      }
+    });
+
+    on<EDITENTERPRIS>((event, emit) async {
+      emit(const LOADING());
+
+      try {
+        await editEnterprise(
+          enterprise: event.enterprise,
+          address: event.address,
+          bank: event.bank,
+        );
+        AppBloc().add(GETENTERPRISE());
+        emit(
+          const SUCCESS(),
+        );
       } on Exception catch (e) {
         hundleError(e: e, emit: emit);
       }

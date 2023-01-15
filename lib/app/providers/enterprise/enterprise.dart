@@ -44,22 +44,23 @@ class Enterprise {
   })  : addresses = [],
         banks = [];
 
-  Enterprise.fromJson(Map<String, dynamic> json) {
+  Enterprise.fromJson(Map<String, dynamic> json)
+      : addresses = <Addresses>[],
+        banks = <Banks>[] {
     id = json['id'];
     designation = json['designation'];
     description = json['description'];
     rccm = json['rccm'];
     logo = json['logo'];
-    idnat = json['idnat'];
     phones = json['phones'];
     impot = json['tax_number'];
     email = json['email'];
     site = json['site'];
+    idnat = json['inat'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
 
     if (json['addresses'] != null) {
-      addresses = <Addresses>[];
       json['addresses'].forEach((v) {
         addresses!.add(
           Addresses.fromJson(v),
@@ -76,13 +77,14 @@ class Enterprise {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
+    data['id'] = id;
     data['designation'] = designation;
     data['description'] = description;
     data['rccm'] = rccm;
-    data['idnat'] = idnat;
     data['phones'] = phones;
     data['email'] = email;
     data['site'] = site;
+    data['inat'] = idnat;
     data['tax_number'] = impot;
     if (addresses != null) {
       data['addresses'] = addresses!.map((v) => v.toJson()).toList();
@@ -94,6 +96,7 @@ class Enterprise {
     if (banks != null) {
       data['banks'] = banks!.map((v) => v.toJson()).toList();
     }
+    // print(data);
     return data;
   }
 }

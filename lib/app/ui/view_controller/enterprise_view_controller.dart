@@ -2,6 +2,7 @@ import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/providers/enterprise/enterprise.dart';
 import 'package:bukara/app/providers/shared/common_models.dart';
+import 'package:bukara/app/ui/view_controller/auth_view_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,14 +26,15 @@ class EnterpriseController {
         bankController = BankController(),
         contactController = ContactController();
 
-  bool validated() =>
-      designation.text.trim().isNotEmpty &&
-      rccm.text.trim().isNotEmpty &&
-      idnat.text.trim().isNotEmpty &&
-      impot.text.trim().isNotEmpty &&
-      addressController.validated() &&
-      contactController.validated() &&
-      bankController.validated();
+  bool validated() {
+    return designation.text.trim().isNotEmpty &&
+        rccm.text.trim().isNotEmpty &&
+        idnat.text.trim().isNotEmpty &&
+        impot.text.trim().isNotEmpty &&
+        addressController.validated() &&
+        contactController.validated() &&
+        bankController.validated();
+  }
 
   void submit(BuildContext context) {
     Enterprise enterprise = Enterprise(
@@ -65,10 +67,24 @@ class EnterpriseController {
 
     enterprise.addresses!.add(addresse);
     enterprise.banks!.add(bank);
+
+    String? enterpriseDesignation =
+        AuthController().enterpriseData.value.designation;
+    if (enterpriseDesignation != null) {
+      bank.id = AuthController().enterpriseData.value.banks![0].id;
+      addresse.id = AuthController().enterpriseData.value.addresses![0].id;
+      enterprise.id = AuthController().enterpriseData.value.id;
+    }
     context.read<AppBloc>().add(
-          ADDENTERPRISE(
-            enterprise: enterprise,
-          ),
+          enterpriseDesignation != null
+              ? EDITENTERPRIS(
+                  enterprise: enterprise.toJson(),
+                  address: addresse.toJson(),
+                  bank: bank.toJson(),
+                )
+              : ADDENTERPRISE(
+                  enterprise: enterprise,
+                ),
         );
   }
 
