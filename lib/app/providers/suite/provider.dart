@@ -38,9 +38,10 @@ Future<Response> addAppart(
 
 Future<Response> editAppart(
     {Map<String, dynamic>? data,
-    List<String>? imagePaths,
+    List<Map<String, dynamic>>? editedImage,
     String? appartId,
-    Map<String, dynamic>? address}) async {
+    Map<String, dynamic>? address,
+    List<String>? imagePaths}) async {
   var endPoint = "${APIURL.ADDAPART}/$appartId";
   var response = await httpPutWithToken(
     endPoint: endPoint,
@@ -52,28 +53,47 @@ Future<Response> editAppart(
     data: address,
   );
 
-  if (imagePaths!.isNotEmpty) {
-    List<MultipartFile> sendImages = [];
-    for (String path in imagePaths) {
-      String fileName = path.split("/").last;
-      sendImages.add(
-        await MultipartFile.fromFile(
-          path,
-          filename: fileName,
-        ),
+  if (editedImage!.isNotEmpty) {
+    MultipartFile sendImage;
+    for (Map<String, dynamic> imageToEdit in editedImage) {
+      String fileName = imageToEdit['filePath'].split("/").last;
+      sendImage = await MultipartFile.fromFile(
+        imageToEdit['filePath'],
+        filename: fileName,
+      );
+      FormData formData = FormData.fromMap(
+        {
+          "image": sendImage,
+        },
+      );
+      response = await httpPutWithToken(
+        endPoint: APIURL.EDITAPARTIMAGE + imageToEdit['imageId'],
+        data: formData,
       );
     }
+  }
 
+  for (String path in imagePaths!) {
+    List<MultipartFile> sendImages = [];
+    String fileName = path.split("/").last;
+    sendImages.add(
+      await MultipartFile.fromFile(
+        path,
+        filename: fileName,
+      ),
+    );
     FormData formData = FormData.fromMap(
       {
         "image": sendImages,
       },
     );
+
     response = await httpPostWithToken(
-      endPoint: APIURL.EDITAPARTIMAGE + appartId,
+      endPoint: APIURL.ADDAPARTIMAGE + appartId,
       data: formData,
     );
   }
+
   return response;
 }
 

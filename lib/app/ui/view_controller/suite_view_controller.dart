@@ -25,6 +25,11 @@ class SuiteViewController {
     "Parking": Iconsax.car,
     "Piscine": Iconsax.bezier,
   };
+  File? changedImageAtIndex0,
+      changedImageAtIndex1,
+      changedImageAtIndex2,
+      changedImageAtIndex3,
+      changedImageAtIndex4;
   TextEditingController designation;
   TextEditingController description;
   TextEditingController price;
@@ -38,6 +43,7 @@ class SuiteViewController {
   String selectedCountLeavingRoom = "0";
   String selectedSuiteNumber = "1";
   List<File> images;
+  List<Map<String, dynamic>> editedImage;
   List<String> typeApparts;
   List<String> typebiens;
   SuiteViewController()
@@ -48,6 +54,7 @@ class SuiteViewController {
         selectedCaracteristics = [],
         images = [],
         typeApparts = [],
+        editedImage = [],
         typebiens = [] {
     for (TypeAppart typeAppart in getAppConfig().typeAppart!) {
       typeApparts.add(typeAppart.designation!);
@@ -71,7 +78,10 @@ class SuiteViewController {
       );
       return false;
     }
-    if (isSuiteEdit == true && images.isNotEmpty && images.length < 5) {
+    if (isSuiteEdit == true &&
+        suiteToEdit!.images!.isEmpty &&
+        images.isNotEmpty &&
+        images.length < 5) {
       alertInfo(
         context,
         action: "Quitter",
@@ -85,9 +95,10 @@ class SuiteViewController {
     }
 
     return designation.text.trim().isNotEmpty &&
-        description.text.trim().isNotEmpty &&
-        price.text.trim().isNotEmpty &&
-        addressController.validated();
+            description.text.trim().isNotEmpty &&
+            price.text.trim().isNotEmpty &&
+            addressController.validated() ||
+        isSuiteEdit == true;
   }
 
   void submit(BuildContext context) {
@@ -152,7 +163,7 @@ class SuiteViewController {
           : description.text.trim(),
       "features": jsonEncode(caracteristic),
       "address": suiteAdress.toJson(),
-      "number": selectedSuiteNumber,
+      "number": selectedSuiteNumber == "0" ? "1" : selectedSuiteNumber,
       "price": isSuiteEdit == true && price.text.trim().isEmpty
           ? suiteToEdit!.price
           : double.tryParse(price.text.trim()),
@@ -167,6 +178,7 @@ class SuiteViewController {
           isSuiteEdit == true
               ? EDITSUITE(
                   data: data,
+                  editedImage: editedImage,
                   imagePaths: imagePaths,
                   appartId: suiteToEdit!.id,
                   address: suiteAdress.toJson(),
@@ -197,6 +209,35 @@ class SuiteViewController {
         for (int i = 0; i < length; i++) {
           images.add(files[i]);
         }
+      }
+    }
+  }
+
+  Future<void> pickOneImage({String? imageId, required int? index}) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['jpg', 'png'],
+    );
+
+    if (result != null) {
+      List<File> files = result.paths.map((path) => File(path!)).toList();
+      editedImage.add({"imageId": imageId, "filePath": files.first.path});
+      switch (index) {
+        case 0:
+          changedImageAtIndex0 = files.first;
+          break;
+        case 1:
+          changedImageAtIndex1 = files.first;
+          break;
+        case 2:
+          changedImageAtIndex2 = files.first;
+          break;
+        case 3:
+          changedImageAtIndex3 = files.first;
+          break;
+        default:
+          changedImageAtIndex4 = files.first;
       }
     }
   }

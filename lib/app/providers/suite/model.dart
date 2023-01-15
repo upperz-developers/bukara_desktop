@@ -62,6 +62,7 @@ class Suite {
   });
 
   Suite.fromJson(Map<String, dynamic> json) {
+    images = [];
     id = json['id'];
     typeBien =
         json['typeBien'] != null ? TypeBiens.fromJson(json['typeBien']) : null;

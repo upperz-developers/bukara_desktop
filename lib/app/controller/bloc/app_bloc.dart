@@ -105,9 +105,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       try {
         await editAppart(
           data: event.data,
-          imagePaths: event.imagePaths,
+          editedImage: event.editedImage,
           appartId: event.appartId,
           address: event.address,
+          imagePaths: event.imagePaths,
         );
 
         emit(
@@ -236,6 +237,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           data: event.data,
           tenantId: event.tenantId,
           phone: event.phone,
+          phoneId: event.phoneId,
         );
         emit(const SUCCESS());
       } on Exception catch (e) {

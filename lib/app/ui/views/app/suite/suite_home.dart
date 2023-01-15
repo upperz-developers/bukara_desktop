@@ -1,7 +1,6 @@
 import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
-import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/suite/provider.dart';
 import 'package:bukara/app/ui/shared/utils/no_data.dart';
 import 'package:bukara/app/ui/squeletton/suite_squeletton.dart';
@@ -11,14 +10,11 @@ import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-List<String> infoBar = ["Tout", "Occuper", "Non occuper"];
 
 class SuiteHome extends StatefulWidget {
   const SuiteHome({super.key});
@@ -126,100 +122,70 @@ class _SuiteHomeState extends State<SuiteHome>
       padding: const EdgeInsets.only(
         left: 130,
         right: 130,
+        top: 10,
+        bottom: 10,
       ),
       decoration: const BoxDecoration(
         color: AppColors.DISABLE_COLOR,
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Expanded(
-            child: Row(
-              children: List.generate(
-                infoBar.length,
-                (index) => Padding(
-                  padding: const EdgeInsets.only(
-                    top: 20,
-                    bottom: 20,
-                  ),
-                  child: InkWell(
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 25),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: AppColors.DISABLE_COLOR,
-                      ),
-                      child: Text(
-                        infoBar[index],
-                        style: GoogleFonts.montserrat(
-                          fontSize: 12,
-                          color: AppColors.SECOND_TEXT_COLOR,
-                        ),
-                      ),
-                    ),
-                  ),
+          OnHoverEffect(
+            child: InkWell(
+              onTap: () {
+                isShowingData.value = false;
+                isSuiteEdit = false;
+              },
+              child: Container(
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                  color: AppColors.BLACK_COLOR,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: const Icon(
+                  Iconsax.add,
+                  color: AppColors.WHITE_COLOR,
                 ),
               ),
             ),
           ),
-          Row(
-            children: [
-              OnHoverEffect(
-                child: InkWell(
-                  onTap: () {
-                    isShowingData.value = false;
-                  },
-                  child: Container(
-                    height: 25,
-                    width: 25,
-                    decoration: BoxDecoration(
-                      color: AppColors.BLACK_COLOR,
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: const Icon(
-                      Iconsax.add,
-                      color: AppColors.WHITE_COLOR,
-                    ),
-                  ),
-                ),
+          15.widthBox,
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+            width: 250,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(
+                color: AppColors.BORDER_COLOR,
               ),
-              15.widthBox,
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                width: 250,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: AppColors.BORDER_COLOR,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        style: GoogleFonts.montserrat(
+            ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    style: GoogleFonts.montserrat(
+                      fontSize: 12,
+                    ),
+                    controller: search,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        isDense: true,
+                        hintText: "Tapez un mot clé",
+                        helperStyle: GoogleFonts.montserrat(
                           fontSize: 12,
-                        ),
-                        controller: search,
-                        decoration: InputDecoration(
-                            border: InputBorder.none,
-                            isDense: true,
-                            hintText: "Tapez un mot clé",
-                            helperStyle: GoogleFonts.montserrat(
-                              fontSize: 12,
-                            )),
-                      ),
-                    ),
-                    10.widthBox,
-                    const Icon(
-                      Iconsax.search_normal,
-                      color: AppColors.SECOND_TEXT_COLOR,
-                      size: 16,
-                    ),
-                  ],
+                        )),
+                  ),
                 ),
-              ),
-            ],
+                10.widthBox,
+                const Icon(
+                  Iconsax.search_normal,
+                  color: AppColors.SECOND_TEXT_COLOR,
+                  size: 16,
+                ),
+              ],
+            ),
           ),
         ],
       ),
