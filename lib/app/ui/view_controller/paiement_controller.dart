@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class PaiementController {
   TextEditingController amount;
   TextEditingController transId;
-  String? recoveryId;
+  String? rentalContratId;
   String selectedPaiementType = "cash";
   List<String> typePaiement = ['cash', 'bank'];
 
@@ -15,7 +15,7 @@ class PaiementController {
 
   submit(AppBloc bloc) {
     var data = {
-      "recovery_id": recoveryId,
+      "rental_contrat_id": rentalContratId,
       "type": selectedPaiementType,
       "amount": double.tryParse(amount.text.trim()),
     };

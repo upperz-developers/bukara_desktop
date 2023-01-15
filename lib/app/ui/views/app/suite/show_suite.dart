@@ -241,7 +241,10 @@ class _ShowSuiteState extends State<ShowSuite> {
               Expanded(
                 flex: 1,
                 child: suite.status!
-                    ? suiteDetailModel(title: "John jean")
+                    ? suiteDetailModel(
+                        title: suite.status == true
+                            ? "${suite.contrats![0].landlord!.name} ${suite.contrats![0].landlord!.lastname}"
+                            : "")
                     : const SizedBox.shrink(),
               ),
               space.widthBox,

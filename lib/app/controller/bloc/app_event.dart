@@ -42,6 +42,14 @@ class ADDSUITE implements AppEvent {
   ADDSUITE({this.data, this.imagePaths});
 }
 
+class EDITENTERPRIS implements AppEvent {
+  final Map<String, dynamic>? enterprise;
+  final Map<String, dynamic>? address;
+  final Map<String, dynamic>? bank;
+
+  EDITENTERPRIS({this.enterprise, this.address, this.bank});
+}
+
 class EDITSUITE implements AppEvent {
   final Map<String, dynamic>? data;
   final List<Map<String, dynamic>>? editedImage;
@@ -100,4 +108,11 @@ class GETPAYEMENTPERRECOVERY implements AppEvent {
   final String recoveryId;
 
   GETPAYEMENTPERRECOVERY({required this.recoveryId});
+}
+
+class BREACKCONTRAT implements AppEvent {
+  final String? tenantId;
+  final String? contratId;
+
+  BREACKCONTRAT({this.tenantId, this.contratId});
 }

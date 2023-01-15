@@ -2,6 +2,7 @@ import 'package:bukara/app/controller/bloc/app_bloc.dart';
 import 'package:bukara/app/controller/bloc/app_event.dart';
 import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/app_prefs.dart';
+import 'package:bukara/app/ui/views/app/home.dart';
 import 'package:bukara/app/ui/views/app/profile/add_edit_enterprise_info.dart';
 import 'package:bukara/app/ui/views/app/profile/profile_enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
@@ -24,6 +25,7 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   ValueNotifier<bool> isEdit = ValueNotifier(false);
+
   @override
   void initState() {
     context.read<AppBloc>().add(GETENTERPRISE());
@@ -33,7 +35,12 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return CustormScaffoldPage(
-      onSuccess: () {},
+      onSuccess: () {
+        if (isEdit.value) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, Home.routeName, (route) => false);
+        }
+      },
       content: Padding(
         padding: EdgeInsets.only(
           left: horizontalSpace,

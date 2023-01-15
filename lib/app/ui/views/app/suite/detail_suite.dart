@@ -1,13 +1,20 @@
+import 'package:bukara/app/controller/bloc/app_bloc.dart';
+import 'package:bukara/app/controller/bloc/app_event.dart';
+import 'package:bukara/app/controller/bloc/app_state.dart';
 import 'package:bukara/app/providers/suite/model.dart';
 import 'package:bukara/app/providers/tenant/model.dart';
 import 'package:bukara/app/ui/shared/style.dart';
+import 'package:bukara/app/ui/shared/utils/custorm_date.dart';
 import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
+import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:bukara/app/ui/shared/utils/utility_functions.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
+import 'package:bukara/app/ui/views/app/home.dart';
 import 'package:bukara/app/ui/views/app/suite/rent_suite.dart';
 import 'package:bukara/app/ui/views/app/tenant/select_tenant_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:velocity_x/velocity_x.dart';
@@ -22,6 +29,13 @@ class SuiteDetail extends StatefulWidget {
 }
 
 class _SuiteDetailState extends State<SuiteDetail> {
+  AppBloc? bloc;
+  @override
+  void initState() {
+    bloc = AppBloc();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Suite suiteDetail = ModalRoute.of(context)!.settings.arguments as Suite;
@@ -200,42 +214,164 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "John doe",
+                                        "${suiteDetail.contrats![0].landlord!.name} ${suiteDetail.contrats![0].landlord!.lastname}",
                                         style: GoogleFonts.montserrat(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
-                                          color: Colors.black,
                                         ),
                                       ),
+                                      10.heightBox,
                                       Text(
-                                        "Personne physique",
-                                        style: GoogleFonts.montserrat(
-                                          color: AppColors.BLACK_COLOR,
-                                        ),
+                                        "${suiteDetail.contrats![0].landlord!.email}",
+                                        style: GoogleFonts.montserrat(),
                                       ),
-                                      const Padding(
-                                        padding: EdgeInsets.only(
-                                            top: 20, bottom: 20),
-                                        child: Divider(),
-                                      ),
+                                      20.heightBox,
                                       Text(
-                                        "Apropos du locataire",
-                                        style: GoogleFonts.montserrat(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.black,
-                                        ),
+                                        "${suiteDetail.contrats![0].amount}\$ le mois",
+                                        style: GoogleFonts.montserrat(),
                                       ),
-                                      25.heightBox,
-                                      module(Iconsax.call, "adresse"),
-                                      module(Iconsax.box_tick, "email"),
-                                      module(Iconsax.home, "état civile"),
-                                      module2(
-                                          Iconsax.tag, "Adresse", "Adresse"),
-                                      module(
-                                          Iconsax.wallet_check, "Nationalité"),
-                                      module2(Iconsax.tag, "Numéro carte",
-                                          "type carte"),
+                                      200.heightBox,
+                                      line(),
+                                      Text(
+                                        "Contrat enregistre par",
+                                        style: GoogleFonts.montserrat(),
+                                      ),
+                                      15.heightBox,
+                                      if (suiteDetail.contrats![0].user!.name !=
+                                          null)
+                                        Column(
+                                          children: [
+                                            Text(
+                                                "${suiteDetail.contrats![0].user!.name} ${suiteDetail.contrats![0].user!.lastname}",
+                                                style: GoogleFonts.montserrat(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                )),
+                                            5.heightBox,
+                                          ],
+                                        ),
+                                      Text(
+                                        "${suiteDetail.contrats![0].landlord!.email}",
+                                        style: GoogleFonts.montserrat(),
+                                      ),
+                                      30.heightBox,
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Signe ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
+                                            style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  AppColors.SECOND_TEXT_COLOR,
+                                            ),
+                                          ),
+                                          if (suiteDetail
+                                                  .contrats![0].endDate !=
+                                              null)
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                5.heightBox,
+                                                Text(
+                                                  "Resilie ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].endDate!)).getFullDate}",
+                                                  style: GoogleFonts.montserrat(
+                                                    fontWeight: FontWeight.bold,
+                                                    color: AppColors
+                                                        .SECOND_TEXT_COLOR,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          30.heightBox,
+                                          OnHoverEffect(
+                                            child: InkWell(
+                                              onTap: () {
+                                                bloc!.add(
+                                                  BREACKCONTRAT(
+                                                    contratId: suiteDetail
+                                                        .contrats![0].id,
+                                                    tenantId: suiteDetail
+                                                        .contrats![0]
+                                                        .landlord!
+                                                        .id,
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                padding:
+                                                    const EdgeInsets.all(15),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.BLACK_COLOR,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          100),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: BlocListener<AppBloc,
+                                                    AppState>(
+                                                  bloc: bloc,
+                                                  listener: (context, state) {
+                                                    if (state is SUCCESS) {
+                                                      Navigator
+                                                          .pushNamedAndRemoveUntil(
+                                                              context,
+                                                              Home.routeName,
+                                                              (route) => false);
+                                                    } else if (state is ERROR) {
+                                                      errorModel(
+                                                        context,
+                                                        dueTo: state
+                                                            .dueTo!.errors!,
+                                                      );
+                                                    }
+                                                  },
+                                                  child: BlocBuilder<AppBloc,
+                                                      AppState>(
+                                                    bloc: bloc,
+                                                    builder: (context, state) {
+                                                      return Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          state is LOADING
+                                                              ? const SizedBox(
+                                                                  height: 15,
+                                                                  width: 15,
+                                                                  child:
+                                                                      CircularProgressIndicator(
+                                                                    color: AppColors
+                                                                        .WHITE_COLOR,
+                                                                  ),
+                                                                )
+                                                              : Text(
+                                                                  "Resilier le contrat",
+                                                                  style: GoogleFonts
+                                                                      .montserrat(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: AppColors
+                                                                        .WHITE_COLOR,
+                                                                  ),
+                                                                ),
+                                                        ],
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      24.heightBox,
                                     ],
                                   ),
                                 )
@@ -350,7 +486,12 @@ class _SuiteDetailState extends State<SuiteDetail> {
             tenantModel: value as TenantModel,
             suiteId: id,
           ),
-        );
+        ).then((value) {
+          if (value == "success") {
+            Navigator.pushNamedAndRemoveUntil(
+                context, Home.routeName, (route) => false);
+          }
+        });
       }
     });
   }
