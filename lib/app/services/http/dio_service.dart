@@ -64,6 +64,7 @@ Future<Response> httpPostWithToken({String? endPoint, var data}) async {
 
 httpPutWithToken({String? endPoint, var data}) async {
   Token token = getMobileToken();
+
   return await DioApi().dio.put(
         endPoint!,
         data: data,

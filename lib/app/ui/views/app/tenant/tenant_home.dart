@@ -191,7 +191,11 @@ class _Tenant extends State<Tenant> {
                         tenant: selectedTenant,
                       ),
                       barrierDismissible: false,
-                    );
+                    ).then((value) {
+                      if (value == "success") {
+                        _bloc!.add(GETTENANT());
+                      }
+                    });
                   }),
               15.widthBox,
               modelAction(
@@ -381,11 +385,16 @@ class _Tenant extends State<Tenant> {
           OnHoverEffect(
             child: InkWell(
               onTap: () {
+                isEditTenant == false;
                 showDialog(
                   context: context,
                   builder: (context) => const AddTenants(),
                   barrierDismissible: false,
-                );
+                ).then((value) {
+                  if (value == "success") {
+                    _bloc!.add(GETTENANT());
+                  }
+                });
               },
               child: Container(
                 height: 25,

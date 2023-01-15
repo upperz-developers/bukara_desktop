@@ -73,6 +73,7 @@ class TenantController {
               phone: phones.first,
               tenantId: tenant!.id,
               data: data,
+              phoneId: tenant.phones![0].id,
             )
           : ADDTENANT(data: data),
     );

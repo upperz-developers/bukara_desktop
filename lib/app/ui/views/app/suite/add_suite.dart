@@ -26,8 +26,29 @@ class AddSuite extends StatefulWidget {
 class _AddSuiteState extends State<AddSuite> {
   SuiteViewController suiteViewController = SuiteViewController();
 
-  removeImage(int index) {
+  removeImage(index) {
     setState(() {
+      if (isSuiteEdit == true) {
+        suiteViewController.editedImage.removeWhere(
+            (img) => img['imageId'] == suiteToEdit!.images![index]);
+        switch (index) {
+          case 0:
+            suiteViewController.changedImageAtIndex0 = null;
+            break;
+          case 1:
+            suiteViewController.changedImageAtIndex1 = null;
+            break;
+          case 2:
+            suiteViewController.changedImageAtIndex2 = null;
+            break;
+          case 3:
+            suiteViewController.changedImageAtIndex3 = null;
+            break;
+          default:
+            suiteViewController.changedImageAtIndex4 = null;
+        }
+        return;
+      }
       suiteViewController.images.removeAt(index);
     });
   }
@@ -68,7 +89,7 @@ class _AddSuiteState extends State<AddSuite> {
 
   bool submitted = false;
   void saveSuite() {
-    if (suiteViewController.validated(context) || isSuiteEdit == true) {
+    if (suiteViewController.validated(context)) {
       suiteViewController.submit(context);
       return;
     }
@@ -82,8 +103,8 @@ class _AddSuiteState extends State<AddSuite> {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.only(
-          left: horizontalSpace,
-          right: horizontalSpace,
+          left: horizontalSpace - 30,
+          right: horizontalSpace - 30,
           bottom: 30,
         ),
         child: Column(
@@ -91,18 +112,22 @@ class _AddSuiteState extends State<AddSuite> {
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(vertical: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     20.heightBox,
-                    Text(
-                      isSuiteEdit == true
-                          ? "Modification de ${suiteToEdit!.designation}"
-                          : "Ajouter un appartement",
-                      style: GoogleFonts.montserrat(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 500,
+                      child: Text(
+                        isSuiteEdit == true
+                            ? "Modification de ${suiteToEdit!.designation}"
+                            : "Ajouter un appartement",
+                        style: GoogleFonts.montserrat(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     30.heightBox,
@@ -194,7 +219,8 @@ class _AddSuiteState extends State<AddSuite> {
       children: [
         Expanded(
           child: OnHoverEffect(
-            child: suiteViewController.images.isNotEmpty
+            child: suiteViewController.images.isNotEmpty ||
+                    suiteViewController.changedImageAtIndex0 != null
                 ? Stack(
                     children: [
                       ClipRRect(
@@ -206,7 +232,10 @@ class _AddSuiteState extends State<AddSuite> {
                           height: 448,
                           width: 620,
                           child: Image.file(
-                            suiteViewController.images[0],
+                            isSuiteEdit == true &&
+                                    suiteToEdit!.images!.isNotEmpty
+                                ? suiteViewController.changedImageAtIndex0!
+                                : suiteViewController.images[0],
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -237,9 +266,26 @@ class _AddSuiteState extends State<AddSuite> {
                   )
                 : InkWell(
                     onTap: () {
-                      suiteViewController.pickImages().then((value) {
-                        setState(() {});
-                      });
+                      if (isSuiteEdit == true) {
+                        if (suiteToEdit!.images!.isNotEmpty) {
+                          suiteViewController
+                              .pickOneImage(
+                            imageId: suiteToEdit!.images![0].id!,
+                            index: 0,
+                          )
+                              .then((value) {
+                            setState(() {});
+                          });
+                        } else {
+                          suiteViewController.pickImages().then((value) {
+                            setState(() {});
+                          });
+                        }
+                      } else {
+                        suiteViewController.pickImages().then((value) {
+                          setState(() {});
+                        });
+                      }
                     },
                     child:
                         isSuiteEdit == true && suiteToEdit!.images!.isNotEmpty
@@ -282,7 +328,7 @@ class _AddSuiteState extends State<AddSuite> {
                                     ),
                                     10.heightBox,
                                     Text(
-                                      "Cliquer sur une des cases\npour ajouter une image ou  plusieurs images",
+                                      "Cliquer sur une des cases\npour ajouter une ou  plusieurs images",
                                       textAlign: TextAlign.center,
                                       style: GoogleFonts.montserrat(
                                         fontSize: 12,
@@ -301,7 +347,8 @@ class _AddSuiteState extends State<AddSuite> {
             Row(
               children: [
                 OnHoverEffect(
-                  child: suiteViewController.images.length > 1
+                  child: suiteViewController.images.length > 1 ||
+                          suiteViewController.changedImageAtIndex1 != null
                       ? Stack(
                           children: [
                             ClipRRect(
@@ -309,7 +356,11 @@ class _AddSuiteState extends State<AddSuite> {
                                 height: 220,
                                 width: 250,
                                 child: Image.file(
-                                  suiteViewController.images[1],
+                                  isSuiteEdit == true &&
+                                          suiteToEdit!.images!.isNotEmpty
+                                      ? suiteViewController
+                                          .changedImageAtIndex1!
+                                      : suiteViewController.images[1],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -342,9 +393,26 @@ class _AddSuiteState extends State<AddSuite> {
                         )
                       : InkWell(
                           onTap: () {
-                            suiteViewController.pickImages().then((value) {
-                              setState(() {});
-                            });
+                            if (isSuiteEdit == true) {
+                              if (suiteToEdit!.images!.isNotEmpty) {
+                                suiteViewController
+                                    .pickOneImage(
+                                  imageId: suiteToEdit!.images![1].id!,
+                                  index: 1,
+                                )
+                                    .then((value) {
+                                  setState(() {});
+                                });
+                              } else {
+                                suiteViewController.pickImages().then((value) {
+                                  setState(() {});
+                                });
+                              }
+                            } else {
+                              suiteViewController.pickImages().then((value) {
+                                setState(() {});
+                              });
+                            }
                           },
                           child: isSuiteEdit == true &&
                                   suiteToEdit!.images!.isNotEmpty
@@ -371,7 +439,8 @@ class _AddSuiteState extends State<AddSuite> {
                 ),
                 8.widthBox,
                 OnHoverEffect(
-                  child: suiteViewController.images.length > 2
+                  child: suiteViewController.images.length > 2 ||
+                          suiteViewController.changedImageAtIndex2 != null
                       ? Stack(
                           children: [
                             ClipRRect(
@@ -382,7 +451,11 @@ class _AddSuiteState extends State<AddSuite> {
                                 height: 220,
                                 width: 250,
                                 child: Image.file(
-                                  suiteViewController.images[2],
+                                  isSuiteEdit == true &&
+                                          suiteToEdit!.images!.isNotEmpty
+                                      ? suiteViewController
+                                          .changedImageAtIndex2!
+                                      : suiteViewController.images[2],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -415,9 +488,26 @@ class _AddSuiteState extends State<AddSuite> {
                         )
                       : InkWell(
                           onTap: () {
-                            suiteViewController.pickImages().then((value) {
-                              setState(() {});
-                            });
+                            if (isSuiteEdit == true) {
+                              if (suiteToEdit!.images!.isNotEmpty) {
+                                suiteViewController
+                                    .pickOneImage(
+                                  imageId: suiteToEdit!.images![2].id!,
+                                  index: 2,
+                                )
+                                    .then((value) {
+                                  setState(() {});
+                                });
+                              } else {
+                                suiteViewController.pickImages().then((value) {
+                                  setState(() {});
+                                });
+                              }
+                            } else {
+                              suiteViewController.pickImages().then((value) {
+                                setState(() {});
+                              });
+                            }
                           },
                           child: isSuiteEdit == true &&
                                   suiteToEdit!.images!.isNotEmpty
@@ -454,7 +544,8 @@ class _AddSuiteState extends State<AddSuite> {
             Row(
               children: [
                 OnHoverEffect(
-                  child: suiteViewController.images.length > 3
+                  child: suiteViewController.images.length > 3 ||
+                          suiteViewController.changedImageAtIndex3 != null
                       ? Stack(
                           children: [
                             ClipRRect(
@@ -462,7 +553,11 @@ class _AddSuiteState extends State<AddSuite> {
                                 height: 220,
                                 width: 250,
                                 child: Image.file(
-                                  suiteViewController.images[3],
+                                  isSuiteEdit == true &&
+                                          suiteToEdit!.images!.isNotEmpty
+                                      ? suiteViewController
+                                          .changedImageAtIndex3!
+                                      : suiteViewController.images[3],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -495,9 +590,26 @@ class _AddSuiteState extends State<AddSuite> {
                         )
                       : InkWell(
                           onTap: () {
-                            suiteViewController.pickImages().then((value) {
-                              setState(() {});
-                            });
+                            if (isSuiteEdit == true) {
+                              if (suiteToEdit!.images!.isNotEmpty) {
+                                suiteViewController
+                                    .pickOneImage(
+                                  imageId: suiteToEdit!.images![3].id!,
+                                  index: 3,
+                                )
+                                    .then((value) {
+                                  setState(() {});
+                                });
+                              } else {
+                                suiteViewController.pickImages().then((value) {
+                                  setState(() {});
+                                });
+                              }
+                            } else {
+                              suiteViewController.pickImages().then((value) {
+                                setState(() {});
+                              });
+                            }
                           },
                           child: isSuiteEdit == true &&
                                   suiteToEdit!.images!.isNotEmpty
@@ -524,7 +636,8 @@ class _AddSuiteState extends State<AddSuite> {
                 ),
                 8.widthBox,
                 OnHoverEffect(
-                  child: suiteViewController.images.length > 4
+                  child: suiteViewController.images.length > 4 ||
+                          suiteViewController.changedImageAtIndex4 != null
                       ? Stack(
                           children: [
                             ClipRRect(
@@ -535,7 +648,11 @@ class _AddSuiteState extends State<AddSuite> {
                                 height: 220,
                                 width: 250,
                                 child: Image.file(
-                                  suiteViewController.images[4],
+                                  isSuiteEdit == true &&
+                                          suiteToEdit!.images!.isNotEmpty
+                                      ? suiteViewController
+                                          .changedImageAtIndex4!
+                                      : suiteViewController.images[4],
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -568,9 +685,26 @@ class _AddSuiteState extends State<AddSuite> {
                         )
                       : InkWell(
                           onTap: () {
-                            suiteViewController.pickImages().then((value) {
-                              setState(() {});
-                            });
+                            if (isSuiteEdit == true) {
+                              if (suiteToEdit!.images!.isNotEmpty) {
+                                suiteViewController
+                                    .pickOneImage(
+                                  imageId: suiteToEdit!.images![4].id!,
+                                  index: 4,
+                                )
+                                    .then((value) {
+                                  setState(() {});
+                                });
+                              } else {
+                                suiteViewController.pickImages().then((value) {
+                                  setState(() {});
+                                });
+                              }
+                            } else {
+                              suiteViewController.pickImages().then((value) {
+                                setState(() {});
+                              });
+                            }
                           },
                           child: isSuiteEdit == true &&
                                   suiteToEdit!.images!.isNotEmpty

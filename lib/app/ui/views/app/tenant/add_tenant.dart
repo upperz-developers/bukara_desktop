@@ -58,7 +58,7 @@ class _AddTenantsState extends State<AddTenants> {
       bloc: _bloc,
       listener: (context, state) {
         if (state is SUCCESS) {
-          Navigator.pop(context);
+          Navigator.pop(context, "success");
         } else if (state is ERROR) {
           errorModel(context, dueTo: state.dueTo!.errors!);
         }
@@ -73,7 +73,7 @@ class _AddTenantsState extends State<AddTenants> {
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height - 370,
+                    height: MediaQuery.of(context).size.height - 315,
                     width: 525,
                     child: Column(
                       children: [
@@ -265,6 +265,14 @@ class _AddTenantsState extends State<AddTenants> {
                                           : "Entrez le numero de la carte d'indentite",
                                       controller: tenantController.cartId,
                                       submitted: submitted,
+                                    ),
+                                    30.heightBox,
+                                    CustomButton(
+                                      title: "Enregistrer",
+                                      backgroundColor: AppColors.BLACK_COLOR,
+                                      textColor: AppColors.WHITE_COLOR,
+                                      onTap: submit,
+                                      state: state,
                                     ),
                                   ],
                                 ),
@@ -520,14 +528,6 @@ class _AddTenantsState extends State<AddTenants> {
                                           submitted: submitted,
                                         ),
                                       ],
-                                    ),
-                                    30.heightBox,
-                                    CustomButton(
-                                      title: "Enregistrer",
-                                      backgroundColor: AppColors.BLACK_COLOR,
-                                      textColor: AppColors.WHITE_COLOR,
-                                      onTap: submit,
-                                      state: state,
                                     ),
                                   ],
                                 ),
