@@ -37,43 +37,48 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
 
   @override
   void initState() {
-    enterpriseController.designation.text = enterprise.designation!;
+    enterpriseController.designation.text = enterprise.designation ?? "";
     enterpriseController.idnat.text = enterprise.idnat ?? "";
     enterpriseController.impot.text = enterprise.impot ?? "";
     enterpriseController.rccm.text = enterprise.rccm ?? "";
     enterpriseController.contactController.email.text = enterprise.email ?? "";
     enterpriseController.contactController.internet.text =
         enterprise.site ?? "";
-    enterpriseController.bankController.bankName.text =
-        enterprise.banks![0].bank ?? "";
-    enterpriseController.bankController.accounName.text =
-        enterprise.banks![0].accountName ?? "";
-    enterpriseController.bankController.accountNumber.text =
-        enterprise.banks![0].accountNumber ?? "";
+    if (enterprise.banks!.isNotEmpty) {
+      enterpriseController.bankController.bankName.text =
+          enterprise.banks?[0].bank ?? "";
+      enterpriseController.bankController.accounName.text =
+          enterprise.banks?[0].accountName ?? "";
+      enterpriseController.bankController.accountNumber.text =
+          enterprise.banks?[0].accountNumber ?? "";
+    }
     enterpriseController.contactController.phoneNumber.text =
         enterprise.phones != null ? enterprise.phones!.substring(4) : "";
 
-    enterpriseController.addressController.country.text =
-        enterprise.addresses![0].country ?? "";
+    if (enterprise.addresses!.isNotEmpty) {
+      enterpriseController.addressController.country.text =
+          enterprise.addresses?[0].country ?? "";
 
-    enterpriseController.addressController.city.text =
-        enterprise.addresses![0].city ?? "";
+      enterpriseController.addressController.city.text =
+          enterprise.addresses?[0].city ?? "";
 
-    enterpriseController.addressController.town.text =
-        enterprise.addresses![0].town ?? "";
+      enterpriseController.addressController.town.text =
+          enterprise.addresses?[0].town ?? "";
 
-    enterpriseController.addressController.commune.text =
-        enterprise.addresses![0].common ?? "";
+      enterpriseController.addressController.commune.text =
+          enterprise.addresses![0].common ?? "";
 
-    enterpriseController.addressController.quater.text =
-        enterprise.addresses![0].quarter ?? "";
-    enterpriseController.addressController.avenue.text =
-        enterprise.addresses![0].street ?? "";
-    enterpriseController.addressController.number.text =
-        enterprise.addresses![0].number != null
-            ? enterprise.addresses![0].number.toString()
-            : "";
+      enterpriseController.addressController.quater.text =
+          enterprise.addresses![0].quarter ?? "";
+      enterpriseController.addressController.avenue.text =
+          enterprise.addresses![0].street ?? "";
+      enterpriseController.addressController.number.text =
+          enterprise.addresses![0].number != null
+              ? enterprise.addresses![0].number.toString()
+              : "";
+    }
     enterpriseController.description.text = enterprise.description ?? "";
+
     super.initState();
   }
 
@@ -189,49 +194,56 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
         ),
         modelInfo(
           title: "Pays",
-          hint: enterprise.addresses![0].country != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].country != null
               ? enterprise.addresses![0].country!
               : "Rep dem du congo",
           controller: enterpriseController.addressController.country,
         ),
         modelInfo(
           title: "Province",
-          hint: enterprise.addresses![0].city != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].city != null
               ? enterprise.addresses![0].city!
               : "Nord-kivu",
           controller: enterpriseController.addressController.city,
         ),
         modelInfo(
           title: "Ville",
-          hint: enterprise.addresses![0].town != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].town != null
               ? enterprise.addresses![0].town!
               : "Goma",
           controller: enterpriseController.addressController.town,
         ),
         modelInfo(
           title: "Commune",
-          hint: enterprise.addresses![0].common != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].common != null
               ? enterprise.addresses![0].common!
               : "Goma",
           controller: enterpriseController.addressController.commune,
         ),
         modelInfo(
           title: "Quartier",
-          hint: enterprise.addresses![0].quarter != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].quarter != null
               ? enterprise.addresses![0].quarter!
               : "Entrer le quartier",
           controller: enterpriseController.addressController.quater,
         ),
         modelInfo(
           title: "Avenue",
-          hint: enterprise.addresses![0].street != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].street != null
               ? enterprise.addresses![0].street!
               : "Entrer l'avenu",
           controller: enterpriseController.addressController.avenue,
         ),
         modelInfo(
           title: "Numéro",
-          hint: enterprise.addresses![0].number != null
+          hint: enterprise.addresses!.isNotEmpty &&
+                  enterprise.addresses?[0].number != null
               ? enterprise.addresses![0].number.toString()
               : "Entrer le numéro",
           controller: enterpriseController.addressController.number,
@@ -421,21 +433,24 @@ class _AddEditEnterpriseInfoState extends State<AddEditEnterpriseInfo> {
         ),
         modelInfo(
           title: "Banque",
-          hint: enterprise.banks![0].bank != null
-              ? enterprise.banks![0].bank!
-              : "Votre banque",
+          hint:
+              enterprise.banks!.isNotEmpty && enterprise.banks?[0].bank != null
+                  ? enterprise.banks![0].bank!
+                  : "Votre banque",
           controller: enterpriseController.bankController.bankName,
         ),
         modelInfo(
           title: "Nom de compte",
-          hint: enterprise.banks![0].accountName != null
+          hint: enterprise.banks!.isNotEmpty &&
+                  enterprise.banks?[0].accountName != null
               ? enterprise.banks![0].accountName!
               : "Le nom de compte de votre banque",
           controller: enterpriseController.bankController.accounName,
         ),
         modelInfo(
           title: "Numéro de compte",
-          hint: enterprise.banks![0].accountNumber != null
+          hint: enterprise.banks!.isNotEmpty &&
+                  enterprise.banks?[0].accountNumber != null
               ? enterprise.banks![0].accountNumber!
               : "0000 0000 0000 0000 0000 000",
           controller: enterpriseController.bankController.accountNumber,
