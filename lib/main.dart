@@ -5,6 +5,13 @@ import 'package:fluent_ui/fluent_ui.dart';
 import 'package:system_theme/system_theme.dart';
 import 'package:window_manager/window_manager.dart';
 
+/*
+    BUKARA V1.0.0 alpha test
+    Build by Devinno in partenership with Upperz
+    Started on December 10 2022, 
+    Ended on January 10 2023
+ */
+
 bool get isDesktop {
   if (kIsWeb) return false;
   return [

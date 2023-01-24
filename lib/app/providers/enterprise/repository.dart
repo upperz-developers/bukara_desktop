@@ -16,7 +16,7 @@ Future<Response> editEnterprise(
     {Map<String, dynamic>? enterprise,
     Map<String, dynamic>? address,
     Map<String, dynamic>? bank}) async {
-  print(enterprise!['id']);
+
   var response = await httpPutWithToken(
     endPoint: APIURL.UPDATEENTREPRS + enterprise!['id'],
     data: enterprise,
