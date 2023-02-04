@@ -12,7 +12,6 @@ class ApiInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    // print(err.response?.data);
     switch (err.type) {
       case DioErrorType.sendTimeout:
       case DioErrorType.connectTimeout:
@@ -27,7 +26,8 @@ class ApiInterceptor extends Interceptor {
           case 404:
             throw NotFoundException(err.requestOptions);
           case 409:
-            throw ConflictException(err.requestOptions);
+            throw ConflictException(err.requestOptions,
+                data: err.response!.data);
           case 500:
             throw InternalServerErrorException(err.requestOptions);
           default:
@@ -118,17 +118,12 @@ class NotFoundException extends DioError {
 }
 
 class ConflictException extends DioError {
-  ConflictException(RequestOptions r) : super(requestOptions: r);
+  final Map<String, dynamic>? data;
+  ConflictException(RequestOptions r, {this.data}) : super(requestOptions: r);
 
   @override
   String toString() {
-    ErrorModel errormodel = ErrorModel();
-    errormodel.errors!.add(
-      ErrorData(
-        message: "Une erreur s'est produite, conflit",
-      ),
-    );
-    return jsonEncode(errormodel.toJson());
+    return jsonEncode(data);
   }
 }
 

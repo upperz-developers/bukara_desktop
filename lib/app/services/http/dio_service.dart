@@ -3,6 +3,7 @@ import 'package:bukara/app/providers/app_prefs.dart';
 import 'package:bukara/app/providers/user/user.dart';
 import 'package:bukara/app/services/http/dio_helper.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 
 httpGet({String? endPoint, Map<String, dynamic>? parameters}) async {
   return await Dio().get(
@@ -49,7 +50,7 @@ httpPost({String? endPoint, Map<String, dynamic>? data}) async {
 
 Future<Response> httpPostWithToken({String? endPoint, var data}) async {
   Token token = getMobileToken();
-
+  debugPrint(endPoint);
   return await DioApi().dio.post(
         endPoint!,
         data: data,

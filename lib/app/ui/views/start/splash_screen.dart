@@ -70,7 +70,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             3.heightBox,
             Text(
-              "Build by Devinno in parternship with Upperz",
+              "Build by Upperz in parternship with Devinno",
               style: GoogleFonts.montserrat(
                 fontSize: 10,
                 color: AppColors.SECOND_TEXT_COLOR,

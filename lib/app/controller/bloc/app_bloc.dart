@@ -176,6 +176,20 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       },
     );
 
+    on<CONFIGRENTDAILY>(
+      (event, emit) async {
+        emit(const LOADING());
+        try {
+          await rentalDailyContrat(
+            data: event.data,
+          );
+          emit(const SUCCESS());
+        } on Exception catch (e) {
+          hundleError(e: e, emit: emit);
+        }
+      },
+    );
+
     on<GETRECOVERYINFO>((event, emit) async {
       emit(const LOADING());
       try {

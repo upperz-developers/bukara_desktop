@@ -19,6 +19,7 @@ class APIURL {
   static const String EDITTENANTPHONE = "$BASEURL/landlords/phones/";
   static const String GETTENANT = "$BASEURL/landlords";
   static const String CONTRATTENANT = "$BASEURL/rental-contrats";
+  static const String DAILYCONTRATTENANT = "$BASEURL/daily-contract";
   static const String GETRECOVERYINFO = "$BASEURL/recoveries";
   static const String PAYERENT = "$BASEURL/payments";
   static const String GETPAYEMENT = "$BASEURL/payments";

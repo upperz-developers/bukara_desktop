@@ -94,6 +94,12 @@ class CONFIGRENT implements AppEvent {
   CONFIGRENT({this.data});
 }
 
+class CONFIGRENTDAILY implements AppEvent {
+  final Map<String, dynamic>? data;
+
+  CONFIGRENTDAILY({this.data});
+}
+
 class GETRECOVERYINFO implements AppEvent {}
 
 class PAYERENT implements AppEvent {
