@@ -43,6 +43,7 @@ class _RentSuiteState extends State<RentSuite> {
       rentController.submit(bloc!);
       return;
     }
+
     setState(() {
       submitted = true;
     });
@@ -178,12 +179,80 @@ class _RentSuiteState extends State<RentSuite> {
                 ),
                 Row(
                   children: [
+                    OnHoverEffect(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            rentController.isRentWithWaranty = true;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 12,
+                              width: 12,
+                              decoration: BoxDecoration(
+                                color: rentController.isRentWithWaranty
+                                    ? AppColors.BLACK_COLOR
+                                    : null,
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                            5.widthBox,
+                            Text(
+                              "Contrat mensuel",
+                              style: GoogleFonts.montserrat(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    20.widthBox,
+                    OnHoverEffect(
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            rentController.isRentWithWaranty = false;
+                          });
+                        },
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 12,
+                              width: 12,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: !rentController.isRentWithWaranty
+                                    ? AppColors.BLACK_COLOR
+                                    : null,
+                                border: Border.all(
+                                  width: 1.5,
+                                ),
+                              ),
+                            ),
+                            5.widthBox,
+                            Text(
+                              "Contrat journalier",
+                              style: GoogleFonts.montserrat(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                20.heightBox,
+                Row(
+                  children: [
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Mois",
+                            rentController.isRentWithWaranty ? "Mois" : "Jours",
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               color: AppColors.SECOND_TEXT_COLOR,
@@ -201,7 +270,9 @@ class _RentSuiteState extends State<RentSuite> {
                               ),
                             ),
                             child: DropdownButton<String>(
-                              value: rentController.selectedMonthUI,
+                              value: rentController.isRentWithWaranty
+                                  ? rentController.selectedMonthUI
+                                  : rentController.selectedDayUI,
                               borderRadius: BorderRadius.circular(4),
                               icon: const Icon(
                                 Icons.arrow_drop_down,
@@ -210,8 +281,13 @@ class _RentSuiteState extends State<RentSuite> {
                               underline: Container(),
                               isDense: true,
                               items: List.generate(
-                                      12, (index) => "${index + 1} mois")
-                                  .map((String items) {
+                                  rentController.isRentWithWaranty ? 12 : 27,
+                                  (index) {
+                                String mesure = rentController.isRentWithWaranty
+                                    ? "mois"
+                                    : "jours";
+                                return "${index + 1} $mesure";
+                              }).map((String items) {
                                 return DropdownMenuItem(
                                   value: items,
                                   child: SizedBox(
@@ -227,9 +303,15 @@ class _RentSuiteState extends State<RentSuite> {
                               }).toList(),
                               onChanged: (String? newValue) {
                                 setState(() {
-                                  rentController.selectedMonth = newValue!
+                                  if (rentController.isRentWithWaranty) {
+                                    rentController.selectedMonth = newValue!
+                                        .substring(0, newValue.indexOf(" "));
+                                    rentController.selectedMonthUI = newValue;
+                                    return;
+                                  }
+                                  rentController.selectedDay = newValue!
                                       .substring(0, newValue.indexOf(" "));
-                                  rentController.selectedMonthUI = newValue;
+                                  rentController.selectedDayUI = newValue;
                                 });
                               },
                             ),
@@ -242,7 +324,9 @@ class _RentSuiteState extends State<RentSuite> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Prix par mois",
+                            rentController.isRentWithWaranty
+                                ? "Prix par mois"
+                                : "Montant",
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               color: AppColors.SECOND_TEXT_COLOR,

@@ -5,10 +5,14 @@ import 'package:flutter/material.dart';
 class RentController {
   String selectedRentAccount = "1";
   String selectedMonth = "1";
+  String selectedDay = "1";
   String selectedMonthUI = "1 mois";
+  String selectedDayUI = "1 jours";
   TextEditingController price;
   String? selectedSuiteId;
   String? selectedTenantId;
+
+  bool isRentWithWaranty = true;
 
   RentController() : price = TextEditingController();
 
@@ -26,9 +30,19 @@ class RentController {
       "numberOfHabitant": int.parse(selectedRentAccount),
     };
     bloc.add(
-      CONFIGRENT(
-        data: data,
-      ),
+      isRentWithWaranty
+          ? CONFIGRENT(
+              data: data,
+            )
+          : CONFIGRENTDAILY(
+              data: {
+                "appartementId": selectedSuiteId,
+                "landlordId": selectedTenantId,
+                "amount": double.parse(price.text.trim()),
+                "days": int.parse(selectedDay),
+                "numberOfHabitant": int.parse(selectedRentAccount),
+              },
+            ),
     );
   }
 }

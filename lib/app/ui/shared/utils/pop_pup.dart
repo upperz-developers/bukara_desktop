@@ -10,7 +10,7 @@ errorModel(BuildContext context, {required List<ErrorData> dueTo}) {
     context: context,
     builder: (context) => SimpleDialog(
       title: Center(
-        child: Text("Oups !!!",
+        child: Text("Erreur",
             style: GoogleFonts.montserrat(
               color: AppColors.BLACK_COLOR,
               fontSize: 24,
