@@ -252,7 +252,9 @@ class _RentSuiteState extends State<RentSuite> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            rentController.isRentWithWaranty ? "Mois" : "Jours",
+                            rentController.isRentWithWaranty
+                                ? "Garantie/mois"
+                                : "Jours",
                             style: GoogleFonts.montserrat(
                               fontSize: 12,
                               color: AppColors.SECOND_TEXT_COLOR,
@@ -286,7 +288,7 @@ class _RentSuiteState extends State<RentSuite> {
                                 String mesure = rentController.isRentWithWaranty
                                     ? "mois"
                                     : "jours";
-                                return "${index + 1} $mesure";
+                                return "$index $mesure";
                               }).map((String items) {
                                 return DropdownMenuItem(
                                   value: items,

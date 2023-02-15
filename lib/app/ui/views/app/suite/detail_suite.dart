@@ -233,7 +233,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                       200.heightBox,
                                       line(),
                                       Text(
-                                        "Contrat enregistre par",
+                                        "Contrat enrégistre par",
                                         style: GoogleFonts.montserrat(),
                                       ),
                                       15.heightBox,
@@ -260,7 +260,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Signe ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
+                                            "Signé ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.bold,
                                               color:
@@ -351,7 +351,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                                                   ),
                                                                 )
                                                               : Text(
-                                                                  "Resilier le contrat",
+                                                                  "Résilier le contrat",
                                                                   style: GoogleFonts
                                                                       .montserrat(
                                                                     fontWeight:

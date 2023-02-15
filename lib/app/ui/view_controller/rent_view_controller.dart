@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 class RentController {
   String selectedRentAccount = "1";
-  String selectedMonth = "1";
+  String selectedMonth = "0";
   String selectedDay = "1";
-  String selectedMonthUI = "1 mois";
+  String selectedMonthUI = "0 mois";
   String selectedDayUI = "1 jours";
   TextEditingController price;
   String? selectedSuiteId;
@@ -29,6 +29,9 @@ class RentController {
       "month": int.parse(selectedMonth),
       "numberOfHabitant": int.parse(selectedRentAccount),
     };
+
+    if (selectedMonth == "0") data.remove('month');
+
     bloc.add(
       isRentWithWaranty
           ? CONFIGRENT(
