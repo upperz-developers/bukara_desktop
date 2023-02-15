@@ -8,7 +8,6 @@ import 'package:bukara/app/ui/views/app/profile/profile_enterprise.dart';
 import 'package:bukara/app/ui/shared/style.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/shared/custom_scaffold.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as mat;
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,11 +78,6 @@ class _ProfileState extends State<Profile> {
   }
 
   Widget appTitle(AppState state) {
-    String? image;
-    String? name = "";
-    if (state is SUCCESS) {
-      name = "";
-    }
     return SizedBox(
       height: 190,
       child: Stack(
@@ -115,16 +109,6 @@ class _ProfileState extends State<Profile> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      3.heightBox,
-                      state is SUCCESS
-                          ? Text(
-                              name,
-                              style: GoogleFonts.montserrat(
-                                color: AppColors.SECOND_TEXT_COLOR,
-                                fontSize: 12,
-                              ),
-                            )
-                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
@@ -176,20 +160,10 @@ class _ProfileState extends State<Profile> {
                       color: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
                     ),
                     color: AppColors.WHITE_COLOR,
-                    image: state is SUCCESS
-                        ? image != null
-                            ? DecorationImage(
-                                image: CachedNetworkImageProvider(image),
-                                fit: BoxFit.cover,
-                              )
-                            : const DecorationImage(
-                                image: AssetImage("assets/icons/bukara.jpg"),
-                                fit: BoxFit.cover,
-                              )
-                        : const DecorationImage(
-                            image: AssetImage("assets/icons/bukara.jpg"),
-                            fit: BoxFit.cover,
-                          ),
+                    image: const DecorationImage(
+                      image: AssetImage("assets/icons/bukara.jpg"),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ],

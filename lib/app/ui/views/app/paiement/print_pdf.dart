@@ -18,8 +18,7 @@ void saveAndPrintPdf(
 
   pdf.addPage(
     MultiPage(
-      pageFormat:
-          PdfPageFormat.letter.copyWith(marginBottom: 1.5 * PdfPageFormat.cm),
+      pageFormat: PdfPageFormat.a5,
       crossAxisAlignment: CrossAxisAlignment.start,
       header: (Context context) {
         if (context.pageNumber == 1) {
@@ -33,9 +32,10 @@ void saveAndPrintPdf(
               border: Border(
                   bottom: BorderSide(width: 0.5, color: PdfColors.grey))),
           child: Text(
-            'Recu de paiement',
+            'Reçu de paiement',
             style: TextStyle(
               font: font,
+              fontSize: 12,
               color: PdfColors.grey,
             ),
           ),
@@ -57,14 +57,14 @@ void saveAndPrintPdf(
                     "Merci de nous avoir fait confiance",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                   Text(
                     "${enterprise.banks?[0].accountName} | ${enterprise.banks?[0].bank} | ${enterprise.banks?[0].accountNumber}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                 ]),
@@ -74,7 +74,7 @@ void saveAndPrintPdf(
                 style: TextStyle(
                   font: font,
                   color: PdfColors.grey,
-                  fontSize: 10,
+                  fontSize: 06,
                 ),
               ),
               Container(
@@ -92,28 +92,28 @@ void saveAndPrintPdf(
                     "${enterprise.designation}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                   Text(
                     "${enterprise.site}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                   Text(
                     "${enterprise.email}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                   Text(
                     "${enterprise.phones}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 06,
                     ),
                   ),
                 ],
@@ -131,14 +131,14 @@ void saveAndPrintPdf(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               SizedBox(
-                height: 55,
-                width: 55,
+                height: 30,
+                width: 30,
                 child: Image(image),
               ),
               Text(
                 'Reçu de paiement',
-                textScaleFactor: 2,
                 style: TextStyle(
+                  fontSize: 14,
                   font: fontBold,
                 ),
               ),
@@ -157,7 +157,7 @@ void saveAndPrintPdf(
                       "${enterprise.designation}",
                       style: TextStyle(
                         font: fontBold,
-                        fontSize: 12,
+                        fontSize: 08,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -166,38 +166,38 @@ void saveAndPrintPdf(
                     "${enterprise.addresses![0].number}, ${enterprise.addresses![0].street}, ${enterprise.addresses![0].quarter}, commune, ${enterprise.addresses![0].town}, ${enterprise.addresses![0].country}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 6,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Text(
                     "${enterprise.rccm}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 6,
                     ),
                   ),
                   if (enterprise.idnat != null)
                     Column(
                       children: [
-                        SizedBox(height: 10),
+                        SizedBox(height: 8),
                         Text(
                           "${enterprise.idnat}",
                           style: TextStyle(
                             font: font,
-                            fontSize: 10,
+                            fontSize: 6,
                           ),
                         ),
                       ],
                     ),
                   if (enterprise.impot != null)
                     Column(children: [
-                      SizedBox(height: 10),
+                      SizedBox(height: 8),
                       Text(
                         "${enterprise.impot}",
                         style: TextStyle(
                           font: font,
-                          fontSize: 10,
+                          fontSize: 6,
                         ),
                       ),
                     ]),
@@ -212,16 +212,16 @@ void saveAndPrintPdf(
                   CustomDate(date: paiedAt).getFullDate,
                   style: TextStyle(
                     font: font,
-                    fontSize: 10,
+                    fontSize: 6,
                   ),
                 ),
-                SizedBox(height: 15),
+                SizedBox(height: 10),
                 Row(children: [
                   Text(
                     "Facture: ${enterprise.designation?.substring(0, 3)}${paiedAt.day}${paiedAt.month}${paiedAt.year}${paiedAt.second}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 8,
                     ),
                   ),
                 ]),
@@ -232,7 +232,7 @@ void saveAndPrintPdf(
         Container(
           height: 1.5,
           width: 793.7007874,
-          margin: const EdgeInsets.only(top: 20, bottom: 20),
+          margin: const EdgeInsets.only(top: 10, bottom: 10),
           decoration: const BoxDecoration(
             color: PdfColors.grey,
           ),
@@ -244,7 +244,7 @@ void saveAndPrintPdf(
               "Locataire:",
               style: TextStyle(
                 font: fontBold,
-                fontSize: 12,
+                fontSize: 8,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -257,23 +257,23 @@ void saveAndPrintPdf(
                     "${payement.contratData!.rentalContrat!.landlord!.name} ${payement.contratData!.rentalContrat!.landlord!.lastname}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 6,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 8),
                   Text(
                     "${payement.contratData!.rentalContrat!.landlord!.email}",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 6,
                     ),
                   ),
                   SizedBox(height: 10),
                   Text(
-                    "${payement.contratData!.rentalContrat!.appartement!.designation} | numero ${payement.contratData!.rentalContrat!.appartement!.number},${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon| ${payement.contratData!.rentalContrat!.appartement!.address}",
+                    "${payement.contratData!.rentalContrat!.appartement!.designation} |${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon",
                     style: TextStyle(
                       font: font,
-                      fontSize: 10,
+                      fontSize: 6,
                     ),
                   ),
                 ],
@@ -284,11 +284,9 @@ void saveAndPrintPdf(
         SizedBox(height: 25),
         Row(
           children: [
-            title1(title: "Libellé", flex: 1, font: font),
+            title1(title: "Méthode de paiement", flex: 1, font: font),
             SizedBox(width: 1),
-            title1(title: "Methode de paiement", flex: 1, font: font),
-            SizedBox(width: 1),
-            title1(title: "Numero de bordereau", flex: 1, font: font),
+            title1(title: "Numéro de bordereau", flex: 1, font: font),
           ],
         ),
         SizedBox(height: 3),
@@ -300,10 +298,6 @@ void saveAndPrintPdf(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              content1(
-                  flex: 1,
-                  title: "${payement.contratData!.labelStr}",
-                  font: font),
               content1(flex: 1, title: "${payement.type}", font: font),
               content1(
                   flex: 1,
@@ -315,54 +309,43 @@ void saveAndPrintPdf(
             ],
           ),
         ),
-        SizedBox(height: 15),
+        SizedBox(height: 10),
         Row(
           children: [
-            Container(
-              width: 100,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              decoration: const BoxDecoration(
-                color: PdfColor(43 / 255, 81 / 255, 133 / 255),
-              ),
-              alignment: Alignment.center,
-              child: Text(
-                "#num",
-                style: const TextStyle(
-                  color: PdfColor(1, 1, 1),
-                  fontSize: 10,
-                ),
-              ),
-            ),
-            SizedBox(width: 1),
             title1(title: "Libellé", flex: 2, font: font),
             SizedBox(width: 1),
-            title1(title: "Payer", flex: 1, font: font),
+            title1(title: "Montant payé", flex: 1, font: font),
+            SizedBox(width: 1),
+            title1(title: "Reste", flex: 1, font: font),
           ],
         ),
         SizedBox(height: 3),
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 100,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-              alignment: Alignment.center,
-              child: Text(
-                "1",
-              ),
+            content1(
+              flex: 2,
+              title: "Paiement recouvrement du ${CustomDate(
+                date: DateTime.parse(payement.contratData!.createdAt!),
+              ).getFullDate} au ${CustomDate(
+                date: DateTime.parse(payement.contratData!.dateRecovery!),
+              ).getFullDate}",
+              font: font,
             ),
+            content1(flex: 1, title: "${payement.amount}\$", font: font),
             SizedBox(width: 3),
             content1(
-                flex: 2,
-                title: "${payement.contratData!.labelStr}",
-                font: font),
-            content1(flex: 1, title: "${payement.amount}\$", font: font),
+              flex: 1,
+              title:
+                  payement.leftToPay != null ? "${payement.leftToPay}\$" : "",
+              font: font,
+            ),
           ],
         ),
         Container(
           height: 1,
           width: 793.7007874,
-          margin: const EdgeInsets.only(top: 10, bottom: 15),
+          margin: const EdgeInsets.only(top: 8, bottom: 10),
           decoration: const BoxDecoration(
             color: PdfColors.grey,
           ),
@@ -379,7 +362,7 @@ Widget title1({String? title, int? flex, required Font font}) {
   return Expanded(
     flex: flex!,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 15),
       decoration: const BoxDecoration(
         color: PdfColor(43 / 255, 81 / 255, 133 / 255),
       ),
@@ -388,7 +371,7 @@ Widget title1({String? title, int? flex, required Font font}) {
         title!,
         style: TextStyle(
           color: const PdfColor(1, 1, 1),
-          fontSize: 10,
+          fontSize: 6,
           font: font,
         ),
       ),
@@ -401,13 +384,17 @@ Widget content1(
   return Expanded(
     flex: flex,
     child: Container(
-      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 3, horizontal: 15),
       decoration: const BoxDecoration(),
       alignment: Alignment.center,
       child: Text(
         title!,
-        style:
-            TextStyle(color: const PdfColor(0, 0, 0), fontSize: 10, font: font),
+        style: TextStyle(
+          color: const PdfColor(0, 0, 0),
+          fontSize: 6,
+          height: 1.5,
+          font: font,
+        ),
       ),
     ),
   );

@@ -72,22 +72,28 @@ class PayementHistoric {
   User? createdBy;
   String? transactionId;
   double? amount;
+  double? amountDue;
+  double? amountPay;
+  double? leftToPay;
   String? currenty;
   bool? status;
   String? createdAt;
   String? updatedAt;
 
-  PayementHistoric(
-      {this.id,
-      this.contratData,
-      this.type,
-      this.transactionId,
-      this.amount,
-      this.currenty,
-      this.status,
-      this.createdAt,
-      this.updatedAt,
-      this.createdBy});
+  PayementHistoric({
+    this.id,
+    this.contratData,
+    this.type,
+    this.transactionId,
+    this.amount,
+    this.currenty,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.createdBy,
+    this.leftToPay,
+    this.amountDue,
+  });
 
   PayementHistoric.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -98,8 +104,18 @@ class PayementHistoric {
         json['created_by'] != null ? User.fromJson(json['created_by']) : null;
     type = json['type'];
     transactionId = json['transaction_id'];
+
+    amountPay = json['amount_pay'] != null
+        ? double.parse(json['amount_pay'].toString())
+        : null;
+    leftToPay = json['left_to_pay'] != null
+        ? double.parse(json['left_to_pay'].toString())
+        : null;
     amount =
         json['amount'] != null ? double.parse(json['amount'].toString()) : null;
+    amountDue = json['amount_due'] != null
+        ? double.parse(json['amount_due'].toString())
+        : null;
     currenty = json['currenty'];
     status = json['status'];
     createdAt = json['created_at'];

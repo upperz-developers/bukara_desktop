@@ -200,7 +200,7 @@ class DetailHistoric extends StatelessWidget {
                                     ),
                                     10.heightBox,
                                     Text(
-                                      "${payement.contratData!.rentalContrat!.appartement!.designation} | numero ${payement.contratData!.rentalContrat!.appartement!.number},${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon| ${payement.contratData!.rentalContrat!.appartement!.address}",
+                                      "${payement.contratData!.rentalContrat!.appartement!.designation} | ${payement.contratData!.rentalContrat!.appartement!.features!.bedroom} chambres - ${payement.contratData!.rentalContrat!.appartement!.features!.livingroom} salon",
                                       style: GoogleFonts.montserrat(
                                         fontSize: 12,
                                       ),
@@ -213,11 +213,9 @@ class DetailHistoric extends StatelessWidget {
                           35.heightBox,
                           Row(
                             children: [
-                              title1(title: "Libellé", flex: 1),
+                              title1(title: "Méthode de paiement", flex: 1),
                               3.widthBox,
-                              title1(title: "Methode de paiement", flex: 1),
-                              3.widthBox,
-                              title1(title: "Numero de bordereau", flex: 1),
+                              title1(title: "Numéro de bordereau", flex: 1),
                             ],
                           ),
                           3.heightBox,
@@ -233,36 +231,21 @@ class DetailHistoric extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     content1(
-                                        flex: 1,
-                                        title:
-                                            "${payement.contratData!.labelStr}"),
-                                    content1(
                                         flex: 1, title: "${payement.type}"),
                                     content1(
-                                        flex: 1,
-                                        title: payement.type == "cash"
-                                            ? ""
-                                            : "${payement.transactionId}",
-                                        isEnd: true),
+                                      flex: 1,
+                                      title: payement.type == "cash"
+                                          ? ""
+                                          : "${payement.transactionId}",
+                                      isEnd: true,
+                                    ),
                                   ],
                                 ),
                               ),
                               Positioned(
                                 top: 0,
                                 bottom: 0,
-                                left: 222.5,
-                                child: Container(
-                                  width: 3,
-                                  height: double.infinity,
-                                  decoration: const BoxDecoration(
-                                    color: AppColors.WHITE_COLOR,
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 0,
-                                bottom: 0,
-                                left: 448,
+                                left: 335.25,
                                 child: Container(
                                   width: 3,
                                   height: double.infinity,
@@ -276,47 +259,34 @@ class DetailHistoric extends StatelessWidget {
                           35.heightBox,
                           Row(
                             children: [
-                              Container(
-                                width: 100,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 43, 81, 133),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "#num",
-                                  style: GoogleFonts.montserrat(
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.WHITE_COLOR,
-                                  ),
-                                ),
-                              ),
-                              3.widthBox,
                               title1(title: "Libellé", flex: 2),
                               3.widthBox,
-                              title1(title: "Paye", flex: 1),
+                              title1(title: "Montant payé", flex: 1),
+                              3.widthBox,
+                              title1(title: "Rest", flex: 1),
                             ],
                           ),
                           3.heightBox,
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                width: 100,
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 10),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "1",
-                                  style: GoogleFonts.montserrat(),
-                                ),
-                              ),
-                              3.widthBox,
                               content1(
                                   flex: 2,
-                                  title: "${payement.contratData!.labelStr}"),
+                                  title: "Paiement recouvrement du ${CustomDate(
+                                    date: DateTime.parse(
+                                        payement.contratData!.createdAt!),
+                                  ).getFullDate} au ${CustomDate(
+                                    date: DateTime.parse(
+                                        payement.contratData!.dateRecovery!),
+                                  ).getFullDate}"),
                               content1(flex: 1, title: "${payement.amount}\$"),
+                              3.widthBox,
+                              content1(
+                                flex: 1,
+                                title: payement.leftToPay != null
+                                    ? "${payement.leftToPay}\$"
+                                    : "",
+                              ),
                             ],
                           ),
                           customDivider(context),
@@ -476,6 +446,7 @@ class DetailHistoric extends StatelessWidget {
           style: GoogleFonts.montserrat(
             color: AppColors.BLACK_COLOR,
             fontSize: 12,
+            height: 1.5,
           ),
         ),
       ),
