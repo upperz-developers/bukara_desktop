@@ -2,7 +2,6 @@
 
 class APIURL {
   static const String BASEURL = "https://api-bukara.upper-z.com/api/v1";
-  // static const String BASEURL = "http://192.168.30.64:4040/api/v1";
   static const String LOGIN = "$BASEURL/users/signin";
   static const String SIGNUP = "$BASEURL/users/";
   static const String ADDENTERPRISEURL = "$BASEURL/entreprises";
