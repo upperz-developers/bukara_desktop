@@ -71,22 +71,26 @@ class ContratData {
   String? createdAt;
   String? updatedAt;
   bool? deslay;
+  int? dayDiff;
 
-  ContratData(
-      {this.id,
-      this.rentalContrat,
-      this.labelMonth,
-      this.labelStr,
-      this.dateRecovery,
-      this.status,
-      this.color,
-      this.createdAt,
-      this.updatedAt,
-      this.deslay});
+  ContratData({
+    this.id,
+    this.rentalContrat,
+    this.labelMonth,
+    this.labelStr,
+    this.dateRecovery,
+    this.status,
+    this.color,
+    this.createdAt,
+    this.updatedAt,
+    this.deslay,
+    this.dayDiff,
+  });
 
   ContratData.fromJson(Map<String, dynamic> json) {
     paiements = [];
     id = json['id'];
+    dayDiff = int.tryParse(json['dayDiff'].toString());
     rentalContrat = json['rental_contrat'] != null
         ? RentalContrat.fromJson(json['rental_contrat'])
         : null;

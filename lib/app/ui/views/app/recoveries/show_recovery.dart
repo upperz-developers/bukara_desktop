@@ -132,7 +132,7 @@ class _ShowRecoveryState extends State<ShowRecovery> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Montant"),
+              child: tabDetailModel(title: "Reste à payer"),
             ),
             space.widthBox,
             Expanded(
@@ -256,9 +256,10 @@ class _ShowRecoveryState extends State<ShowRecovery> {
                   Expanded(
                     flex: 1,
                     child: Text(
-                      dayLeft(
-                          start: DateTime.now().toString(),
-                          end: contratData.dateRecovery!),
+                      (contratData.deslay == true ||
+                              contratData.status == false)
+                          ? "${contratData.dayDiff} jour.s"
+                          : "0 jour",
                       style: GoogleFonts.montserrat(
                         fontSize: 13,
                         fontWeight: FontWeight.bold,
