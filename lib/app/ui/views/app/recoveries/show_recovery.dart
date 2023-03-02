@@ -48,65 +48,6 @@ class _ShowRecoveryState extends State<ShowRecovery> {
     );
   }
 
-  Widget pagination() {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: horizontalSpace,
-        right: horizontalSpace,
-        top: 30,
-        bottom: 30,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Text(
-            "1 sur 13",
-            style: GoogleFonts.montserrat(
-              fontSize: 12,
-              color: AppColors.SECOND_TEXT_COLOR,
-            ),
-          ),
-          15.widthBox,
-          OnHoverEffect(
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.DISABLE_COLOR,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(
-                  Iconsax.arrow_left_1,
-                  color: AppColors.BLACK_COLOR,
-                ),
-              ),
-            ),
-          ),
-          5.widthBox,
-          OnHoverEffect(
-            child: InkWell(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.DISABLE_COLOR,
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: const Icon(
-                  Iconsax.arrow_right_4,
-                  color: AppColors.BLACK_COLOR,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget tabDetail() {
     double space = 10;
     return Padding(
@@ -166,7 +107,12 @@ class _ShowRecoveryState extends State<ShowRecovery> {
   }) {
     double space = 10;
 
-    DateTime recoverAt = DateTime.parse(contratData.dateRecovery!);
+    DateTime recoverAt = DateTime.parse(
+      contratData.dateRecovery!.substring(
+        0,
+        contratData.dateRecovery!.indexOf("T"),
+      ),
+    );
     return OnHoverEffect(
       child: InkWell(
         onTap: () {

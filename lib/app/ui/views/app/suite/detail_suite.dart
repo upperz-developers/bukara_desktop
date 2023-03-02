@@ -39,6 +39,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
   @override
   Widget build(BuildContext context) {
     Suite suiteDetail = ModalRoute.of(context)!.settings.arguments as Suite;
+
     return Scaffold(
       backgroundColor: AppColors.SCAFFOLD_BACKGROUND_LIGHT,
       body: Padding(
@@ -269,7 +270,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                           ),
                                           10.heightBox,
                                           Text(
-                                            "Mise en effet ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
+                                            "Mise en effet ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!.substring(0, suiteDetail.contrats![0].startDate!.indexOf("T")))).getFullDate}",
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.bold,
                                               color:
