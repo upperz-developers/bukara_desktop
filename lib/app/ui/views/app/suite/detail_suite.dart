@@ -260,7 +260,7 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Signé ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].createdAt ?? DateTime.now().toString())).getFullDate}",
+                                            "Enrégistré ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].createdAt ?? DateTime.now().toString())).getFullDate}",
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.bold,
                                               color:
@@ -276,24 +276,6 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                                   AppColors.SECOND_TEXT_COLOR,
                                             ),
                                           ),
-                                          if (suiteDetail
-                                                  .contrats![0].endDate !=
-                                              null)
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                5.heightBox,
-                                                Text(
-                                                  "Resilie ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].endDate!)).getFullDate}",
-                                                  style: GoogleFonts.montserrat(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: AppColors
-                                                        .SECOND_TEXT_COLOR,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                           30.heightBox,
                                           OnHoverEffect(
                                             child: InkWell(

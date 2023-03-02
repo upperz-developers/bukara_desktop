@@ -457,7 +457,7 @@ class _RentSuiteState extends State<RentSuite> {
                                 : contratDate.day.toString();
                             String month = contratDate.month < 10
                                 ? "0${contratDate.month}"
-                                : contratDate.day.toString();
+                                : contratDate.month.toString();
                             rentController.contratDate =
                                 "${contratDate.year}-$month-$day";
                           }
