@@ -137,12 +137,7 @@ class _ShowRecoveryState extends State<ShowRecovery> {
             space.widthBox,
             Expanded(
               flex: 1,
-              child: tabDetailModel(title: "Date début"),
-            ),
-            space.widthBox,
-            Expanded(
-              flex: 1,
-              child: tabDetailModel(title: "Date fin"),
+              child: tabDetailModel(title: "Date recouvrement"),
             ),
             space.widthBox,
             Expanded(
@@ -170,7 +165,7 @@ class _ShowRecoveryState extends State<ShowRecovery> {
     required ContratData contratData,
   }) {
     double space = 10;
-    DateTime startAt = DateTime.parse(contratData.createdAt!);
+
     DateTime recoverAt = DateTime.parse(contratData.dateRecovery!);
     return OnHoverEffect(
       child: InkWell(
@@ -239,12 +234,6 @@ class _ShowRecoveryState extends State<ShowRecovery> {
                       amount: contratData.rentalContrat!.amount,
                       paiements: contratData.paiements,
                     )} USD"),
-                  ),
-                  space.widthBox,
-                  Expanded(
-                    flex: 1,
-                    child: suiteDetailModel(
-                        title: CustomDate(date: startAt).getFullDate),
                   ),
                   space.widthBox,
                   Expanded(

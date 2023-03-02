@@ -11,6 +11,7 @@ class RentController {
   TextEditingController price;
   String? selectedSuiteId;
   String? selectedTenantId;
+  String? contratDate;
 
   bool isRentWithWaranty = true;
 
@@ -27,6 +28,7 @@ class RentController {
       "landlordId": selectedTenantId,
       "amount": double.parse(price.text.trim()),
       "month": int.parse(selectedMonth),
+      "startDate": contratDate,
       "numberOfHabitant": int.parse(selectedRentAccount),
     };
 
@@ -39,6 +41,7 @@ class RentController {
             )
           : CONFIGRENTDAILY(
               data: {
+                "startDate": contratDate,
                 "appartementId": selectedSuiteId,
                 "landlordId": selectedTenantId,
                 "amount": double.parse(price.text.trim()),

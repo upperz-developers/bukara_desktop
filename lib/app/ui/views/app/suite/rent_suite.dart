@@ -6,6 +6,7 @@ import 'package:bukara/app/ui/shared/utils/hover_animation.dart';
 import 'package:bukara/app/ui/shared/utils/pop_pup.dart';
 import 'package:bukara/app/ui/shared/widget.dart';
 import 'package:bukara/app/ui/view_controller/rent_view_controller.dart';
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -35,6 +36,8 @@ class _RentSuiteState extends State<RentSuite> {
 
   RentController rentController = RentController();
   ValueNotifier<bool> isError = ValueNotifier(false);
+  DateTime contratDate = DateTime.now();
+
   void submit() {
     isError.value = false;
     rentController.selectedSuiteId = widget.suiteId;
@@ -400,6 +403,113 @@ class _RentSuiteState extends State<RentSuite> {
                             ),
                           )
                         ],
+                      ),
+                    ),
+                  ],
+                ),
+                15.heightBox,
+                Text(
+                  "Date de début du contrat",
+                  style: GoogleFonts.montserrat(
+                    fontSize: 12,
+                    color: AppColors.SECOND_TEXT_COLOR,
+                  ),
+                ),
+                10.heightBox,
+                Wrap(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        var results = await showCalendarDatePicker2Dialog(
+                          context: context,
+                          config: CalendarDatePicker2WithActionButtonsConfig(
+                            firstDate: DateTime.now(),
+                            lastDate: DateTime(2030, 1, 1),
+                            dayTextStyle: GoogleFonts.montserrat(),
+                            selectedDayTextStyle: GoogleFonts.montserrat(
+                              color: AppColors.WHITE_COLOR,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            yearTextStyle: GoogleFonts.montserrat(),
+                            todayTextStyle: GoogleFonts.montserrat(),
+                            disabledDayTextStyle: GoogleFonts.montserrat(
+                              color: AppColors.SECOND_TEXT_COLOR,
+                            ),
+                            controlsTextStyle: GoogleFonts.montserrat(),
+                            okButtonTextStyle: GoogleFonts.montserrat(
+                              color: AppColors.BLACK_COLOR,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            selectedDayHighlightColor: AppColors.BLACK_COLOR,
+                            cancelButtonTextStyle: GoogleFonts.montserrat(
+                              color: AppColors.SECOND_TEXT_COLOR,
+                            ),
+                          ),
+                          dialogSize: const Size(325, 400),
+                          initialValue: [contratDate],
+                          borderRadius: BorderRadius.circular(10),
+                        );
+                        setState(() {
+                          if (results != null) {
+                            contratDate = results[0]!;
+                            String day = contratDate.day < 10
+                                ? "0${contratDate.day}"
+                                : contratDate.day.toString();
+                            String month = contratDate.month < 10
+                                ? "0${contratDate.month}"
+                                : contratDate.day.toString();
+                            rentController.contratDate =
+                                "${contratDate.year}-$month-$day";
+                          }
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.BLACK_COLOR,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: const Icon(
+                          Iconsax.calendar,
+                          size: 15,
+                          color: AppColors.WHITE_COLOR,
+                        ),
+                      ),
+                    ),
+                    15.widthBox,
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.DISABLE_COLOR,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        "${contratDate.day}",
+                        style: GoogleFonts.montserrat(),
+                      ),
+                    ),
+                    5.widthBox,
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.DISABLE_COLOR,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        "${contratDate.month}",
+                        style: GoogleFonts.montserrat(),
+                      ),
+                    ),
+                    5.widthBox,
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.DISABLE_COLOR,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        "${contratDate.year}",
+                        style: GoogleFonts.montserrat(),
                       ),
                     ),
                   ],

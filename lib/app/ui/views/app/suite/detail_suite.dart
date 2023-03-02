@@ -260,7 +260,16 @@ class _SuiteDetailState extends State<SuiteDetail> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Signé ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
+                                            "Signé ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].createdAt ?? DateTime.now().toString())).getFullDate}",
+                                            style: GoogleFonts.montserrat(
+                                              fontWeight: FontWeight.bold,
+                                              color:
+                                                  AppColors.SECOND_TEXT_COLOR,
+                                            ),
+                                          ),
+                                          10.heightBox,
+                                          Text(
+                                            "Mise en effet ${CustomDate(date: DateTime.parse(suiteDetail.contrats![0].startDate!)).getFullDate}",
                                             style: GoogleFonts.montserrat(
                                               fontWeight: FontWeight.bold,
                                               color:

@@ -33,6 +33,7 @@ dependencies:
   shimmer_animation: ^2.1.0+1
   printing: ^5.9.3
   pdf: ^3.8.4
+  calendar_date_picker2: ^0.4.0
   path_provider: ^2.0.11
   flutter_svg: ^1.1.6
   window_manager: ^0.2.3
