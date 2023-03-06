@@ -160,7 +160,6 @@ class _AddTenantsState extends State<AddTenants> {
                                           ? widget.tenant!.email
                                           : "Entrez l'adresse mail",
                                       controller: tenantController.email,
-                                      submitted: submitted,
                                     ),
                                     20.heightBox,
                                     Text(
@@ -176,7 +175,6 @@ class _AddTenantsState extends State<AddTenants> {
                                           ? widget.tenant!.lastAdress
                                           : "Entrez le dernier adresse du locataire",
                                       controller: tenantController.lastAddress,
-                                      submitted: submitted,
                                     ),
                                     20.heightBox,
                                     Padding(
@@ -292,7 +290,6 @@ class _AddTenantsState extends State<AddTenants> {
                                           ? widget.tenant!.nationality
                                           : "Entrez la nationnalite du locataire",
                                       controller: tenantController.nationalite,
-                                      submitted: submitted,
                                     ),
                                     20.heightBox,
                                     Padding(

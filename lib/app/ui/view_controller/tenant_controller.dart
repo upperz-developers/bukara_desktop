@@ -82,8 +82,6 @@ class TenantController {
   bool addValidation() =>
       firstName!.text.trim().isNotEmpty &&
       lastname!.text.trim().isNotEmpty &&
-      email!.text.trim().isNotEmpty &&
-      cartId!.text.trim().isNotEmpty &&
       nationalite!.text.trim().isNotEmpty &&
       phoneNumber!.text.trim().isNotEmpty;
 }
